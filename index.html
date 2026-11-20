@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sarmento Ads — Engenharia de Posicionamento Digital</title>
+  
+  <!-- Tipografia Editorial: Plus Jakarta Sans + Instrument Serif -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              caribe: '#00C46A',
+              caribeGlow: 'rgba(0, 196, 106, 0.25)',
+              forest: '#29694E',
+              dark: '#0d0d0d',
+              surface: '#121212',
+              border: '#1f1f1f',
+              borderHover: '#333333',
+              muted: '#8a8a8a',
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Instrument Serif', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #070707;
+      color: #ECECEC;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      selection-background-color: #00C46A;
+      selection-color: #000;
+    }
+
+    /* Textura de Granulação de Filme (Film Noise) */
+    .film-grain {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Brilho de Estúdio Suave */
+    .studio-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0, 196, 106, 0.12) 0%, rgba(41, 105, 78, 0.04) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(60px);
+    }
+
+    /* Efeito Spotlight Interativo com Mouse */
+    .spotlight-card {
+      position: relative;
+      background: #0e0e0e;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: border-color 0.4s ease, transform 0.4s ease;
+    }
+
+    .spotlight-card:hover {
+      border-color: rgba(0, 196, 106, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .spotlight-card::before {
+      content: '';
+      position: absolute;
+      top: var(--mouse-y, -200px);
+      left: var(--mouse-x, -200px);
+      transform: translate(-50%, -50%);
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(0, 196, 106, 0.15) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Badge Pílula Flutuante */
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9999px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Botão com feixe de luz dinâmico */
+    .btn-shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shine::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(60deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: rotate(30deg);
+      transition: transform 0.8s ease;
+    }
+    .btn-shine:hover::after {
+      transform: rotate(30deg) translate(50%, 50%);
+    }
+  </style>
+</head>
+<body class="selection:bg-brand-caribe selection:text-black">
+
+  <!-- Ruído de Cinema / Grain Overlay -->
+  <div class="film-grain"></div>
+
+  <!-- NAVEGAÇÃO MINIMALISTA -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-[#070707]/80 backdrop-blur-xl border-b border-white/[0.05]">
+    <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+      
+      <!-- Assinatura Sarmento Ads -->
+      <a href="#" class="flex items-center gap-3 group">
+        <span class="w-2 h-2 rounded-full bg-brand-caribe"></span>
+        <span class="text-sm font-semibold tracking-wider text-white">SARMENTO <span class="font-serif italic font-normal text-brand-caribe text-base">Ads</span></span>
+      </a>
+
+      <!-- Status Operacional -->
+      <div class="hidden sm:flex items-center gap-2 font-mono text-[11px] text-brand-muted tracking-wider uppercase">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Posicionamento de Alto Padrão</span>
+      </div>
+
+      <!-- CTA Nav -->
+      <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20avaliar%20o%20posicionamento%20digital%20da%20minha%20empresa." 
+         target="_blank" 
+         rel="noopener noreferrer" 
+         class="px-5 py-2 rounded-full border border-white/15 text-xs text-white/90 hover:border-brand-caribe hover:text-brand-caribe transition-all duration-300">
+        Iniciar Conversa
+      </a>
+    </div>
+  </nav>
+
+  <!-- ==============================================
+       1. CABEÇALHO (HERO EDITORIAL & DIRETO)
+       ============================================== -->
+  <header class="relative pt-36 pb-24 md:pt-48 md:pb-36 z-10">
+    <div class="studio-glow"></div>
+
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      
+      <!-- Pílula Estúdio -->
+      <div class="pill-badge mb-8">
+        <span class="text-[10px] font-mono tracking-[0.2em] uppercase text-brand-caribe font-medium">Design & Estrutura Comercial</span>
+        <span class="w-1 h-1 rounded-full bg-white/20"></span>
+        <span class="text-[11px] text-white/60">Exclusivo para Negócios de Alto Valor</span>
+      </div>
+
+      <!-- Manchete Editorial com Instrument Serif Itálico -->
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-light tracking-tight text-white leading-[1.08]">
+        Construímos a presença digital que <span class="font-serif italic font-normal text-brand-caribe tracking-normal">justifica os seus honorários.</span>
+      </h1>
+
+      <p class="mt-8 text-base sm:text-lg text-brand-muted max-w-2xl mx-auto leading-relaxed font-light">
+        Empresas de alto valor perdem contratos todos os dias para concorrentes inferiores simplesmente porque sua presença na web transmite amadorismo. Nós encerramos esse ciclo.
+      </p>
+
+      <!-- Botões de Ação com Acabamento Refinado -->
+      <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20avaliar%20o%20posicionamento%20digital%20da%20minha%20empresa." 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn-shine w-full sm:w-auto px-8 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-full transition-all duration-300 flex items-center justify-center gap-3">
+          <span>Agendar Diagnóstico Direto</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+
+        <a href="#detalhe" 
+           class="w-full sm:w-auto px-8 py-4 rounded-full border border-white/10 hover:border-white/25 text-white/70 hover:text-white text-xs tracking-wider uppercase font-medium transition-all duration-300">
+          Entender o Processo
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==============================================
+       2. DETALHAMENTO DO CONTEÚDO (A ENGENHARIA)
+       ============================================== -->
+  <section id="detalhe" class="py-24 relative z-10 border-t border-white/[0.05]">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="max-w-2xl mb-16">
+        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">O Método Sarmento</span>
+        <h2 class="text-3xl md:text-5xl font-light text-white mt-3 leading-tight">
+          Menos ruído visual. <br>
+          <span class="font-serif italic text-white/90">Mais conversão imediata.</span>
+        </h2>
+        <p class="text-sm text-brand-muted mt-4 leading-relaxed font-light">
+          Templates genéricos do WordPress carregam centenas de scripts desnecessários que espantam o visitante antes do carregamento. A nossa abordagem é orientada a código limpo e arquitetura comercial.
+        </p>
+      </div>
+
+      <!-- Grid com Spotlight Interativo -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="spotlight-card p-8">
+          <div class="text-xs font-mono text-brand-caribe mb-6 tracking-wider">01 / ARQUITETURA</div>
+          <h3 class="text-xl font-medium text-white mb-3">Copywriting com Rigor Factual</h3>
+          <p class="text-xs text-brand-muted leading-relaxed font-light">
+            Textos pensados para quem decide. Eliminamos jargões vazios e estruturamos uma narrativa que antecipa as dúvidas e quebra as principais objeções de compra antes do primeiro contato.
+          </p>
+        </div>
+
+        <div class="spotlight-card p-8">
+          <div class="text-xs font-mono text-brand-caribe mb-6 tracking-wider">02 / PERFORMANCE</div>
+          <h3 class="text-xl font-medium text-white mb-3">Carregamento Sub-Segundo</h3>
+          <p class="text-xs text-brand-muted leading-relaxed font-light">
+            Desenvolvido com tecnologia de ponta sem plugins acumulados. A página abre em menos de 1,2 segundo no smartphone do seu prospecto, mesmo em conexões oscilantes de 4G.
+          </p>
+        </div>
+
+        <div class="spotlight-card p-8">
+          <div class="text-xs font-mono text-brand-caribe mb-6 tracking-wider">03 / CONEXÃO</div>
+          <h3 class="text-xl font-medium text-white mb-3">Fluxo de Contato sem Fricção</h3>
+          <p class="text-xs text-brand-muted leading-relaxed font-light">
+            Cada elemento, botão e formulário é posicionado na rota ergonômica natural do polegar, conduzindo o interessado diretamente para o seu WhatsApp corporativo em um único toque.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==============================================
+       3. PARA QUEM É (CRITÉRIO DE QUALIFICAÇÃO)
+       ============================================== -->
+  <section class="py-24 relative z-10 border-t border-white/[0.05] bg-[#090909]">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="text-center max-w-xl mx-auto mb-16">
+        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Filtro de Segmentos</span>
+        <h2 class="text-3xl md:text-4xl font-light text-white mt-3">
+          Projetado para quem vende <span class="font-serif italic">competência técnica.</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+        
+        <!-- Para Quem É -->
+        <div class="p-8 sm:p-10 rounded-2xl bg-[#0e0e0e] border border-brand-forest/40">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="w-2 h-2 rounded-full bg-brand-caribe"></span>
+            <span class="text-xs font-mono uppercase tracking-wider text-white font-medium">Projetos com Alta Sinergia</span>
+          </div>
+          <ul class="space-y-5 text-xs sm:text-sm text-gray-300 font-light">
+            <li class="flex items-start gap-3">
+              <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
+              <span><strong>Escritórios de Advocacia Especializada:</strong> Que precisam demonstrar reputação, rigor institucional e autoridade antes de reuniões de honorários.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
+              <span><strong>BPO Financeiro & Auditoria Contábil:</strong> Empresas que vendem segurança de dados e processos organizados para decisores e diretores.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
+              <span><strong>Clínicas Médicas & Odontologia Avançada:</strong> Onde a sofisticação da experiência visual precisa refletir o alto nível do procedimento clínico.</span>
+            </li>
+            <li class="flex items-start gap-3">
+  <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
+  <span><strong>Negócios B2B e Serviços Especializados:</strong> Empresas que recebem clientes por indicação, prospecção ativa ou anúncios e exigem uma presença digital que passe credibilidade imediata na hora de fechar contratos.</span>
+</li>
+          </ul>
+        </div>
+
+        <!-- Não é para -->
+        <div class="p-8 sm:p-10 rounded-2xl bg-[#0a0a0a] border border-white/[0.05]">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="w-2 h-2 rounded-full bg-neutral-600"></span>
+            <span class="text-xs font-mono uppercase tracking-wider text-brand-muted font-medium">Fora do Nosso Escopo</span>
+          </div>
+          <ul class="space-y-5 text-xs sm:text-sm text-brand-muted font-light">
+            <li class="flex items-start gap-3">
+              <span class="text-neutral-600 font-serif text-lg leading-none mt-0.5">•</span>
+              <span>Quem procura criadores de sites automatizados de baixo custo com templates prontos copiados da internet.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-neutral-600 font-serif text-lg leading-none mt-0.5">•</span>
+              <span>Lojas virtuais com centenas de produtos de varejo de ticket baixo (nosso foco são serviços e autoridade).</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-neutral-600 font-serif text-lg leading-none mt-0.5">•</span>
+              <span>Empresas que disputam mercado unicamente pelo menor preço, sem valorizar a própria credibilidade.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==============================================
+       4. BENEFÍCIOS DO PRODUTO (IMPACTO COMERCIAL)
+       ============================================== -->
+  <section class="py-24 relative z-10 border-t border-white/[0.05]">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="max-w-xl mb-16">
+        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Resultados Práticos</span>
+        <h2 class="text-3xl md:text-4xl font-light text-white mt-3">
+          O que muda quando seu site passa a operar como um <span class="font-serif italic text-brand-caribe">ativo de vendas.</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="p-6 rounded-2xl bg-[#0e0e0e] border border-white/[0.06]">
+          <div class="text-2xl font-light text-white mb-2">01</div>
+          <h4 class="text-sm font-medium text-white mb-2">Fim da Guerra de Preços</h4>
+          <p class="text-xs text-brand-muted leading-relaxed font-light">
+            O cliente percebe imediatamente a distinção do seu serviço antes mesmo de solicitar o orçamento comercial.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#0e0e0e] border border-white/[0.06]">
+          <div class="text-2xl font-light text-white mb-2">02</div>
+          <h4 class="text-sm font-medium text-white mb-2">Aproveitamento de Tráfego</h4>
+          <p class="text-xs text-brand-muted leading-relaxed font-light">
+            Redução drástica da taxa de rejeição de anúncios no Google e Instagram graças ao carregamento instantâneo.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#0e0e0e] border border-white/[0.06]">
+          <div class="text-2xl font-light text-white mb-2">03</div>
+          <h4 class="text-sm font-medium text-white mb-2">Blindagem Técnica</h4>
+          <p class="text-xs text-brand-muted leading-relaxed font-light">
+            Zero plugins desatualizados, zero páginas fora do ar e total conformidade com os navegadores modernos.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#0e0e0e] border border-white/[0.06]">
+          <div class="text-2xl font-light text-white mb-2">04</div>
+          <h4 class="text-sm font-medium text-white mb-2">Rastreamento Preciso</h4>
+          <p class="text-xs text-brand-muted leading-relaxed font-light">
+            Pixels e tags de conversão integrados para fornecer dados exatos para as suas campanhas de marketing pago.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Banner de Chamada da Sessão 1 -->
+      <div class="mt-16 p-8 rounded-2xl border border-brand-forest/40 bg-gradient-to-r from-brand-forest/20 via-[#0e0e0e] to-[#0e0e0e] flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div>
+          <h3 class="text-lg font-medium text-white">Sua empresa merece esse nível de acabamento.</h3>
+          <p class="text-xs text-brand-muted mt-1 font-light">Analisamos seu posicionamento atual sem qualquer compromisso.</p>
+        </div>
+        <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20avaliar%20o%20posicionamento%20digital%20da%20minha%20empresa." 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="px-6 py-3.5 bg-brand-caribe hover:bg-[#00d876] text-black text-xs font-semibold tracking-wider uppercase rounded-full transition-all shrink-0">
+          Solicitar Análise Gratuita
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Script Spotlight com Mouse -->
+  <script>
+    document.querySelectorAll('.spotlight-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+  </script>
+
+</body>
+</html>
+  <!-- ==============================================
+       SESSÃO 2: URGÊNCIA, SOBRE, VALOR & GARANTIA
+       ============================================== -->
+
+  <!-- 1. ESCASSEZ OPERACIONAL (CAPACIDADE LIMITADA) -->
+  <section class="py-20 relative z-10 border-t border-white/[0.05] bg-[#080808]">
+    <div class="max-w-5xl mx-auto px-6">
+      
+      <div class="p-8 sm:p-10 rounded-2xl border border-white/[0.08] bg-[#0c0c0c] flex flex-col md:flex-row items-start md:items-center justify-between gap-8 relative overflow-hidden">
+        <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-brand-caribe/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="space-y-3 max-w-xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-forest/25 border border-brand-forest/40">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-caribe animate-ping"></span>
+            <span class="text-[10px] font-mono tracking-widest uppercase text-brand-caribe font-medium">Controle de Qualidade</span>
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-light text-white">
+            Limite estrito de <span class="font-serif italic text-brand-caribe">04 novos projetos</span> por mês.
+          </h3>
+          <p class="text-xs sm:text-sm text-brand-muted leading-relaxed font-light">
+            Não operamos como fábrica de páginas em escala. Cada ecossistema comercial é desenvolvido manualmente por nossa equipe técnica sênior. Para preservar o rigor e a exclusividade por nicho na sua região, aceitamos apenas quatro contratações mensais.
+          </p>
+        </div>
+
+        <div class="shrink-0 w-full md:w-auto">
+          <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20verificar%20a%20disponibilidade%20de%20vaga%20para%20o%20meu%20segmento." 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="btn-shine block w-full sm:w-auto px-6 py-3.5 bg-brand-caribe hover:bg-[#00d876] text-black text-xs font-semibold tracking-wider uppercase rounded-full text-center transition-all duration-300">
+            Consultar Vaga na Região
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 2. SOBRE A SARMENTO ADS (AUTORIDADE & PROPÓSITO) -->
+  <section class="py-24 relative z-10 border-t border-white/[0.05]">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Manifesto Textual -->
+        <div class="lg:col-span-7 space-y-6">
+          <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Sobre a Sarmento Ads</span>
+          <h2 class="text-3xl md:text-5xl font-light text-white leading-tight">
+            Nascemos para tirar negócios sérios da <span class="font-serif italic text-white/90">vala comum da internet.</span>
+          </h2>
+          
+          <div class="space-y-4 text-xs sm:text-sm text-brand-muted font-light leading-relaxed">
+            <p>
+              A maioria dos empresários investe anos para dominar sua técnica, montar uma equipe qualificada e prestar um serviço impecável. No entanto, ao se apresentar no ambiente digital, utiliza uma página genérica que faz a empresa parecer idêntica a qualquer concorrente iniciante.
+            </p>
+            <p>
+              A <strong>Sarmento Ads</strong> foi fundada com um propósito claro: fundir engenharia de tráfego, design com padrão internacional e copywriting focado em fechamento para criar páginas que posicionam você como a escolha óbvia do seu mercado.
+            </p>
+            <p class="text-white font-normal">
+              Não entregamos apenas arquivos de design. Entregamos a infraestrutura comercial que sustenta os seus honorários.
+            </p>
+          </div>
+
+          <div class="pt-4 flex items-center gap-8 border-t border-white/[0.06] text-xs font-mono text-white/80">
+            <div>
+              <span class="text-xl font-light text-brand-caribe block font-sans">100%</span>
+              <span class="text-brand-muted text-[11px] uppercase">Código Autoral</span>
+            </div>
+            <div>
+              <span class="text-xl font-light text-white block font-sans">0</span>
+              <span class="text-brand-muted text-[11px] uppercase">Templates Repetidos</span>
+            </div>
+            <div>
+              <span class="text-xl font-light text-brand-caribe block font-sans">24/7</span>
+              <span class="text-brand-muted text-[11px] uppercase">Estabilidade Ativa</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box Visual Minimalista -->
+        <div class="lg:col-span-5">
+          <div class="p-8 sm:p-10 rounded-2xl bg-[#0c0c0c] border border-white/[0.08] relative">
+            <div class="w-12 h-12 rounded-full bg-brand-forest/20 border border-brand-forest/40 flex items-center justify-center text-brand-caribe mb-6 font-mono text-sm">
+              SA
+            </div>
+            <p class="font-serif italic text-lg sm:text-xl text-white/90 leading-snug">
+              «Se o seu site não transmite a mesma sofisticação do seu trabalho presencial, você está concedendo descontos invisíveis para clientes que deveriam pagar o valor total.»
+            </p>
+            <div class="mt-6 pt-6 border-t border-white/[0.06] flex items-center justify-between">
+              <div>
+                <div class="text-xs font-semibold text-white">Sarmento Ads</div>
+                <div class="text-[11px] font-mono text-brand-muted">Engenharia Comercial & Tráfego</div>
+              </div>
+              <span class="text-brand-caribe font-mono text-xs">Rio Grande do Sul</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. VALOR DO PRODUTO / SERVIÇO (TRANSPARÊNCIA TOTAL) -->
+  <section class="py-24 relative z-10 border-t border-white/[0.05] bg-[#090909]">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Modelo Comercial</span>
+        <h2 class="text-3xl md:text-5xl font-light text-white mt-3">
+          Investimento com <span class="font-serif italic">clareza matemática.</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-brand-muted mt-3 font-light">
+          Sem custos surpresa, sem cobranças abusivas. Você sabe com precisão o que está contratando.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+        
+        <!-- Bloco 1: Desenvolvimento e Construção -->
+        <div class="p-8 sm:p-10 rounded-2xl bg-[#0d0d0d] border border-white/[0.08] flex flex-col justify-between">
+          <div>
+            <div class="text-xs font-mono uppercase tracking-widest text-brand-caribe mb-3 font-medium">Etapa 01 — Ativo Único</div>
+            <h3 class="text-2xl font-light text-white mb-2">Estruturação Comercial Completa</h3>
+            <p class="text-xs text-brand-muted mb-6 leading-relaxed font-light">
+              Construção personalizada de ponta a ponta com foco estrito na percepção de alto padrão do seu negócio.
+            </p>
+
+            <ul class="space-y-3.5 text-xs sm:text-sm text-gray-300 font-light mb-8">
+              <li class="flex items-center gap-3">
+                <span class="text-brand-caribe">✦</span> Redação estratégica e copywriting factual anti-objeções
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="text-brand-caribe">✦</span> Design editorial com hierarquia visual contemporânea
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="text-brand-caribe">✦</span> Código puro otimizado para velocidade extrema (Core Web Vitals)
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="text-brand-caribe">✦</span> Rastreamento analítico com Meta Pixel e Google Analytics configurados
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-6 border-t border-white/[0.06]">
+            <span class="text-[11px] font-mono text-brand-muted block uppercase mb-1">Modelo de Contratação</span>
+            <span class="text-sm font-medium text-white">Projeto Fechado • Sob Diagnóstico Prévia</span>
+          </div>
+        </div>
+
+        <!-- Bloco 2: Gestão Técnica e Manutenção (R$ 99,90) -->
+        <div class="p-8 sm:p-10 rounded-2xl bg-[#0f0f0f] border border-brand-forest/60 relative flex flex-col justify-between">
+          <div class="absolute top-6 right-6">
+            <span class="text-[10px] font-mono px-3 py-1 rounded-full bg-brand-forest/30 border border-brand-forest/50 text-brand-caribe uppercase tracking-wider font-semibold">
+              Infraestrutura
+            </span>
+          </div>
+
+          <div>
+            <div class="text-xs font-mono uppercase tracking-widest text-brand-caribe mb-3 font-medium">Etapa 02 — Tranquilidade Operacional</div>
+            <h3 class="text-2xl font-light text-white mb-2">Manutenção & Servidor Dedicado</h3>
+            
+            <div class="flex items-baseline gap-2 mb-4">
+              <span class="text-4xl sm:text-5xl font-light text-white tracking-tight">R$ 99,90</span>
+              <span class="text-xs text-brand-muted font-mono uppercase">/ mês</span>
+            </div>
+
+            <p class="text-xs text-brand-muted mb-6 leading-relaxed font-light">
+              Sua estrutura protegida, estável e sempre atualizada. Cuidamos dos bastidores técnicos para você focar no fechamento de clientes.
+            </p>
+
+            <ul class="space-y-3.5 text-xs sm:text-sm text-gray-300 font-light mb-8">
+              <li class="flex items-center gap-3">
+                <span class="text-brand-caribe">✦</span> Hospedagem de alta performance com carregamento instantâneo
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="text-brand-caribe">✦</span> Certificado de Segurança SSL renovado automaticamente
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="text-brand-caribe">✦</span> Rotinas semanais de backup e monitoramento contínuo
+              </li>
+              <li class="flex items-center gap-3">
+                <span class="text-brand-caribe">✦</span> Suporte direto para ajustes pontuais de textos, fotos e links
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-6 border-t border-white/[0.06]">
+            <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20receber%20uma%20proposta%20personalizada%20da%20Sarmento%20Ads." 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="btn-shine block w-full py-3.5 px-6 rounded-full text-center bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase transition-all duration-300">
+              Solicitar Proposta para Meu Negócio
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 4. GARANTIA DE HOMOLOGAÇÃO E VALIDAÇÃO -->
+  <section class="py-20 relative z-10 border-t border-white/[0.05]">
+    <div class="max-w-4xl mx-auto px-6">
+      
+      <div class="p-8 sm:p-10 rounded-2xl border border-white/[0.08] bg-[#0c0c0c] flex flex-col sm:flex-row items-center gap-6">
+        <div class="w-14 h-14 rounded-full bg-brand-forest/20 border border-brand-forest/40 flex items-center justify-center shrink-0 text-brand-caribe">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+        <div class="space-y-1 text-center sm:text-left">
+          <h4 class="text-base sm:text-lg font-medium text-white">Garantia Técnica de Homologação</h4>
+          <p class="text-xs text-brand-muted leading-relaxed font-light">
+            Seu projeto não entra em ambiente de produção enquanto você não validar 100% da identidade visual, a clareza da cópia e o funcionamento dos botões de contato. Cada entrega cumpre rigorosamente os parâmetros combinados no diagnóstico inicial.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+    <!-- ==============================================
+       SESSÃO 3: MERCADO, PROVA SOCIAL & SUPORTE
+       ============================================== -->
+
+  <!-- 1. RECONHECIMENTO DE MERCADO & NÚMEROS AUDITADOS -->
+  <section class="py-24 relative z-10 border-t border-white/[0.05] bg-[#080808]">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="max-w-2xl mb-16">
+        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Critério & Resultados</span>
+        <h2 class="text-3xl md:text-5xl font-light text-white mt-3 leading-tight">
+          A autoridade que se comprova em <span class="font-serif italic text-brand-caribe">tempo de resposta.</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-brand-muted mt-3 font-light leading-relaxed">
+          Estruturas lentas e sem foco comercial acumulam abandonos antes mesmo da primeira linha ser lida. Nossos projetos são parametrizados sob métricas técnicas comprovadas.
+        </p>
+      </div>
+
+      <!-- Grid de Métricas Técnicas -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="p-6 rounded-2xl bg-[#0c0c0c] border border-white/[0.06]">
+          <div class="text-xs font-mono text-brand-caribe mb-4 tracking-wider">MÉTRICA 01</div>
+          <div class="text-3xl sm:text-4xl font-light text-white font-sans tracking-tight">&lt; 1.2s</div>
+          <p class="text-[11px] text-brand-muted mt-2 font-light">Tempo médio de abertura mobile no primeiro acesso.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#0c0c0c] border border-white/[0.06]">
+          <div class="text-xs font-mono text-brand-caribe mb-4 tracking-wider">MÉTRICA 02</div>
+          <div class="text-3xl sm:text-4xl font-light text-white font-sans tracking-tight">95+</div>
+          <p class="text-[11px] text-brand-muted mt-2 font-light">Pontuação média de performance no Google Lighthouse.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#0c0c0c] border border-white/[0.06]">
+          <div class="text-xs font-mono text-brand-caribe mb-4 tracking-wider">MÉTRICA 03</div>
+          <div class="text-3xl sm:text-4xl font-light text-white font-sans tracking-tight">100%</div>
+          <p class="text-[11px] text-brand-muted mt-2 font-light">Responsivo com toque ergonômico para conversão no WhatsApp.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#0c0c0c] border border-white/[0.06]">
+          <div class="text-xs font-mono text-brand-caribe mb-4 tracking-wider">MÉTRICA 04</div>
+          <div class="text-3xl sm:text-4xl font-light text-white font-sans tracking-tight">Zero</div>
+          <p class="text-[11px] text-brand-muted mt-2 font-light">Plugins pesados de terceiros comprometendo o servidor.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 2. DEPOIMENTOS E VITRINE DE PROVA SOCIAL (CASE + CONCEITOS) -->
+  <section class="py-24 relative z-10 border-t border-white/[0.05]">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Portfólio em Operação</span>
+        <h2 class="text-3xl md:text-5xl font-light text-white mt-3">
+          Projetos concebidos para <span class="font-serif italic">comandar respeito.</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-brand-muted mt-3 font-light">
+          Apresentação limpa, contraste técnico e narrativa construída para validar honorários elevados.
+        </p>
+      </div>
+
+      <!-- Vitrine 2x2 com Estilo Editorial -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Case Real: 4Tires -->
+        <div class="spotlight-card p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <span class="text-[10px] font-mono px-3 py-1 rounded-full bg-brand-forest/30 border border-brand-forest/50 text-brand-caribe uppercase tracking-wider font-semibold">
+                Case em Produção
+              </span>
+              <span class="text-[11px] font-mono text-brand-muted">Distribuição Automotiva</span>
+            </div>
+
+            <div class="h-44 rounded-xl bg-gradient-to-br from-[#121212] via-[#161616] to-[#0e0e0e] border border-white/[0.06] flex flex-col items-center justify-center p-6 text-center mb-6">
+              <span class="font-serif italic text-2xl text-white">4tires.com.br</span>
+              <span class="text-[11px] font-mono text-brand-muted mt-1 tracking-wider uppercase">Alta Performance B2B</span>
+            </div>
+
+            <h3 class="text-lg font-medium text-white mb-2">Estrutura B2B para Distribuição e Atacado</h3>
+            <p class="text-xs text-brand-muted leading-relaxed font-light mb-6">
+              Arquitetura de catálogo digital e credibilidade imediata voltada para captação direta de frotistas e revendedores de grande porte via equipe de consultores.
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-white/[0.06] flex items-center justify-between">
+            <span class="text-[11px] font-mono text-white/70">Ativo Comercial Ativo</span>
+            <a href="https://4tires.com.br" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-brand-caribe hover:underline flex items-center gap-1 font-medium">
+              Acessar Projeto ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Conceito: Boutique Jurídica -->
+        <div class="spotlight-card p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <span class="text-[10px] font-mono px-3 py-1 rounded-full bg-white/[0.05] border border-white/[0.1] text-brand-muted uppercase tracking-wider">
+                Diretriz Conceitual
+              </span>
+              <span class="text-[11px] font-mono text-brand-muted">Direito Empresarial</span>
+            </div>
+
+            <div class="h-44 rounded-xl bg-gradient-to-br from-[#121212] via-[#161616] to-[#0e0e0e] border border-white/[0.06] flex flex-col items-center justify-center p-6 text-center mb-6">
+              <span class="font-serif italic text-2xl text-white">Boutique Jurídica</span>
+              <span class="text-[11px] font-mono text-brand-muted mt-1 tracking-wider uppercase">Tributário & Contencioso</span>
+            </div>
+
+            <h3 class="text-lg font-medium text-white mb-2">Sobriedade & Rigor para Bancas de Direito</h3>
+            <p class="text-xs text-brand-muted leading-relaxed font-light mb-6">
+              Tipografia austera e organização das áreas de prática jurídica desenhadas para sustentar honorários contratuais de alto valor com discrição.
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-white/[0.06] flex items-center justify-between">
+            <span class="text-[11px] font-mono text-white/70">Disponível para Implementação</span>
+            <span class="text-xs font-mono text-brand-caribe">Exclusividade Local</span>
+          </div>
+        </div>
+
+        <!-- Conceito: BPO Financeiro -->
+        <div class="spotlight-card p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <span class="text-[10px] font-mono px-3 py-1 rounded-full bg-white/[0.05] border border-white/[0.1] text-brand-muted uppercase tracking-wider">
+                Diretriz Conceitual
+              </span>
+              <span class="text-[11px] font-mono text-brand-muted">Controladoria & BPO</span>
+            </div>
+
+            <div class="h-44 rounded-xl bg-gradient-to-br from-[#121212] via-[#161616] to-[#0e0e0e] border border-white/[0.06] flex flex-col items-center justify-center p-6 text-center mb-6">
+              <span class="font-serif italic text-2xl text-white">BPO & Gestão Financeira</span>
+              <span class="text-[11px] font-mono text-brand-muted mt-1 tracking-wider uppercase">Eficiência Corporativa</span>
+            </div>
+
+            <h3 class="text-lg font-medium text-white mb-2">Comunicação Focada em Governança</h3>
+            <p class="text-xs text-brand-muted leading-relaxed font-light mb-6">
+              Apresentação clara de rotinas contábeis e demonstrativos orçamentários estruturada para negociações diretamente com diretores executivos.
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-white/[0.06] flex items-center justify-between">
+            <span class="text-[11px] font-mono text-white/70">Disponível para Implementação</span>
+            <span class="text-xs font-mono text-brand-caribe">Exclusividade Local</span>
+          </div>
+        </div>
+
+        <!-- Conceito: Saúde Premium / Clínica -->
+        <div class="spotlight-card p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <span class="text-[10px] font-mono px-3 py-1 rounded-full bg-white/[0.05] border border-white/[0.1] text-brand-muted uppercase tracking-wider">
+                Diretriz Conceitual
+              </span>
+              <span class="text-[11px] font-mono text-brand-muted">Medicina & Odontologia</span>
+            </div>
+
+            <div class="h-44 rounded-xl bg-gradient-to-br from-[#121212] via-[#161616] to-[#0e0e0e] border border-white/[0.06] flex flex-col items-center justify-center p-6 text-center mb-6">
+              <span class="font-serif italic text-2xl text-white">Clínica Especializada</span>
+              <span class="text-[11px] font-mono text-brand-muted mt-1 tracking-wider uppercase">Excelência & Estética</span>
+            </div>
+
+            <h3 class="text-lg font-medium text-white mb-2">Exclusividade para Procedimentos Premium</h3>
+            <p class="text-xs text-brand-muted leading-relaxed font-light mb-6">
+              Transmissão imediata de conforto clínico, tecnologia de ponta e titulação dos profissionais com canal direto de agendamento de consultas.
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-white/[0.06] flex items-center justify-between">
+            <span class="text-[11px] font-mono text-white/70">Disponível para Implementação</span>
+            <span class="text-xs font-mono text-brand-caribe">Exclusividade Local</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Declaração de Prova Institucional -->
+      <div class="mt-16 p-8 rounded-2xl bg-[#0c0c0c] border border-white/[0.08] text-center max-w-3xl mx-auto">
+        <p class="font-serif italic text-lg sm:text-xl text-white/90">
+          «O valor que um cliente aceita pagar pelo seu serviço é determinado nos primeiros cinco segundos em que ele avalia a solidez da sua marca.»
+        </p>
+        <span class="text-xs font-mono text-brand-muted block mt-3 uppercase tracking-wider">
+          Diretriz de Posicionamento — Sarmento Ads
+        </span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. SESSÃO DE ACESSO E SUPORTE (TRANQUILIDADE OPERACIONAL) -->
+  <section class="py-24 relative z-10 border-t border-white/[0.05] bg-[#090909]">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="max-w-xl mb-16">
+        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Fluxo de Entrega & Gestão</span>
+        <h2 class="text-3xl md:text-4xl font-light text-white mt-3">
+          Como funciona o seu <span class="font-serif italic text-brand-caribe">acesso e suporte contínuo.</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="p-8 rounded-2xl bg-[#0c0c0c] border border-white/[0.06]">
+          <div class="text-xs font-mono text-brand-caribe mb-4 tracking-wider">PASSO 01</div>
+          <h3 class="text-lg font-medium text-white mb-2">Homologação em Link Privado</h3>
+          <p class="text-xs text-brand-muted leading-relaxed font-light">
+            Antes de ir ao ar no seu domínio definitivo, enviamos uma URL de prévia para que você teste e aprove a navegação, textos e formulários em seu próprio smartphone.
+          </p>
+        </div>
+
+        <div class="p-8 rounded-2xl bg-[#0c0c0c] border border-white/[0.06]">
+          <div class="text-xs font-mono text-brand-caribe mb-4 tracking-wider">PASSO 02</div>
+          <h3 class="text-lg font-medium text-white mb-2">Publicação & Apontamento de DNS</h3>
+          <p class="text-xs text-brand-muted leading-relaxed font-light">
+            Cuidamos de toda a configuração técnica de servidores, certificados criptográficos de segurança e direcionamento do seu domínio (.com.br ou .com).
+          </p>
+        </div>
+
+        <div class="p-8 rounded-2xl bg-[#0c0c0c] border border-white/[0.06]">
+          <div class="text-xs font-mono text-brand-caribe mb-4 tracking-wider">PASSO 03</div>
+          <h3 class="text-lg font-medium text-white mb-2">Linha Direta de Manutenção</h3>
+          <p class="text-xs text-brand-muted leading-relaxed font-light">
+            Através da nossa gestão técnica mensal (R$ 99,90), você tem canal no WhatsApp com nossa equipe para atualizações de equipe, telefones ou fotos sem custo adicional.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+    <!-- ==============================================
+       SESSÃO 4: CTA SECUNDÁRIO, FAQS & URGÊNCIA ADICIONAL
+       ============================================== -->
+
+  <!-- 1. CALL TO ACTION SECUNDÁRIO (DIAGNÓSTICO SEM COMPROMISSO) -->
+  <section class="py-20 relative z-10 border-t border-white/[0.05] bg-[#0c0c0c]">
+    <div class="max-w-5xl mx-auto px-6">
+      
+      <div class="p-8 sm:p-12 rounded-3xl border border-brand-forest/40 bg-gradient-to-br from-[#121212] via-[#0e0e0e] to-[#0a0a0a] flex flex-col md:flex-row items-start md:items-center justify-between gap-8 relative overflow-hidden">
+        <div class="absolute -left-20 -top-20 w-64 h-64 bg-brand-caribe/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="space-y-3 max-w-xl">
+          <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-medium">Diagnóstico de Presença Digital</span>
+          <h3 class="text-2xl sm:text-4xl font-light text-white leading-tight">
+            Descubra onde o seu site atual está <span class="font-serif italic text-white/90">dispersando clientes qualificados.</span>
+          </h3>
+          <p class="text-xs sm:text-sm text-brand-muted leading-relaxed font-light">
+            Avaliamos a velocidade de carregamento, a hierarquia visual e a rota de conversão do seu domínio atual em um parecer objetivo diretamente no seu WhatsApp.
+          </p>
+        </div>
+
+        <div class="shrink-0 w-full md:w-auto">
+          <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20um%20diagnóstico%20do%20meu%20posicionamento%20digital%20atual." 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="btn-shine block w-full sm:w-auto px-8 py-4 bg-brand-caribe hover:bg-[#00d876] text-black text-xs font-semibold tracking-wider uppercase rounded-full text-center transition-all duration-300">
+            Solicitar Parecer Técnico
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 2. PERGUNTAS FREQUENTES (FAQS COM RIGOR TÉCNICO) -->
+  <section id="faq" class="py-24 relative z-10 border-t border-white/[0.05] bg-[#080808]">
+    <div class="max-w-4xl mx-auto px-6">
+      
+      <div class="text-center max-w-xl mx-auto mb-16">
+        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Esclarecimentos Objetivos</span>
+        <h2 class="text-3xl md:text-5xl font-light text-white mt-3">
+          Perguntas <span class="font-serif italic">frequentes.</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-brand-muted mt-3 font-light">
+          Relações comerciais transparentes se sustentam em clareza antes do início dos trabalhos.
+        </p>
+      </div>
+
+      <div class="space-y-4">
+        
+        <details class="group p-6 rounded-2xl bg-[#0d0d0d] border border-white/[0.07] hover:border-brand-forest/50 transition-all cursor-pointer">
+          <summary class="flex justify-between items-center text-sm font-medium text-white list-none">
+            <span>Qual é o prazo estimado para a entrega completa do projeto?</span>
+            <span class="text-brand-caribe font-serif text-lg group-open:rotate-45 transition-transform duration-300">+</span>
+          </summary>
+          <p class="mt-4 text-xs sm:text-sm text-brand-muted leading-relaxed font-light">
+            O ciclo médio de desenvolvimento dura entre 7 e 15 dias úteis. Esse intervalo compreende o alinhamento da narrativa comercial, estruturação do código limpo, aplicação do design responsivo e validação de todas as rotas de contato.
+          </p>
+        </details>
+
+        <details class="group p-6 rounded-2xl bg-[#0d0d0d] border border-white/[0.07] hover:border-brand-forest/50 transition-all cursor-pointer">
+          <summary class="flex justify-between items-center text-sm font-medium text-white list-none">
+            <span>O que compreende exatamente a gestão técnica de R$ 99,90 por mês?</span>
+            <span class="text-brand-caribe font-serif text-lg group-open:rotate-45 transition-transform duration-300">+</span>
+          </summary>
+          <p class="mt-4 text-xs sm:text-sm text-brand-muted leading-relaxed font-light">
+            A mensalidade assegura servidor de alta performance dedicado, renovação contínua do certificado de segurança SSL, rotinas programadas de backup, vigilância de disponibilidade 24/7 e atendimento direto para pequenas alterações periódicas (telefones, endereços, substituição de fotos e textos).
+          </p>
+        </details>
+
+        <details class="group p-6 rounded-2xl bg-[#0d0d0d] border border-white/[0.07] hover:border-brand-forest/50 transition-all cursor-pointer">
+          <summary class="flex justify-between items-center text-sm font-medium text-white list-none">
+            <span>Como funciona a cláusula de exclusividade por nicho na minha região?</span>
+            <span class="text-brand-caribe font-serif text-lg group-open:rotate-45 transition-transform duration-300">+</span>
+          </summary>
+          <p class="mt-4 text-xs sm:text-sm text-brand-muted leading-relaxed font-light">
+            Para garantir a singularidade da presença dos nossos clientes, assumimos o compromisso formal de não desenvolver projetos simultâneos para empresas concorrentes diretas situadas na mesma microrregião geográfica durante a fase de vigência do contrato.
+          </p>
+        </details>
+
+        <details class="group p-6 rounded-2xl bg-[#0d0d0d] border border-white/[0.07] hover:border-brand-forest/50 transition-all cursor-pointer">
+          <summary class="flex justify-between items-center text-sm font-medium text-white list-none">
+            <span>O site já é entregue configurado para o recebimento de anúncios pagos?</span>
+            <span class="text-brand-caribe font-serif text-lg group-open:rotate-45 transition-transform duration-300">+</span>
+          </summary>
+          <p class="mt-4 text-xs sm:text-sm text-brand-muted leading-relaxed font-light">
+            Sim. A infraestrutura é parametrizada com os eventos de rastreamento do Pixel da Meta e as tags de conversão do Google Ads instaladas com precisão nos botões de contato, permitindo que suas campanhas mensurem cada clique gerado.
+          </p>
+        </details>
+
+        <details class="group p-6 rounded-2xl bg-[#0d0d0d] border border-white/[0.07] hover:border-brand-forest/50 transition-all cursor-pointer">
+          <summary class="flex justify-between items-center text-sm font-medium text-white list-none">
+            <span>Eu preciso fornecer todos os textos prontos para o site?</span>
+            <span class="text-brand-caribe font-serif text-lg group-open:rotate-45 transition-transform duration-300">+</span>
+          </summary>
+          <p class="mt-4 text-xs sm:text-sm text-brand-muted leading-relaxed font-light">
+            Não. Conduzimos uma entrevista de diagnóstico estruturada para compreender o escopo técnico do seu negócio, diferenciais e perfil de cliente ideal. A partir dessas respostas, redigimos toda a narrativa factual e argumentativa da página.
+          </p>
+        </details>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. SESSÃO DE URGÊNCIA ADICIONAL & FECHAMENTO DE AGENDA -->
+  <section class="py-24 relative z-10 border-t border-white/[0.05] bg-gradient-to-b from-[#090909] via-[#070707] to-[#050505]">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      
+      <div class="pill-badge mb-8">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-caribe animate-ping"></span>
+        <span class="text-[10px] font-mono tracking-[0.2em] uppercase text-brand-caribe font-medium">Cronograma Mensal</span>
+        <span class="w-1 h-1 rounded-full bg-white/20"></span>
+        <span class="text-[11px] text-white/70">Apenas 04 Vagas Abertas</span>
+      </div>
+
+      <h2 class="text-3xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-tight">
+        Sua empresa não pode mais ser julgada por uma <span class="font-serif italic text-brand-caribe">página amadora.</span>
+      </h2>
+
+      <p class="mt-6 text-xs sm:text-base text-brand-muted max-w-2xl mx-auto leading-relaxed font-light">
+        A distância entre o fechamento de um contrato de alto valor e a perda do cliente para o concorrente reside na confiança transmitida no primeiro ponto de contato. Inicie o alinhamento do seu projeto com a Sarmento Ads.
+      </p>
+
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20verificar%20a%20disponibilidade%20para%20estruturar%20o%20meu%20site." 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn-shine w-full sm:w-auto px-10 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-full transition-all duration-300 flex items-center justify-center gap-3">
+          <span>Consultar Agenda no WhatsApp</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <div class="mt-8 text-[11px] font-mono text-brand-muted">
+        Linha direta: (51) 98021-1154 • Atendimento em horário comercial
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RODAPÉ INSTITUCIONAL -->
+  <footer class="py-12 bg-[#050505] border-t border-white/[0.05] text-[11px] font-mono text-brand-muted relative z-10">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+      
+      <div class="flex items-center gap-3">
+        <span class="w-2 h-2 rounded-full bg-brand-caribe"></span>
+        <span class="text-xs font-semibold tracking-wider text-white">SARMENTO <span class="font-serif italic font-normal text-brand-caribe text-sm">Ads</span></span>
+        <span class="text-neutral-600">|</span>
+        <span>Engenharia de Posicionamento Digital</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="#detalhe" class="hover:text-white transition-colors">Método</a>
+        <a href="#faq" class="hover:text-white transition-colors">Dúvidas</a>
+        <a href="https://wa.me/5551980211154" target="_blank" rel="noopener noreferrer" class="text-brand-caribe hover:underline">WhatsApp Oficial ↗</a>
+      </div>
+
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 mt-6 pt-6 border-t border-white/[0.03] text-center sm:text-left text-[10px] text-neutral-600">
+      © 2026 Sarmento Ads. Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <!-- Script Spotlight Interativo com Mouse -->
+  <script>
+    document.querySelectorAll('.spotlight-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+  </script>
+
+</body>
+</html>
