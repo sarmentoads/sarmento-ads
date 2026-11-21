@@ -934,111 +934,365 @@
   <!-- ==============================================
        SESSÃO DO FORMULÁRIO DE QUALIFICAÇÃO (INTEGRADO AO CRM)
        ============================================== -->
-  <section id="contato" class="py-24 relative z-10 border-t border-white/[0.06] bg-[#080808]">
-    <div class="max-w-xl mx-auto px-6">
-      
-      <div class="text-center mb-10">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Aplicação Comercial</span>
-        <h2 class="text-3xl font-light text-white mt-2">
-          Agende um Diagnóstico Estratégico
-        </h2>
-        <p class="text-xs text-brand-muted mt-2 font-light">
-          Preencha os dados abaixo para receber uma análise do posicionamento digital da sua empresa.
-        </p>
-      </div>
+  <!-- ==============================================
+       FORMULÁRIO DINÂMICO MULTI-ETAPAS (EXPERIÊNCIA SARMENTO ADS)
+       ============================================== -->
+  <section id="contato" class="py-24 relative z-10 border-t border-white/[0.06] bg-[#070707]">
+    <div class="max-w-2xl mx-auto px-6">
 
-      <div class="bento-card p-8 border-brand-caribe/30">
-        <form id="form-crm" onsubmit="enviarParaCRM(event)" class="space-y-4">
+      <!-- CONTAINER PRINCIPAL DO QUIZ -->
+      <div class="bento-card p-8 sm:p-12 border-brand-caribe/30 relative overflow-hidden bg-gradient-to-b from-[#121212] to-[#0A0A0A] shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+        
+        <!-- BARRA DE PROGRESSO SUPERIOR -->
+        <div id="quiz-progress-bar-container" class="hidden mb-8">
+          <div class="flex items-center justify-between text-[11px] font-mono text-brand-muted uppercase mb-2">
+            <span id="quiz-step-indicator">Etapa 1 de 4</span>
+            <span id="quiz-percent-text" class="text-brand-caribe font-bold">25%</span>
+          </div>
+          <div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+            <div id="quiz-progress-fill" class="bg-brand-caribe h-full w-1/4 transition-all duration-500 ease-out"></div>
+          </div>
+        </div>
+
+        <form id="wizard-form" onsubmit="event.preventDefault()">
           
-          <div>
-            <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nome Completo</label>
-            <input type="text" id="campo-nome" required placeholder="Ex: Rodrigo Sarmento" 
-                   class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">WhatsApp</label>
-              <input type="tel" id="campo-whatsapp" required placeholder="(51) 99999-9999" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+          <!-- SLIDE 0: INTRODUÇÃO -->
+          <div id="step-intro" class="quiz-step text-center space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-forest/30 border border-brand-caribe/30 text-brand-caribe text-xs font-mono uppercase tracking-widest">
+              <span class="w-2 h-2 rounded-full bg-brand-caribe animate-ping"></span>
+              Turbine Seu Negócio Local
             </div>
-
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">E-mail Corporativo</label>
-              <input type="email" id="campo-email" required placeholder="contato@empresa.com" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nicho do Negócio</label>
-              <input type="text" id="campo-nicho" required placeholder="Ex: Advocacia / BPO" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-            </div>
-
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Faturamento Médio</label>
-              <select id="campo-faturamento" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-                <option value="Até R$ 20k/mês">Até R$ 20k/mês</option>
-                <option value="R$ 20k a R$ 50k/mês">R$ 20k a R$ 50k/mês</option>
-                <option value="R$ 50k a R$ 100k/mês">R$ 50k a R$ 100k/mês</option>
-                <option value="Acima de R$ 100k/mês">Acima de R$ 100k/mês</option>
-              </select>
+            <h2 class="text-3xl sm:text-4xl font-light text-white tracking-tight leading-tight">
+              Vamos criar o site que seu negócio merece.
+            </h2>
+            <p class="text-sm text-brand-muted font-light max-w-lg mx-auto leading-relaxed">
+              Responda algumas perguntas rápidas sobre o seu modelo de atuação para iniciarmos o projeto alinhado aos seus objetivos comerciais.
+            </p>
+            <div class="pt-4">
+              <button type="button" onclick="irParaPasso(1)" 
+                      class="btn-shine px-8 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.3)] inline-flex items-center gap-2">
+                <span>Iniciar Diagnóstico do Negócio</span>
+                <span>→</span>
+              </button>
             </div>
           </div>
 
-          <button type="submit" id="btn-enviar-crm" 
-                  class="btn-shine w-full mt-4 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)] flex items-center justify-center gap-2">
-            <span>Solicitar Diagnóstico Comercial</span>
-          </button>
+          <!-- BLOCO 1: CONTATO E IDENTIFICAÇÃO -->
+          <div id="step-1" class="quiz-step hidden space-y-6">
+            <div>
+              <span class="text-xs font-mono text-brand-caribe uppercase tracking-wider font-semibold">Bloco 1 • Identificação</span>
+              <h3 class="text-2xl font-light text-white mt-1">Quem é você e como podemos te achar?</h3>
+            </div>
 
-          <p id="msg-sucesso" class="hidden text-center text-xs font-mono text-brand-caribe mt-2">
-            ✓ Solicitação registrada com sucesso! Redirecionando...
-          </p>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Qual o seu nome completo?</label>
+                <input type="text" id="w-nome" required placeholder="Ex: Rodrigo Sarmento" 
+                       class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+              </div>
+
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">WhatsApp com DDD</label>
+                <input type="tel" id="w-whatsapp" required placeholder="(XX) XXXXX-XXXX" maxlength="15" oninput="aplicarMascaraTelefone(this)"
+                       class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+              </div>
+
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Qual o seu melhor e-mail corporativo?</label>
+                <input type="email" id="w-email" required placeholder="contato@empresa.com" 
+                       class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+              </div>
+            </div>
+
+            <div class="flex justify-end pt-4">
+              <button type="button" onclick="validarPasso1()" 
+                      class="px-6 py-3 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs uppercase tracking-wider rounded-xl transition">
+                Continuar →
+              </button>
+            </div>
+          </div>
+
+          <!-- BLOCO 2: ENTENDENDO O NEGÓCIO -->
+          <div id="step-2" class="quiz-step hidden space-y-6">
+            <div>
+              <span class="text-xs font-mono text-brand-caribe uppercase tracking-wider font-semibold">Bloco 2 • Posicionamento</span>
+              <h3 class="text-2xl font-light text-white mt-1">Entendendo o seu Negócio</h3>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Qual o nome do seu negócio local?</label>
+                <input type="text" id="w-negocio" required placeholder="Ex: Barbearia Modelo / Clínica Vida" 
+                       class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+              </div>
+
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Principal segmento de atuação</label>
+                <select id="w-segmento" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+                  <option value="Restaurantes/Bares">Restaurantes / Bares</option>
+                  <option value="Salão de Beleza/Barbearia">Salão de Beleza / Barbearia</option>
+                  <option value="Loja de Roupas/Calçados">Loja de Roupas / Calçados</option>
+                  <option value="Academias/Personal">Academias / Personal Trainers</option>
+                  <option value="Clínicas/Consultórios">Clínicas / Consultórios</option>
+                  <option value="Autônomo/Pequenos Serviços">Autônomo / Pequenos Serviços</option>
+                  <option value="Construtora/Reforma">Construtora / Reformas</option>
+                  <option value="Imobiliária">Imobiliária / Corretores</option>
+                  <option value="Outros">Outros segmentos</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-2">Você já tem um site para o seu negócio?</label>
+                <div class="space-y-2">
+                  <label class="flex items-center gap-3 p-3 rounded-xl bg-black/40 border border-white/10 hover:border-brand-caribe/40 cursor-pointer transition">
+                    <input type="radio" name="w-tem-site" value="Não tem site" checked onchange="toggleUrlSite(false)" class="accent-brand-caribe">
+                    <span class="text-xs text-neutral-300">Não, meu negócio ainda não tem site.</span>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 rounded-xl bg-black/40 border border-white/10 hover:border-brand-caribe/40 cursor-pointer transition">
+                    <input type="radio" name="w-tem-site" value="Quer modernizar" onchange="toggleUrlSite(true)" class="accent-brand-caribe">
+                    <span class="text-xs text-neutral-300">Sim, mas quero refazer / modernizar.</span>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 rounded-xl bg-black/40 border border-white/10 hover:border-brand-caribe/40 cursor-pointer transition">
+                    <input type="radio" name="w-tem-site" value="Precisa de LP" onchange="toggleUrlSite(true)" class="accent-brand-caribe">
+                    <span class="text-xs text-neutral-300">Sim, e estou satisfeito, mas preciso de uma Landing Page focada em campanhas.</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- PERGUNTA CONDICIONAL: APARECE SÓ SE TIVER SITE -->
+              <div id="campo-url-site" class="hidden transition-all">
+                <label class="block text-xs font-mono text-brand-caribe uppercase mb-1">Qual o endereço do seu site atual (URL)?</label>
+                <input type="text" id="w-site-atual" placeholder="www.seudominio.com.br" 
+                       class="w-full bg-black/60 border border-brand-caribe/40 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-4">
+              <button type="button" onclick="irParaPasso(1)" class="text-xs font-mono text-brand-muted hover:text-white transition">← Voltar</button>
+              <button type="button" onclick="validarPasso2()" 
+                      class="px-6 py-3 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs uppercase tracking-wider rounded-xl transition">
+                Continuar →
+              </button>
+            </div>
+          </div>
+
+          <!-- BLOCO 3: OBJETIVOS E DESAFIOS -->
+          <div id="step-3" class="quiz-step hidden space-y-6">
+            <div>
+              <span class="text-xs font-mono text-brand-caribe uppercase tracking-wider font-semibold">Bloco 3 • Diagnóstico de Mercado</span>
+              <h3 class="text-2xl font-light text-white mt-1">Seus Objetivos e Desafios</h3>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Qual o seu MAIOR desafio hoje para atrair clientes online?</label>
+                <select id="w-desafio" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+                  <option value="Não apareço nas buscas do Google/Maps">Não apareço nas buscas do Google / Maps</option>
+                  <option value="Meu site não gera contatos/orçamentos">Meu site não gera contatos / orçamentos</option>
+                  <option value="Não tenho credibilidade online">Não tenho credibilidade online suficiente</option>
+                  <option value="Meu concorrente está mais visível">Meu concorrente está muito mais visível</option>
+                  <option value="Não sei por onde começar">Não sei exatamente por onde começar</option>
+                  <option value="Outro desafio comercial">Outro desafio comercial</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">O que você espera ALCANÇAR com o seu novo site?</label>
+                <select id="w-expectativa" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+                  <option value="Aumentar vendas e pedidos">Aumentar vendas e pedidos</option>
+                  <option value="Gerar mais orçamentos qualificados">Gerar mais orçamentos e contatos qualificados</option>
+                  <option value="Melhorar imagem e credibilidade">Melhorar a imagem e autoridade da minha marca</option>
+                  <option value="Aparecer no Google e Google Maps">Aparecer com destaque no Google e Maps</option>
+                  <option value="Ter um catálogo online de produtos/serviços">Ter um portfólio / catálogo online profissional</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-4">
+              <button type="button" onclick="irParaPasso(2)" class="text-xs font-mono text-brand-muted hover:text-white transition">← Voltar</button>
+              <button type="button" onclick="irParaPasso(4)" 
+                      class="px-6 py-3 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs uppercase tracking-wider rounded-xl transition">
+                Continuar →
+              </button>
+            </div>
+          </div>
+
+          <!-- BLOCO 4: ALINHAMENTO FINANCEIRO -->
+          <div id="step-4" class="quiz-step hidden space-y-6">
+            <div>
+              <span class="text-xs font-mono text-brand-caribe uppercase tracking-wider font-semibold">Bloco Final • Alinhamento Financeiro</span>
+              <h3 class="text-2xl font-light text-white mt-1">Estrutura de Investimento</h3>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-black/50 border border-brand-caribe/30 space-y-3">
+              <p class="text-xs text-neutral-300 leading-relaxed font-light">
+                Nosso <strong class="text-white">Plano Essencial</strong> inclui o desenvolvimento completo da Landing Page (<strong class="text-brand-caribe">R$ 600,00</strong> em pagamento único) e uma mensalidade de gestão contínua de <strong class="text-brand-caribe">R$ 97,90</strong> (cobringo infraestrutura segura, CDN, SSL e suporte técnico).
+              </p>
+              <p class="text-xs font-mono text-brand-muted uppercase">
+                Você está ciente e de acordo com esta estrutura de investimento?
+              </p>
+
+              <div class="space-y-2 pt-2">
+                <label class="flex items-center gap-3 p-3 rounded-xl bg-black/60 border border-white/10 hover:border-brand-caribe cursor-pointer transition">
+                  <input type="radio" name="w-investimento" value="Sim, estou ciente e interessado" checked class="accent-brand-caribe">
+                  <span class="text-xs text-white font-medium">Sim, estou ciente e interessado.</span>
+                </label>
+                <label class="flex items-center gap-3 p-3 rounded-xl bg-black/60 border border-white/10 hover:border-brand-caribe cursor-pointer transition">
+                  <input type="radio" name="w-investimento" value="Tenho dúvidas sobre os valores" class="accent-brand-caribe">
+                  <span class="text-xs text-neutral-300">Tenho dúvidas sobre os valores/estrutura e gostaria de conversar.</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-4">
+              <button type="button" onclick="irParaPasso(3)" class="text-xs font-mono text-brand-muted hover:text-white transition">← Voltar</button>
+              <button type="button" id="btn-finalizar-quiz" onclick="finalizarQuiz()" 
+                      class="btn-shine px-8 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs uppercase tracking-wider rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.3)]">
+                Concluir e Enviar Aplicação
+              </button>
+            </div>
+          </div>
+
+          <!-- TELA DE AGRADECIMENTO -->
+          <div id="step-obrigado" class="quiz-step hidden text-center space-y-6 py-6">
+            <div class="w-16 h-16 rounded-full bg-brand-forest/40 border border-brand-caribe flex items-center justify-center mx-auto text-brand-caribe text-2xl shadow-[0_0_20px_rgba(0,196,106,0.3)]">
+              ✓
+            </div>
+            
+            <h3 class="text-3xl font-light text-white">Parabéns! Seu primeiro passo foi dado.</h3>
+            
+            <p class="text-xs text-brand-muted font-light max-w-md mx-auto leading-relaxed">
+              Obrigado por preencher nosso diagnóstico. Analisaremos as informações da sua empresa e entraremos em contato via WhatsApp em menos de 24h úteis para detalhar o escopo da sua presença digital.
+            </p>
+
+            <div class="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
+              <a id="btn-whats-direto" href="#" target="_blank" 
+                 class="px-6 py-3.5 bg-brand-caribe text-black font-semibold text-xs uppercase tracking-wider rounded-xl hover:bg-[#00d876] transition shadow-[0_10px_25px_rgba(0,196,106,0.25)]">
+                Falar com Rodrigo no WhatsApp Agora ↗
+              </a>
+              <a href="#solucoes" class="px-6 py-3.5 bg-white/5 border border-white/10 text-white font-mono text-xs rounded-xl hover:bg-white/10 transition">
+                Rever Recursos do Site
+              </a>
+            </div>
+          </div>
+
         </form>
-      </div>
 
+      </div>
     </div>
   </section>
 
-  <!-- Script de Conexão com o Supabase -->
+  <!-- MOTOR JAVASCRIPT DO FORMULÁRIO DINÂMICO -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const CRM_URL = "https://yqiunyrpkljtgenjeyev.supabase.co";
     const CRM_KEY = "sb_publishable_6YnqMemgF07N1YwoTxVCkg_utecUki8";
     const supabaseClient = supabase.createClient(CRM_URL, CRM_KEY);
 
-    async function enviarParaCRM(e) {
-      e.preventDefault();
-      const btn = document.getElementById('btn-enviar-crm');
-      btn.innerText = "Registrando Oportunidade...";
+    let currentStep = 'intro';
+
+    function irParaPasso(passo) {
+      document.querySelectorAll('.quiz-step').forEach(el => el.classList.add('hidden'));
+
+      if (passo === 'intro') {
+        document.getElementById('step-intro').classList.remove('hidden');
+        document.getElementById('quiz-progress-bar-container').classList.add('hidden');
+      } else if (passo === 'obrigado') {
+        document.getElementById('step-obrigado').classList.remove('hidden');
+        document.getElementById('quiz-progress-bar-container').classList.add('hidden');
+      } else {
+        document.getElementById(`step-${passo}`).classList.remove('hidden');
+        document.getElementById('quiz-progress-bar-container').classList.remove('hidden');
+
+        // Atualizar barra de progresso
+        const porcentagens = { 1: 25, 2: 50, 3: 75, 4: 100 };
+        document.getElementById('quiz-step-indicator').innerText = `Etapa ${passo} de 4`;
+        document.getElementById('quiz-percent-text').innerText = `${porcentagens[passo]}%`;
+        document.getElementById('quiz-progress-fill').style.width = `${porcentagens[passo]}%`;
+      }
+    }
+
+    function toggleUrlSite(mostrar) {
+      const container = document.getElementById('campo-url-site');
+      if (mostrar) {
+        container.classList.remove('hidden');
+      } else {
+        container.classList.add('hidden');
+        document.getElementById('w-site-atual').value = '';
+      }
+    }
+
+    function aplicarMascaraTelefone(input) {
+      let v = input.value.replace(/\D/g, '');
+      if (v.length > 11) v = v.slice(0, 11);
+      
+      if (v.length > 10) {
+        input.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+      } else if (v.length > 6) {
+        input.value = `(${v.slice(0, 2)}) ${v.slice(2, 6)}-${v.slice(6)}`;
+      } else if (v.length > 2) {
+        input.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+      } else {
+        input.value = v;
+      }
+    }
+
+    function validarPasso1() {
+      const nome = document.getElementById('w-nome').value.trim();
+      const zap = document.getElementById('w-whatsapp').value.trim();
+      const email = document.getElementById('w-email').value.trim();
+
+      if (!nome) { alert("Por favor, preencha o seu nome completo."); return; }
+      if (zap.length < 14) { alert("Por favor, preencha um WhatsApp válido com DDD."); return; }
+      if (!email || !email.includes('@')) { alert("Por favor, preencha um e-mail corporativo válido."); return; }
+
+      irParaPasso(2);
+    }
+
+    function validarPasso2() {
+      const negocio = document.getElementById('w-negocio').value.trim();
+      if (!negocio) { alert("Por favor, informe o nome do seu negócio."); return; }
+      irParaPasso(3);
+    }
+
+    async function finalizarQuiz() {
+      const btn = document.getElementById('btn-finalizar-quiz');
+      btn.innerText = "Registrando Aplicação...";
       btn.disabled = true;
 
-      const leadData = {
-        nome: document.getElementById('campo-nome').value,
-        whatsapp: document.getElementById('campo-whatsapp').value,
-        email: document.getElementById('campo-email').value,
-        nicho: document.getElementById('campo-nicho').value,
-        faturamento: document.getElementById('campo-faturamento').value,
-        status: 'novo'
+      const temSiteRadio = document.querySelector('input[name="w-tem-site"]:checked')?.value || 'Não tem site';
+      const investimentoRadio = document.querySelector('input[name="w-investimento"]:checked')?.value || 'Sim, ciente';
+
+      const leadPayload = {
+        nome: document.getElementById('w-nome').value.trim(),
+        whatsapp: document.getElementById('w-whatsapp').value.trim(),
+        email: document.getElementById('w-email').value.trim(),
+        nome_negocio: document.getElementById('w-negocio').value.trim(),
+        segmento: document.getElementById('w-segmento').value,
+        tem_site: temSiteRadio,
+        site_atual: document.getElementById('w-site-atual').value.trim() || null,
+        maior_desafio: document.getElementById('w-desafio').value,
+        expectativa: document.getElementById('w-expectativa').value,
+        acordo_investimento: investimentoRadio,
+        status: 'novo',
+        faturamento: 'Plano R$600 + R$97,90/mês'
       };
 
-      const { error } = await supabaseClient.from('leads').insert([leadData]);
+      const { error } = await supabaseClient.from('leads').insert([leadPayload]);
 
       if (error) {
-        alert("Ocorreu um erro ao enviar. Tente novamente ou nos chame via WhatsApp.");
-        btn.innerText = "Solicitar Diagnóstico Comercial";
-        btn.disabled = false;
-        return;
+        console.error("Erro ao registrar lead:", error);
+        alert("Ocorreu um imprevisto técnico. Vamos redirecionar você diretamente ao WhatsApp.");
       }
 
-      document.getElementById('msg-sucesso').classList.remove('hidden');
-      
-      setTimeout(() => {
-        const zapMsg = encodeURIComponent(`Olá, sou ${leadData.nome}. Acabei de preencher o formulário para o diagnóstico da minha empresa.`);
-        window.location.href = `https://wa.me/5551980211154?text=${zapMsg}`;
-      }, 1200);
+      // Preparar link personalizado para WhatsApp
+      const msgWhats = encodeURIComponent(
+        `Olá Rodrigo! Meu nome é ${leadPayload.nome}, da empresa ${leadPayload.nome_negocio} (${leadPayload.segmento}). ` +
+        `Acabei de responder o diagnóstico no site para criarmos nossa presença digital.`
+      );
+      document.getElementById('btn-whats-direto').href = `https://wa.me/5551980211154?text=${msgWhats}`;
+
+      irParaPasso('obrigado');
     }
   </script>
 </body>
