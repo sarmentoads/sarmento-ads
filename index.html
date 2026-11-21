@@ -263,7 +263,6 @@
 
   <!-- ==============================================
        NOVO MÓDULO: EXPERIÊNCIA DE UI / UX & MOTION (BENTO GRID)
-       Inspirado em Streaming IVI (Behance) e Apple Design
        ============================================== -->
   <section id="experiencia" class="py-28 relative z-10 border-t border-white/[0.06]">
     <div class="max-w-7xl mx-auto px-6">
@@ -486,10 +485,6 @@
             </li>
             <li class="flex items-start gap-3">
               <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Negócios B2B e Serviços Especializados:</strong> Empresas que recebem clientes por indicação, prospecção ativa
-
----
-
               <span><strong>Negócios B2B e Serviços Especializados:</strong> Empresas que recebem clientes por indicação, prospecção ativa ou anúncios e exigem uma presença digital que passe credibilidade imediata na hora de fechar contratos.</span>
             </li>
           </ul>
@@ -501,7 +496,7 @@
             <span class="w-2.5 h-2.5 rounded-full bg-neutral-600"></span>
             <span class="text-xs font-mono uppercase tracking-wider text-brand-muted font-medium">Modelos Sem Alinhamento</span>
           </div>
-          <ul class="space-y-5 text-xs sm:text-sm text-brand-muted font-light">
+                    <ul class="space-y-5 text-xs sm:text-sm text-brand-muted font-light">
             <li class="flex items-start gap-3">
               <span class="text-neutral-500 font-serif text-lg leading-none mt-0.5">•</span>
               <span><strong>Lojas de Dropshipping ou E-commerce de Varejo:</strong> Não desenvolvemos catálogos com centenas de produtos ou gateways de carrinho complexos.</span>
@@ -719,7 +714,7 @@
             </div>
           </div>
 
-                 <!-- Coluna de Preço & CTA -->
+          <!-- Coluna de Preço & CTA -->
           <div class="lg:col-span-5 flex flex-col justify-center items-center lg:items-end text-center lg:text-right border-t lg:border-t-0 lg:border-l border-white/[0.08] pt-8 lg:pt-0 lg:pl-8">
             <span class="text-xs font-mono uppercase text-brand-muted tracking-wider">DESENVOLVIMENTO COMPLETO</span>
             <div class="my-3">
@@ -844,12 +839,159 @@
       </p>
 
       <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20iniciar%20meu%20projeto%20com%20a%20Sarmento%20Ads." 
-           target="_blank" 
-           rel="noopener noreferrer" 
+        <a href="#contato" 
            class="btn-shine w-full sm:w-auto px-10 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-full transition-all duration-300 shadow-[0_10px_30px_rgba(0,196,106,0.3)]">
-          Iniciar Meu Projeto via WhatsApp
+          Iniciar Meu Projeto
         </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==============================================
+       SESSÃO DO FORMULÁRIO DINÂMICO (TURBINE SEU NEGÓCIO LOCAL!)
+       ============================================== -->
+  <section id="contato" class="py-24 relative z-10 border-t border-white/[0.06] bg-[#080808]">
+    <div class="max-w-xl mx-auto px-6">
+      
+      <div class="text-center mb-8">
+        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Diagnóstico Estratégico</span>
+        <h2 class="text-3xl font-light text-white mt-2">
+          Turbine Seu Negócio Local!
+        </h2>
+        <p class="text-xs text-brand-muted mt-2 font-light">
+          Preencha os passos abaixo para receber uma análise completa e sob medida da sua operação.
+        </p>
+
+        <!-- Indicador visual das etapas -->
+        <div class="flex justify-center items-center gap-2 mt-6">
+          <div id="dot-1" class="h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300"></div>
+          <div id="dot-2" class="h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300"></div>
+          <div id="dot-3" class="h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <div class="bento-card p-8 border-brand-caribe/30">
+        <form id="form-crm" onsubmit="enviarParaCRM(event)">
+          
+          <!-- ETAPA 1: Dados Pessoais de Contato -->
+          <div id="etapa-1" class="space-y-4">
+            <div class="text-xs font-mono text-brand-caribe uppercase tracking-wider mb-2">Etapa 1 de 3 — Seus Dados</div>
+            
+            <div>
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nome Completo *</label>
+              <input type="text" id="campo-nome" required placeholder="Ex: Rodrigo Sarmento" 
+                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">WhatsApp *</label>
+                <input type="tel" id="campo-whatsapp" required placeholder="(51) 99999-9999" 
+                       class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+              </div>
+
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">E-mail *</label>
+                <input type="email" id="campo-email" required placeholder="contato@empresa.com" 
+                       class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+              </div>
+            </div>
+
+            <button type="button" onclick="irParaEtapa(2)" 
+                    class="btn-shine w-full mt-6 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)] flex items-center justify-center gap-2">
+              <span>Avançar para o Negócio →</span>
+            </button>
+          </div>
+
+          <!-- ETAPA 2: Dados do Negócio e Presença Web -->
+          <div id="etapa-2" class="space-y-4 hidden">
+            <div class="text-xs font-mono text-brand-caribe uppercase tracking-wider mb-2">Etapa 2 de 3 — Seu Negócio</div>
+
+            <div>
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nome do Negócio *</label>
+              <input type="text" id="campo-nome-negocio" placeholder="Ex: Barbearia Vip / Clínica Viva" 
+                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Segmento de Atuação *</label>
+              <select id="campo-segmento" 
+                      class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+                <option value="" disabled selected>Selecione seu nicho</option>
+                <option value="Restaurantes/Bares">Restaurantes / Bares</option>
+                <option value="Salão de Beleza/Estética">Salão de Beleza / Estética</option>
+                <option value="Lojas/Comércio">Lojas e Comércio Local</option>
+                <option value="Academias">Academias</option>
+                <option value="Clínicas">Clínicas Médicas / Odontológicas</option>
+                <option value="Autônomo/Prestador">Profissional Autônomo</option>
+                <option value="Construtora/Reforma">Construtora / Reformas</option>
+                <option value="Imobiliária">Imobiliária / Corretor</option>
+                <option value="Outros">Outros</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Já possui um site ativo?</label>
+              <select id="campo-possui-site" onchange="verificarSite(this.value)" 
+                      class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+                <option value="Não">Não possuo site</option>
+                <option value="Sim">Sim, já tenho site</option>
+              </select>
+            </div>
+
+            <div id="wrapper-site-url" class="hidden">
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Endereço (URL) do Site</label>
+              <input type="url" id="campo-site-url" placeholder="https://www.seusite.com.br" 
+                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+            </div>
+
+            <div class="flex gap-3 pt-2">
+              <button type="button" onclick="irParaEtapa(1)" 
+                      class="w-1/3 py-4 border border-white/10 hover:border-white/30 text-white/80 font-mono text-xs uppercase rounded-xl transition">
+                ← Voltar
+              </button>
+              <button type="button" onclick="irParaEtapa(3)" 
+                      class="btn-shine w-2/3 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)]">
+                Avançar →
+              </button>
+            </div>
+          </div>
+
+          <!-- ETAPA 3: Diagnóstico de Desafio & Envio Final -->
+          <div id="etapa-3" class="space-y-4 hidden">
+            <div class="text-xs font-mono text-brand-caribe uppercase tracking-wider mb-2">Etapa 3 de 3 — Seu Maior Desafio</div>
+                        <div>
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Qual o seu maior desafio atual para atrair clientes online? *</label>
+              <select id="campo-desafio" required
+                      class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+                <option value="" disabled selected>Selecione o principal obstáculo</option>
+                <option value="Não aparece no Google">Não apareço no Google quando procuram meu serviço</option>
+                <option value="Site não gera contatos">Tenho presença online/site, mas não recebo mensagens de clientes</option>
+                <option value="Falta de credibilidade">Falta de credibilidade visual na internet</option>
+                <option value="Concorrente mais visível">Concorrentes aparecem mais e captam os clientes da minha região</option>
+                <option value="Não sabe por onde começar">Não sei por onde começar a estruturar meu tráfego e presença</option>
+                <option value="Outro">Outro obstáculo</option>
+              </select>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+              <button type="button" onclick="irParaEtapa(2)" 
+                      class="w-1/3 py-4 border border-white/10 hover:border-white/30 text-white/80 font-mono text-xs uppercase rounded-xl transition">
+                ← Voltar
+              </button>
+              <button type="submit" id="btn-enviar-crm" 
+                      class="btn-shine w-2/3 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)] flex items-center justify-center gap-2">
+                <span>Finalizar Aplicação</span>
+              </button>
+            </div>
+
+            <p id="msg-sucesso" class="hidden text-center text-xs font-mono text-brand-caribe mt-2">
+              ✓ Diagnóstico enviado com sucesso! Redirecionando...
+            </p>
+          </div>
+
+        </form>
       </div>
 
     </div>
@@ -891,11 +1033,9 @@
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        // Passa as coordenadas do mouse para o degradê interno do CSS
         card.style.setProperty('--mouse-x', `${x}px`);
         card.style.setProperty('--mouse-y', `${y}px`);
 
-        // Inclinação sutil tridimensional (Tilt 3D)
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
         const rotateX = ((y - centerY) / centerY) * -4;
@@ -916,7 +1056,6 @@
       
       const isOpen = !content.classList.contains('hidden');
       
-      // Fecha todos os outros
       document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
       document.querySelectorAll('.faq-icon').forEach(i => {
         i.textContent = '+';
@@ -932,79 +1071,58 @@
   </script>
 
   <!-- ==============================================
-       SESSÃO DO FORMULÁRIO DE QUALIFICAÇÃO (INTEGRADO AO CRM)
+       LÓGICA DO FORMULÁRIO DINÂMICO & SUPABASE CRM
        ============================================== -->
-  <section id="contato" class="py-24 relative z-10 border-t border-white/[0.06] bg-[#080808]">
-    <div class="max-w-xl mx-auto px-6">
-      
-      <div class="text-center mb-10">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Aplicação Comercial</span>
-        <h2 class="text-3xl font-light text-white mt-2">
-          Agende um Diagnóstico Estratégico
-        </h2>
-        <p class="text-xs text-brand-muted mt-2 font-light">
-          Preencha os dados abaixo para receber uma análise do posicionamento digital da sua empresa.
-        </p>
-      </div>
-
-      <div class="bento-card p-8 border-brand-caribe/30">
-        <form id="form-crm" onsubmit="enviarParaCRM(event)" class="space-y-4">
-          
-          <div>
-            <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nome Completo</label>
-            <input type="text" id="campo-nome" required placeholder="Ex: Rodrigo Sarmento" 
-                   class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">WhatsApp</label>
-              <input type="tel" id="campo-whatsapp" required placeholder="(51) 99999-9999" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-            </div>
-
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">E-mail Corporativo</label>
-              <input type="email" id="campo-email" required placeholder="contato@empresa.com" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nicho do Negócio</label>
-              <input type="text" id="campo-nicho" required placeholder="Ex: Advocacia / BPO" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-            </div>
-
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Faturamento Médio</label>
-              <select id="campo-faturamento" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-                <option value="Até R$ 20k/mês">Até R$ 20k/mês</option>
-                <option value="R$ 20k a R$ 50k/mês">R$ 20k a R$ 50k/mês</option>
-                <option value="R$ 50k a R$ 100k/mês">R$ 50k a R$ 100k/mês</option>
-                <option value="Acima de R$ 100k/mês">Acima de R$ 100k/mês</option>
-              </select>
-            </div>
-          </div>
-
-          <button type="submit" id="btn-enviar-crm" 
-                  class="btn-shine w-full mt-4 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)] flex items-center justify-center gap-2">
-            <span>Solicitar Diagnóstico Comercial</span>
-          </button>
-
-          <p id="msg-sucesso" class="hidden text-center text-xs font-mono text-brand-caribe mt-2">
-            ✓ Solicitação registrada com sucesso! Redirecionando...
-          </p>
-        </form>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Script de Conexão com o Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // Navegação em Etapas
+    function irParaEtapa(etapa) {
+      if (etapa === 2) {
+        const nome = document.getElementById('campo-nome').value.trim();
+        const zap = document.getElementById('campo-whatsapp').value.trim();
+        const email = document.getElementById('campo-email').value.trim();
+        if (!nome || !zap || !email) {
+          alert("Por favor, preencha os dados de contato obrigatórios.");
+          return;
+        }
+      }
+
+      if (etapa === 3) {
+        const negocio = document.getElementById('campo-nome-negocio').value.trim();
+        const segmento = document.getElementById('campo-segmento').value;
+        if (!negocio || !segmento) {
+          alert("Por favor, preencha o nome do negócio e selecione o segmento.");
+          return;
+        }
+      }
+
+      // Alternar visualização dos blocos
+      document.getElementById('etapa-1').classList.toggle('hidden', etapa !== 1);
+      document.getElementById('etapa-2').classList.toggle('hidden', etapa !== 2);
+      document.getElementById('etapa-3').classList.toggle('hidden', etapa !== 3);
+
+      // Atualizar indicadores visuais
+      const d1 = document.getElementById('dot-1');
+      const d2 = document.getElementById('dot-2');
+      const d3 = document.getElementById('dot-3');
+
+      d1.className = etapa >= 1 ? 'h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300' : 'h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300';
+      d2.className = etapa >= 2 ? 'h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300' : 'h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300';
+      d3.className = etapa === 3 ? 'h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300' : 'h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300';
+    }
+
+    // Exibição condicional do campo de URL do site
+    function verificarSite(valor) {
+      const wrapper = document.getElementById('wrapper-site-url');
+      if (valor === 'Sim') {
+        wrapper.classList.remove('hidden');
+      } else {
+        wrapper.classList.add('hidden');
+        document.getElementById('campo-site-url').value = '';
+      }
+    }
+
+    // Envio para o Supabase
     const CRM_URL = "https://yqiunyrpkljtgenjeyev.supabase.co";
     const CRM_KEY = "sb_publishable_6YnqMemgF07N1YwoTxVCkg_utecUki8";
     const supabaseClient = supabase.createClient(CRM_URL, CRM_KEY);
@@ -1016,19 +1134,22 @@
       btn.disabled = true;
 
       const leadData = {
-        nome: document.getElementById('campo-nome').value,
-        whatsapp: document.getElementById('campo-whatsapp').value,
-        email: document.getElementById('campo-email').value,
-        nicho: document.getElementById('campo-nicho').value,
-        faturamento: document.getElementById('campo-faturamento').value,
+        nome: document.getElementById('campo-nome').value.trim(),
+        whatsapp: document.getElementById('campo-whatsapp').value.trim(),
+        email: document.getElementById('campo-email').value.trim(),
+        nome_negocio: document.getElementById('campo-nome-negocio').value.trim(),
+        segmento: document.getElementById('campo-segmento').value,
+        possui_site: document.getElementById('campo-possui-site').value,
+        site_url: document.getElementById('campo-site-url').value.trim() || null,
+        desafio: document.getElementById('campo-desafio').value,
         status: 'novo'
       };
 
       const { error } = await supabaseClient.from('leads').insert([leadData]);
 
       if (error) {
-        alert("Ocorreu um erro ao enviar. Tente novamente ou nos chame via WhatsApp.");
-        btn.innerText = "Solicitar Diagnóstico Comercial";
+        alert("Ocorreu um erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.");
+        btn.innerText = "Finalizar Aplicação";
         btn.disabled = false;
         return;
       }
@@ -1036,7 +1157,7 @@
       document.getElementById('msg-sucesso').classList.remove('hidden');
       
       setTimeout(() => {
-        const zapMsg = encodeURIComponent(`Olá, sou ${leadData.nome}. Acabei de preencher o formulário para o diagnóstico da minha empresa.`);
+        const zapMsg = encodeURIComponent(`Olá, sou ${leadData.nome} da ${leadData.nome_negocio}. Preenchi o formulário de diagnóstico da Sarmento Ads para o segmento de ${leadData.segmento}.`);
         window.location.href = `https://wa.me/5551980211154?text=${zapMsg}`;
       }, 1200);
     }
