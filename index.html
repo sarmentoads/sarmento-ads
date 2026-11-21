@@ -931,5 +931,115 @@
     }
   </script>
 
+  <!-- ==============================================
+       SESSÃO DO FORMULÁRIO DE QUALIFICAÇÃO (INTEGRADO AO CRM)
+       ============================================== -->
+  <section id="contato" class="py-24 relative z-10 border-t border-white/[0.06] bg-[#080808]">
+    <div class="max-w-xl mx-auto px-6">
+      
+      <div class="text-center mb-10">
+        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Aplicação Comercial</span>
+        <h2 class="text-3xl font-light text-white mt-2">
+          Agende um Diagnóstico Estratégico
+        </h2>
+        <p class="text-xs text-brand-muted mt-2 font-light">
+          Preencha os dados abaixo para receber uma análise do posicionamento digital da sua empresa.
+        </p>
+      </div>
+
+      <div class="bento-card p-8 border-brand-caribe/30">
+        <form id="form-crm" onsubmit="enviarParaCRM(event)" class="space-y-4">
+          
+          <div>
+            <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nome Completo</label>
+            <input type="text" id="campo-nome" required placeholder="Ex: Rodrigo Sarmento" 
+                   class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">WhatsApp</label>
+              <input type="tel" id="campo-whatsapp" required placeholder="(51) 99999-9999" 
+                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">E-mail Corporativo</label>
+              <input type="email" id="campo-email" required placeholder="contato@empresa.com" 
+                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nicho do Negócio</label>
+              <input type="text" id="campo-nicho" required placeholder="Ex: Advocacia / BPO" 
+                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Faturamento Médio</label>
+              <select id="campo-faturamento" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
+                <option value="Até R$ 20k/mês">Até R$ 20k/mês</option>
+                <option value="R$ 20k a R$ 50k/mês">R$ 20k a R$ 50k/mês</option>
+                <option value="R$ 50k a R$ 100k/mês">R$ 50k a R$ 100k/mês</option>
+                <option value="Acima de R$ 100k/mês">Acima de R$ 100k/mês</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-enviar-crm" 
+                  class="btn-shine w-full mt-4 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)] flex items-center justify-center gap-2">
+            <span>Solicitar Diagnóstico Comercial</span>
+          </button>
+
+          <p id="msg-sucesso" class="hidden text-center text-xs font-mono text-brand-caribe mt-2">
+            ✓ Solicitação registrada com sucesso! Redirecionando...
+          </p>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Script de Conexão com o Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const CRM_URL = "https://yqiunyrpkljtgenjeyev.supabase.co";
+    const CRM_KEY = "sb_publishable_6YnqMemgF07N1YwoTxVCkg_utecUki8";
+    const supabaseClient = supabase.createClient(CRM_URL, CRM_KEY);
+
+    async function enviarParaCRM(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-enviar-crm');
+      btn.innerText = "Registrando Oportunidade...";
+      btn.disabled = true;
+
+      const leadData = {
+        nome: document.getElementById('campo-nome').value,
+        whatsapp: document.getElementById('campo-whatsapp').value,
+        email: document.getElementById('campo-email').value,
+        nicho: document.getElementById('campo-nicho').value,
+        faturamento: document.getElementById('campo-faturamento').value,
+        status: 'novo'
+      };
+
+      const { error } = await supabaseClient.from('leads').insert([leadData]);
+
+      if (error) {
+        alert("Ocorreu um erro ao enviar. Tente novamente ou nos chame via WhatsApp.");
+        btn.innerText = "Solicitar Diagnóstico Comercial";
+        btn.disabled = false;
+        return;
+      }
+
+      document.getElementById('msg-sucesso').classList.remove('hidden');
+      
+      setTimeout(() => {
+        const zapMsg = encodeURIComponent(`Olá, sou ${leadData.nome}. Acabei de preencher o formulário para o diagnóstico da minha empresa.`);
+        window.location.href = `https://wa.me/5551980211154?text=${zapMsg}`;
+      }, 1200);
+    }
+  </script>
 </body>
 </html>
