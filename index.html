@@ -1,1166 +1,1136 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sarmento Ads — Engenharia de UI/UX & Posicionamento Digital</title>
-  
-  <!-- Tipografia Editorial & High-Tech -->
+  <title>Sarmento Ads | Landing Pages de Alta Performance</title>
+  <meta name="description" content="Landing pages de alta conversão, ultravelozes e otimizadas para tráfego pago. Estruturadas por Thales Sarmento.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              caribe: '#00C46A',
-              caribeGlow: 'rgba(0, 196, 106, 0.35)',
-              forest: '#1E4A37',
-              dark: '#080808',
-              surface: '#0f0f0f',
-              card: 'rgba(18, 18, 18, 0.75)',
-              border: 'rgba(255, 255, 255, 0.08)',
-              borderHover: 'rgba(0, 196, 106, 0.45)',
-              muted: '#8A8A8A',
-            }
-          },
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            serif: ['Instrument Serif', 'serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
-  </script>
-
   <style>
+    :root {
+      --bg: #07090e;
+      --card-bg: rgba(16, 21, 30, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover-border: rgba(99, 102, 241, 0.4);
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-teal: #06b6d4;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'Space Grotesk', sans-serif;
+    }
+
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
     }
+
     body {
-      background-color: #060606;
-      color: #ECECEC;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
       overflow-x: hidden;
-      selection-background-color: #00C46A;
-      selection-color: #000;
+      line-height: 1.6;
+      position: relative;
     }
 
-    /* Textura de Granulação de Filme (Film Noise) */
-    .film-grain {
+    /* Ambient cursor glow */
+    #cursor-glow {
       position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
       pointer-events: none;
-      z-index: 999;
-      opacity: 0.035;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s;
+      display: none;
+    }
+    @media (min-width: 1024px) {
+      #cursor-glow { display: block; }
     }
 
-    /* Luz de Cursor Dinâmica (Spotlight de Ambiente) */
-    #cursor-light {
+    /* Scroll Reveal (Fade-up + Blur) */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      filter: blur(10px);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform, filter;
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0px);
+    }
+
+    /* Header Nav */
+    header {
       position: fixed;
       top: 0;
       left: 0;
-      width: 600px;
-      height: 600px;
-      margin-top: -300px;
-      margin-left: -300px;
-      background: radial-gradient(circle, rgba(0, 196, 106, 0.09) 0%, rgba(41, 105, 78, 0.03) 40%, transparent 70%);
-      pointer-events: none;
-      z-index: 2;
-      border-radius: 50%;
-      transition: transform 0.15s ease-out;
-      will-change: transform;
+      width: 100%;
+      z-index: 100;
+      padding: 20px 0;
+      backdrop-filter: blur(16px);
+      background: rgba(7, 9, 14, 0.65);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-badge {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .nav-cta {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 40px;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    .nav-cta:hover {
+      background: #fff;
+      color: #07090e;
+      border-color: #fff;
     }
 
-    /* Orbes de Luz Animadas de Fundo */
-    .ambient-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(120px);
-      pointer-events: none;
-      animation: floatOrb 18s ease-in-out infinite alternate;
-    }
-
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) scale(1); opacity: 0.25; }
-      50% { transform: translate(60px, 40px) scale(1.15); opacity: 0.45; }
-      100% { transform: translate(-40px, 80px) scale(0.9); opacity: 0.2; }
-    }
-
-    /* Cartão Bento com Efeito Vidro e Tilt 3D */
-    .bento-card {
+    /* Hero Section com Vídeo Conceitual */
+    .hero {
       position: relative;
-      background: rgba(14, 14, 14, 0.65);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 24px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 24px 80px;
       overflow: hidden;
-      transform-style: preserve-3d;
-      transition: border-color 0.4s ease, transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.4s ease;
+      text-align: center;
     }
-
-    .bento-card:hover {
-      border-color: rgba(0, 196, 106, 0.35);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 196, 106, 0.1);
-    }
-
-    /* Brilho Interno Focal no Mouse */
-    .bento-card::before {
-      content: '';
+    .hero-video-bg {
       position: absolute;
-      top: var(--mouse-y, -300px);
-      left: var(--mouse-x, -300px);
-      transform: translate(-50%, -50%);
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(0, 196, 106, 0.18) 0%, transparent 65%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.32;
       z-index: 1;
+      pointer-events: none;
     }
-
-    .bento-card:hover::before {
-      opacity: 1;
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(7, 9, 14, 0.3) 0%, rgba(7, 9, 14, 0.95) 85%);
+      z-index: 2;
     }
-
-    /* Badge Pílula Flutuante */
-    .pill-badge {
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 880px;
+      margin: 0 auto;
+    }
+    .hero-tag {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 16px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 9999px;
-      backdrop-filter: blur(12px);
+      padding: 8px 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #cbd5e1;
+      margin-bottom: 28px;
+      backdrop-filter: blur(8px);
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 12px #10b981;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.5; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.5; transform: scale(0.9); }
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.5vw, 4.4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 24px;
+      color: #fff;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, #818cf8 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 36px;
+      font-weight: 400;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+    .btn-primary {
+      background: #fff;
+      color: #07090e;
+      padding: 16px 36px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+      border: 1px solid #fff;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(255, 255, 255, 0.25);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      padding: 16px 32px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
     }
 
-    /* Botão com feixe cinemático */
-    .btn-shine {
+    /* Container Global */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    /* Metrics Bar (Ticker 0 -> Valor) */
+    .metrics-bar {
+      margin-top: -40px;
+      position: relative;
+      z-index: 10;
+      background: rgba(16, 21, 30, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 36px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+    }
+    .metric-item {
+      text-align: center;
+      position: relative;
+    }
+    .metric-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 15%;
+      height: 70%;
+      width: 1px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    @media (max-width: 768px) {
+      .metric-item:not(:last-child)::after { display: none; }
+    }
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: 2px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .metric-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+
+    /* Tilt Cards & Grid */
+    .section-head {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 60px;
+    }
+    .section-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent-teal);
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .section-head h2 {
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-head p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+    .tilt-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 40px;
+      position: relative;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      will-change: transform;
+      backdrop-filter: blur(12px);
+    }
+    .tilt-card:hover {
+      border-color: var(--card-hover-border);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-glow);
+    }
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 24px;
+      color: #818cf8;
+    }
+    .tilt-card h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .tilt-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Sessão de Investimento / Preço */
+    .price-box {
+      background: linear-gradient(180deg, rgba(20, 27, 40, 0.8) 0%, rgba(12, 16, 25, 0.95) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 28px;
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 48px;
+      text-align: center;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
       position: relative;
       overflow: hidden;
     }
-    .btn-shine::after {
-      content: '';
+    .price-badge {
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(60deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
-      transform: rotate(30deg) translate(-100%, -100%);
-      transition: transform 0.75s ease;
+      top: 24px;
+      right: 24px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
     }
-    .btn-shine:hover::after {
-      transform: rotate(30deg) translate(50%, 50%);
+    .price-tag {
+      font-family: var(--font-mono);
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 20px 0 8px;
+      line-height: 1;
+    }
+    .price-tag small {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .price-monthly {
+      color: var(--accent-teal);
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 28px;
+    }
+    .price-features {
+      list-style: none;
+      text-align: left;
+      margin: 32px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .price-features li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #cbd5e1;
+      font-size: 0.95rem;
+    }
+    .check-icon {
+      color: #10b981;
+      font-weight: bold;
     }
 
-    /* Efeito Radar UI */
-    @keyframes pulseRing {
-      0% { transform: scale(0.6); opacity: 0.8; }
-      100% { transform: scale(1.6); opacity: 0; }
+    /* Modal / Multi-step Form */
+    #form-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(7, 9, 14, 0.85);
+      backdrop-filter: blur(16px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
-    .radar-ring {
-      animation: pulseRing 3s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+    .modal-box {
+      background: #0d121c;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      max-width: 560px;
+      width: 100%;
+      padding: 36px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .progress-bar-wrap {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1, #06b6d4);
+      width: 20%;
+      transition: width 0.3s ease;
+    }
+    .form-step {
+      display: none;
+    }
+    .form-step.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .step-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .step-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color: var(--accent);
+    }
+    .step-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .btn-step {
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-step-next {
+      background: #fff;
+      color: #07090e;
+      margin-left: auto;
+    }
+    .btn-step-prev {
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+    }
+
+    /* CRM Kanban Admin View (?admin) */
+    #crm-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #090d14;
+      z-index: 10000;
+      display: none;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 32px 24px;
+    }
+    .crm-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto 32px;
+      width: 100%;
+    }
+    .crm-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .crm-col {
+      background: #111622;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .crm-col h4 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .crm-card {
+      background: #171f2f;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+    }
+    .crm-card b {
+      color: #fff;
+      display: block;
+      margin-bottom: 4px;
     }
   </style>
 </head>
-<body class="selection:bg-brand-caribe selection:text-black">
+<body>
 
-  <!-- Ruído de Granulação de Cinema -->
-  <div class="film-grain"></div>
+  <div id="cursor-glow"></div>
 
-  <!-- Luz Dinâmica que Segue o Cursor -->
-  <div id="cursor-light"></div>
-
-  <!-- NAVEGAÇÃO MINIMALISTA COM VIDRO -->
-  <nav class="fixed top-0 left-0 w-full z-50 bg-[#060606]/75 backdrop-blur-2xl border-b border-white/[0.06]">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      
-      <!-- Assinatura Sarmento Ads -->
-      <a href="#" class="flex items-center gap-3 group">
-        <span class="w-2.5 h-2.5 rounded-full bg-brand-caribe shadow-[0_0_12px_#00C46A]"></span>
-        <span class="text-sm font-semibold tracking-wider text-white">SARMENTO <span class="font-serif italic font-normal text-brand-caribe text-base">Ads</span></span>
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo">
+        SARMENTO ADS
+        <span class="logo-badge">High-End</span>
       </a>
-
-      <!-- Menu de Seções com Linha de Estúdio -->
-      <div class="hidden md:flex items-center gap-8 text-xs font-mono tracking-wider text-brand-muted">
-        <a href="#experiencia" class="hover:text-white transition-colors">UI / UX Experience</a>
-        <a href="#detalhe" class="hover:text-white transition-colors">Engenharia</a>
-        <a href="#portfolio" class="hover:text-white transition-colors">Projetos</a>
-        <a href="#investimento" class="hover:text-white transition-colors">Investimento</a>
-        <a href="#faq" class="hover:text-white transition-colors">Dúvidas</a>
-      </div>
-
-      <!-- CTA Nav -->
-      <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20avaliar%20o%20posicionamento%20digital%20da%20minha%20empresa." 
-         target="_blank" 
-         rel="noopener noreferrer" 
-         class="px-5 py-2.5 rounded-full border border-white/15 text-xs text-white/90 hover:border-brand-caribe hover:text-brand-caribe transition-all duration-300 backdrop-blur-lg">
-        Iniciar Conversa
-      </a>
-    </div>
-  </nav>
-
-  <!-- ==============================================
-       HERO CINEMATOGRÁFICO
-       ============================================== -->
-  <header class="relative pt-40 pb-28 md:pt-52 md:pb-36 z-10 overflow-hidden">
-    
-    <!-- Luzes de Estúdio Animadas -->
-    <div class="ambient-orb w-[650px] h-[650px] bg-brand-caribe/15 top-10 left-1/2 -translate-x-1/2"></div>
-    <div class="ambient-orb w-[450px] h-[450px] bg-emerald-950/40 -top-20 left-10" style="animation-delay: -5s;"></div>
-
-    <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-      
-      <!-- Pílula de Autoridade Interativa -->
-      <div class="pill-badge mb-8 mx-auto hover:border-brand-caribe/50 transition-colors">
-        <span class="w-2 h-2 rounded-full bg-brand-caribe animate-pulse shadow-[0_0_8px_#00C46A]"></span>
-        <span class="text-[11px] font-mono tracking-[0.2em] uppercase text-brand-caribe font-semibold">Engenharia de UI / UX & Tráfego</span>
-        <span class="w-1 h-1 rounded-full bg-white/20"></span>
-        <span class="text-[11px] text-white/70">Padrão Internacional</span>
-      </div>
-
-      <!-- Manchete Editorial com Instrument Serif Itálico -->
-      <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-tight text-white leading-[1.05]">
-        Construímos a presença digital que <br class="hidden sm:inline">
-        <span class="font-serif italic font-normal text-brand-caribe tracking-normal">justifica os seus honorários.</span>
-      </h1>
-
-      <p class="mt-8 text-base sm:text-xl text-brand-muted max-w-3xl mx-auto leading-relaxed font-light">
-        A maioria dos sites corporativos parece um documento em PDF estático e sem vida. Criamos ecossistemas fluidos, cinematográficos e desenhados para que o cliente decida fechar contrato nos primeiros cinco segundos.
-      </p>
-
-      <!-- Botões de Ação com Acabamento Refinado -->
-      <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20avaliar%20o%20posicionamento%20digital%20da%20minha%20empresa." 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="btn-shine w-full sm:w-auto px-9 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-full transition-all duration-300 flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(0,196,106,0.3)]">
-          <span>Agendar Diagnóstico Gratuito</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-        </a>
-
-        <a href="#experiencia" 
-           class="w-full sm:w-auto px-8 py-4 rounded-full border border-white/10 hover:border-white/30 text-white/80 hover:text-white text-xs tracking-wider uppercase font-medium transition-all duration-300 bg-white/[0.02] backdrop-blur-lg">
-          Explorar a Experiência UI / UX ↓
-        </a>
-      </div>
-
+      <a href="#investimento" class="nav-cta" onclick="openFormModal()">Solicitar Página</a>
     </div>
   </header>
 
-  <!-- ==============================================
-       NOVO MÓDULO: EXPERIÊNCIA DE UI / UX & MOTION (BENTO GRID)
-       ============================================== -->
-  <section id="experiencia" class="py-28 relative z-10 border-t border-white/[0.06]">
-    <div class="max-w-7xl mx-auto px-6">
-      
-      <div class="max-w-2xl mb-16">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Motion & User Experience</span>
-        <h2 class="text-3xl sm:text-5xl font-light text-white mt-3 leading-tight">
-          Por que uma interface fluida <br>
-          <span class="font-serif italic text-brand-caribe">vende infinitamente mais?</span>
-        </h2>
-        <p class="text-sm text-brand-muted mt-4 leading-relaxed font-light">
-          A psicologia humana associa movimento suave, design sem ruído e resposta imediata a marcas sólidas, caras e confiáveis. Integramos os três pilares que transformam visitantes em compradores:
-        </p>
+  <!-- Hero com Vídeo 3D em Segundo Plano -->
+  <section class="hero">
+    <video class="hero-video-bg" autoplay muted loop playsinline>
+      <source src="https://assets.mixkit.co/videos/41662/41662-720.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content reveal">
+      <div class="hero-tag">
+        <span class="pulse-dot"></span>
+        Engenharia Digital & Alta Conversão
+      </div>
+      <h1>Landing Pages que convertem tráfego em <span class="gradient-text">faturamento real.</span></h1>
+      <p>Desenvolvidas sob medida para anúncios de Meta Ads e Google Ads. Carregamento instantâneo, arquitetura persuasiva e UX refinada para transformar cliques em leads qualificados.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="openFormModal()">Começar Meu Projeto ↗</button>
+        <a href="#diferenciais" class="btn-secondary">Explorar Estrutura</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metrics Bar (Contadores Dinâmicos 0 -> Valor) -->
+  <div class="container">
+    <div class="metrics-bar reveal">
+      <div class="metric-item">
+        <div class="metric-value"><span class="ticker" data-target="1.2" data-decimals="1">0.0</span>s</div>
+        <div class="metric-label">Tempo médio de abertura mobile</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">+<span class="ticker" data-target="38">0</span>%</div>
+        <div class="metric-label">Aumento médio em conversão de leads</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value"><span class="ticker" data-target="100">0</span>%</div>
+        <div class="metric-label">Garantia técnica de satisfação</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value"><span class="ticker" data-target="24">0</span>/7</div>
+        <div class="metric-label">Monitoramento de servidor em nuvem</div>
+      </div>
+    </div>
+  </div>
+    <!-- Seção de Diferenciais (Tilt 3D Cards) -->
+  <section id="diferenciais">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-pill">Arquitetura de Precisão</span>
+        <h2>Construído para maximizar seu ROAS</h2>
+        <p>Cada componente da página é posicionado com propósito comercial: reter a atenção nos primeiros 3 segundos e conduzir o visitante até a conversão sem fricção.</p>
       </div>
 
-      <!-- BENTO GRID ASSIMÉTRICO DINÂMICO -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+      <div class="cards-grid">
+        <div class="tilt-card reveal">
+          <div class="card-icon">⚡</div>
+          <h3>Velocidade Extrema (Core Web Vitals)</h3>
+          <p>Páginas leves sem plugins pesados ou códigos inchados. Abrir em menos de 1,5s no 4G garante que você pare de queimar verba de anúncios com cliques perdidos no caminho.</p>
+        </div>
+
+        <div class="tilt-card reveal">
+          <div class="card-icon">🎯</div>
+          <h3>Copywriting Fundo de Funil</h3>
+          <p>Estrutura narrativa orientada à tomada de ação imediata. Argumentação lógica, quebra antecipada de objeções e clareza absoluta sobre a proposta de valor da sua empresa.</p>
+        </div>
+
+        <div class="tilt-card reveal">
+          <div class="card-icon">📱</div>
+          <h3>Mobile-First & UX Fluida</h3>
+          <p>Mais de 85% do tráfego de redes sociais consome conteúdos pelo celular. Menus acessíveis ao alcance do polegar, fontes legíveis e botões com acionamento instantâneo.</p>
+        </div>
+
+        <div class="tilt-card reveal">
+          <div class="card-icon">📊</div>
+          <h3>Rastreamento e Dados Avançados</h3>
+          <p>Configuração do Pixel Meta, API de Conversões (CAPI) e Google Analytics 4 com eventos otimizados para educar os algoritmos a buscar leads com real poder de compra.</p>
+        </div>
+
+        <div class="tilt-card reveal">
+          <div class="card-icon">🛡️</div>
+          <h3>Hospedagem em Nuvem de Elite</h3>
+          <p>Infraestrutura global com CDN de alta performance, certificado SSL automático e taxa de estabilidade de 99,9% para suportar picos de tráfego sem oscilações.</p>
+        </div>
+
+        <div class="tilt-card reveal">
+          <div class="card-icon">💬</div>
+          <h3>Qualificação Direta para WhatsApp</h3>
+          <p>Formulários inteligentes em etapas com pré-filtro de perfil e direcionamento com mensagem pré-formatada diretamente para a sua equipe comercial.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção de Investimento / Proposta Comercial -->
+  <section id="investimento">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-pill">Investimento Transparente</span>
+        <h2>Estrutura completa pronta para vender</h2>
+        <p>Sem taxas ocultas, sem contratos de longo prazo engessados. Um ativo digital feito para gerar retorno desde o primeiro dia de veiculação.</p>
+      </div>
+
+      <div class="price-box reveal">
+        <span class="price-badge">Condição Estratégica</span>
+        <h3 style="font-size: 1.4rem; color: #fff;">Implementação Completa + Gestão Contínua</h3>
         
-        <!-- Bloco 1: Microinterações & Física (8 Colunas) -->
-        <div class="bento-card p-8 md:p-10 md:col-span-8 flex flex-col justify-between min-h-[380px]">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono uppercase tracking-widest text-brand-caribe font-medium">01 / MICROINTERAÇÃO & FLUIDEZ</span>
-            <span class="text-[10px] font-mono px-3 py-1 rounded-full bg-brand-forest/30 border border-brand-forest/50 text-white/80">60 FPS Native</span>
-          </div>
-
-          <!-- Demonstração Visual de Interface Responsiva -->
-          <div class="my-8 p-6 rounded-2xl bg-black/40 border border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div class="space-y-2 text-center sm:text-left">
-              <div class="text-xs font-mono text-brand-muted uppercase">Feedback Visual Imediato</div>
-              <div class="text-xl font-medium text-white">Taxa de Conversão por Segundo de Resposta</div>
-              <p class="text-xs text-brand-muted max-w-sm font-light">Páginas com transições orgânicas diminuem a percepção de espera a zero absoluto.</p>
-            </div>
-            <!-- Simulador de Barra de Performance -->
-            <div class="w-full sm:w-48 bg-white/5 p-4 rounded-xl border border-white/10 text-center">
-              <div class="text-2xl font-mono font-bold text-brand-caribe tracking-tight">&lt; 0.8s</div>
-              <div class="text-[10px] font-mono text-brand-muted uppercase mt-1">Tempo de Resposta Médio</div>
-              <div class="w-full bg-neutral-800 h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-brand-caribe h-full w-[96%] rounded-full shadow-[0_0_10px_#00C46A]"></div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-medium text-white mb-2">Engenharia Visual com Física Natural</h3>
-            <p class="text-xs sm:text-sm text-brand-muted font-light leading-relaxed">
-              Cada botão, rolagem e abertura de sanfona reage ao usuário com curvas de aceleração orgânicas. Eliminamos a sensação robótica de templates antigos.
-            </p>
-          </div>
+        <div class="price-tag">
+          <small>R$</small> 600 <span style="font-size: 1.1rem; color: var(--text-muted); font-weight: 500;">único</span>
         </div>
+        <div class="price-monthly">+ R$ 97,90 / mês de manutenção e suporte</div>
 
-        <!-- Bloco 2: Radar de Atenção / Ergonomia Mobile (4 Colunas) -->
-        <div class="bento-card p-8 md:p-10 md:col-span-4 flex flex-col justify-between min-h-[380px]">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono uppercase tracking-widest text-brand-caribe font-medium">02 / ERGONOMIA</span>
-            <div class="w-2 h-2 rounded-full bg-brand-caribe animate-ping"></div>
-          </div>
+        <ul class="price-features">
+          <li><span class="check-icon">✓</span> Landing Page sob medida com design de alta conversão</li>
+          <li><span class="check-icon">✓</span> Copywriting persuasivo estratégico e pesquisa de público</li>
+          <li><span class="check-icon">✓</span> Formulário multi-etapas com qualificação de leads</li>
+          <li><span class="check-icon">✓</span> Integração nativa com WhatsApp e painel CRM Kanban</li>
+          <li><span class="check-icon">✓</span> Instalação de Tags de Rastreamento (Meta / Google)</li>
+          <li><span class="check-icon">✓</span> Hospedagem de alta performance em nuvem inclusa</li>
+          <li><span class="check-icon">✓</span> Suporte técnico direto com Thales</li>
+        </ul>
 
-          <!-- Radar Animado -->
-          <div class="relative w-36 h-36 mx-auto my-6 flex items-center justify-center">
-            <div class="absolute inset-0 rounded-full border border-brand-forest/40 radar-ring"></div>
-            <div class="absolute inset-3 rounded-full border border-brand-forest/60"></div>
-            <div class="absolute inset-8 rounded-full border border-brand-caribe/30"></div>
-            <div class="w-12 h-12 rounded-full bg-brand-forest/30 border border-brand-caribe flex items-center justify-center text-brand-caribe font-mono text-xs shadow-[0_0_20px_rgba(0,196,106,0.3)]">
-              UX
-            </div>
-          </div>
-
-          <div>
-            <h3 class="text-lg font-medium text-white mb-1">Zona do Polegar Mobile</h3>
-            <p class="text-xs text-brand-muted font-light leading-relaxed">
-              O botão de fechamento fica no raio natural de alcance do polegar. Zero esforço para quem está navegando pelo smartphone.
-            </p>
-          </div>
-        </div>
-
-        <!-- Bloco 3: Hierarquia Editorial Anti-Cansaço (4 Colunas) -->
-        <div class="bento-card p-8 md:p-10 md:col-span-4 flex flex-col justify-between min-h-[340px]">
-          <span class="text-xs font-mono uppercase tracking-widest text-brand-caribe font-medium">03 / PSICOLOGIA COGNITIVA</span>
-          
-          <div class="my-6 space-y-2.5">
-            <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs font-mono text-white/80">
-              <span class="text-brand-caribe">01.</span> Gancho Visual Sofisticado
-            </div>
-            <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs font-mono text-white/80">
-              <span class="text-brand-caribe">02.</span> Eliminação de Objeções Factual
-            </div>
-            <div class="p-3 rounded-xl bg-brand-forest/20 border border-brand-forest/50 text-xs font-mono text-brand-caribe font-medium">
-              <span class="text-white">03.</span> Ação Direta no WhatsApp
-            </div>
-          </div>
-
-          <div>
-            <h3 class="text-lg font-medium text-white mb-1">Arquitetura de Olhar Guiado</h3>
-            <p class="text-xs text-brand-muted font-light leading-relaxed">
-              O visitante nunca se sente sobrecarregado de texto. Cada parágrafo é calculado para criar curiosidade e respeito pela sua marca.
-            </p>
-          </div>
-        </div>
-
-        <!-- Bloco 4: Rastreamento & Dados sem Cookies Pesados (8 Colunas) -->
-        <div class="bento-card p-8 md:p-10 md:col-span-8 flex flex-col justify-between min-h-[340px]">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono uppercase tracking-widest text-brand-caribe font-medium">04 / INTELIGÊNCIA COMERCIAL</span>
-            <span class="text-xs font-mono text-brand-muted">Analytics Precision</span>
-          </div>
-
-          <div class="my-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="p-4 rounded-xl bg-black/40 border border-white/[0.06]">
-              <span class="text-[10px] font-mono uppercase text-brand-muted block">Meta Pixel 8.0</span>
-              <span class="text-lg font-medium text-white mt-1 block">Eventos de Lead</span>
-              <span class="text-xs font-mono text-brand-caribe">100% Auditado</span>
-            </div>
-            <div class="p-4 rounded-xl bg-black/40 border border-white/[0.06]">
-              <span class="text-[10px] font-mono uppercase text-brand-muted block">Google Tag Manager</span>
-              <span class="text-lg font-medium text-white mt-1 block">Conversão Exata</span>
-              <span class="text-xs font-mono text-brand-caribe">Zero Dispersão</span>
-            </div>
-            <div class="p-4 rounded-xl bg-black/40 border border-white/[0.06]">
-              <span class="text-[10px] font-mono uppercase text-brand-muted block">Core Web Vitals</span>
-              <span class="text-lg font-medium text-white mt-1 block">Nota 95+ Mobile</span>
-              <span class="text-xs font-mono text-brand-caribe">Green Score</span>
-            </div>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-medium text-white mb-1">Rastreamento Analítico Sem Comprometer a Velocidade</h3>
-            <p class="text-xs sm:text-sm text-brand-muted font-light leading-relaxed">
-              Enquanto sites comuns ficam lentos ao instalar pixels de anúncio, nossa arquitetura dispara eventos em segundo plano sem travar a experiência do usuário.
-            </p>
-          </div>
-        </div>
-
+        <button class="btn-primary" style="width: 100%;" onclick="openFormModal()">Solicitar Proposta Agora ↗</button>
       </div>
-
     </div>
   </section>
 
-  <!-- ==============================================
-       DETALHAMENTO DO CONTEÚDO (MÉTODO)
-       ============================================== -->
-  <section id="detalhe" class="py-24 relative z-10 border-t border-white/[0.06] bg-[#070707]">
-    <div class="max-w-6xl mx-auto px-6">
-      
-      <div class="max-w-2xl mb-16">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">A Engenharia</span>
-        <h2 class="text-3xl md:text-5xl font-light text-white mt-3 leading-tight">
-          Menos ruído visual. <br>
-          <span class="font-serif italic text-white/90">Mais conversão imediata.</span>
-        </h2>
-        <p class="text-sm text-brand-muted mt-4 leading-relaxed font-light">
-          Templates genéricos do WordPress carregam centenas de scripts desnecessários que espantam o visitante antes do carregamento. A nossa abordagem é orientada a código limpo e arquitetura comercial.
-        </p>
-      </div>
-
-      <!-- Grid com Bento Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <div class="bento-card p-8">
-          <div class="text-xs font-mono text-brand-caribe mb-6 tracking-wider">01 / NARRATIVA</div>
-          <h3 class="text-xl font-medium text-white mb-3">Copywriting com Rigor Factual</h3>
-          <p class="text-xs text-brand-muted leading-relaxed font-light">
-            Textos pensados para quem decide. Eliminamos jargões vazios e estruturamos uma narrativa que antecipa as dúvidas e quebra as principais objeções de compra antes do primeiro contato.
-          </p>
-        </div>
-
-        <div class="bento-card p-8">
-          <div class="text-xs font-mono text-brand-caribe mb-6 tracking-wider">02 / VELOCIDADE</div>
-          <h3 class="text-xl font-medium text-white mb-3">Carregamento Sub-Segundo</h3>
-          <p class="text-xs text-brand-muted leading-relaxed font-light">
-            Desenvolvido com tecnologia de ponta sem plugins acumulados. A página abre em menos de 1,2 segundo no smartphone do seu prospecto, mesmo em redes 4G oscilantes.
-          </p>
-        </div>
-
-        <div class="bento-card p-8">
-          <div class="text-xs font-mono text-brand-caribe mb-6 tracking-wider">03 / CONVERSÃO</div>
-          <h3 class="text-xl font-medium text-white mb-3">Fluxo de Contato sem Fricção</h3>
-          <p class="text-xs text-brand-muted leading-relaxed font-light">
-            Cada elemento, botão e chamada é posicionado na rota ergonômica natural do polegar, conduzindo o interessado diretamente para o seu WhatsApp corporativo em um único toque.
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       PARA QUEM É (CRITÉRIO DE QUALIFICAÇÃO)
-       ============================================== -->
-  <section class="py-24 relative z-10 border-t border-white/[0.06] bg-[#090909]">
-    <div class="max-w-6xl mx-auto px-6">
-      
-      <div class="text-center max-w-xl mx-auto mb-16">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Filtro de Segmentos</span>
-        <h2 class="text-3xl md:text-5xl font-light text-white mt-3">
-          Projetado para quem vende <span class="font-serif italic">competência técnica.</span>
-        </h2>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-        
-        <!-- Para Quem É -->
-        <div class="bento-card p-8 sm:p-10 border-brand-forest/50">
-          <div class="flex items-center gap-3 mb-6">
-            <span class="w-2.5 h-2.5 rounded-full bg-brand-caribe shadow-[0_0_8px_#00C46A]"></span>
-            <span class="text-xs font-mono uppercase tracking-wider text-white font-medium">Projetos com Alta Sinergia</span>
-          </div>
-          <ul class="space-y-5 text-xs sm:text-sm text-gray-300 font-light">
-            <li class="flex items-start gap-3">
-              <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Escritórios de Advocacia Especializada:</strong> Que precisam demonstrar reputação, rigor institucional e autoridade antes de reuniões de honorários.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>BPO Financeiro & Auditoria Contábil:</strong> Empresas que vendem segurança de dados e processos organizados para decisores e diretores.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Clínicas Médicas & Odontologia Avançada:</strong> Onde a sofisticação da experiência visual precisa refletir o alto nível do procedimento clínico.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Negócios B2B e Serviços Especializados:</strong> Empresas que recebem clientes por indicação, prospecção ativa ou anúncios e exigem uma presença digital que passe credibilidade imediata na hora de fechar contratos.</span>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Para Quem Não É -->
-        <div class="bento-card p-8 sm:p-10 border-white/[0.05] bg-black/40">
-          <div class="flex items-center gap-3 mb-6">
-            <span class="w-2.5 h-2.5 rounded-full bg-neutral-600"></span>
-            <span class="text-xs font-mono uppercase tracking-wider text-brand-muted font-medium">Modelos Sem Alinhamento</span>
-          </div>
-                    <ul class="space-y-5 text-xs sm:text-sm text-brand-muted font-light">
-            <li class="flex items-start gap-3">
-              <span class="text-neutral-500 font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Lojas de Dropshipping ou E-commerce de Varejo:</strong> Não desenvolvemos catálogos com centenas de produtos ou gateways de carrinho complexos.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-neutral-500 font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Empresas focadas em soluções improvisadas:</strong> Nosso foco é engenharia de código sob medida, arquitetura de informação e posicionamento de autoridade.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-neutral-500 font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Projetos sem clareza de proposta de valor:</strong> A estrutura funciona potencializando negócios com serviços validados e posicionamento comercial sério.</span>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       CASES & PORTFÓLIO VISUAL (UI/UX NA PRÁTICA)
-       ============================================== -->
-  <section id="portfolio" class="py-28 relative z-10 border-t border-white/[0.06]">
-    <div class="max-w-7xl mx-auto px-6">
-      
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-        <div>
-          <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Portfólio Selecionado</span>
-          <h2 class="text-3xl sm:text-5xl font-light text-white mt-3 leading-tight">
-            Projetos reais construídos <br>
-            <span class="font-serif italic text-brand-caribe">para converter decisores.</span>
-          </h2>
-        </div>
-        <p class="text-xs text-brand-muted max-w-md font-light leading-relaxed">
-          Cada página é tratada como um ativo de vendas exclusivo. Não utilizamos estruturas prontas; desenhamos cada hierarquia conforme o perfil do comprador final.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        
-        <!-- Case 1: 4Tires (Case Real de Sucesso) -->
-        <div class="bento-card group p-8 flex flex-col justify-between">
-          <div>
-            <div class="aspect-video w-full rounded-xl bg-neutral-900 border border-white/10 overflow-hidden relative mb-6">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
-              <div class="absolute top-4 left-4 z-20 flex gap-2">
-                <span class="text-[10px] font-mono uppercase bg-brand-caribe text-black font-semibold px-2.5 py-1 rounded-full">Case Real</span>
-                <span class="text-[10px] font-mono uppercase bg-white/10 text-white/90 backdrop-blur-md px-2.5 py-1 rounded-full">Automotivo Premium</span>
-              </div>
-              <div class="w-full h-full flex items-center justify-center text-brand-muted/40 font-mono text-sm group-hover:scale-105 transition-transform duration-500">
-                [ Interface 4Tires — Otimizada para WhatsApp ]
-              </div>
-            </div>
-            <div class="flex items-baseline justify-between mb-2">
-              <h3 class="text-2xl font-medium text-white">4Tires Centro Automotivo</h3>
-              <span class="text-xs font-mono text-brand-caribe">Taxa de Conversão 18.4%</span>
-            </div>
-            <p class="text-xs text-brand-muted font-light leading-relaxed">
-              Estrutura ergonômica voltada à cotação direta de pneus de alta performance. Redução do tempo de carregamento para 0.9s e integração direta com o time de vendas via WhatsApp.
-            </p>
-          </div>
-          <div class="mt-6 pt-6 border-t border-white/[0.06] flex items-center justify-between">
-            <span class="text-[11px] font-mono text-brand-muted">Arquitetura UI/UX & Código Puro</span>
-            <span class="text-xs font-mono text-brand-caribe group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">Ver Detalhes →</span>
-          </div>
-        </div>
-
-        <!-- Case 2: Modelo Advocacia & Direito Corporativo -->
-        <div class="bento-card group p-8 flex flex-col justify-between">
-          <div>
-            <div class="aspect-video w-full rounded-xl bg-neutral-900 border border-white/10 overflow-hidden relative mb-6">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
-              <div class="absolute top-4 left-4 z-20 flex gap-2">
-                <span class="text-[10px] font-mono uppercase bg-white/10 text-white/90 backdrop-blur-md px-2.5 py-1 rounded-full">Direito Empresarial</span>
-                <span class="text-[10px] font-mono uppercase bg-brand-forest/60 text-brand-caribe border border-brand-forest px-2.5 py-1 rounded-full">Editorial Jurídico</span>
-              </div>
-              <div class="w-full h-full flex items-center justify-center text-brand-muted/40 font-mono text-sm group-hover:scale-105 transition-transform duration-500">
-                [ Layout Advocacia de Alto Valor ]
-              </div>
-            </div>
-            <div class="flex items-baseline justify-between mb-2">
-              <h3 class="text-2xl font-medium text-white">Boutique Jurídica & Compliance</h3>
-              <span class="text-xs font-mono text-brand-caribe">Status Institucional</span>
-            </div>
-            <p class="text-xs text-brand-muted font-light leading-relaxed">
-              Comunicação sóbria em tipografia com serifa clássica, eliminando distrações e valorizando as áreas de atuação para clientes com honorários superiores a cinco dígitos.
-            </p>
-          </div>
-          <div class="mt-6 pt-6 border-t border-white/[0.06] flex items-center justify-between">
-            <span class="text-[11px] font-mono text-brand-muted">Design Conforme Provimento OAB</span>
-            <span class="text-xs font-mono text-brand-caribe group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">Ver Detalhes →</span>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       SOBRE A EMPRESA & O ESTRATEGISTA
-       ============================================== -->
-  <section class="py-24 relative z-10 border-t border-white/[0.06] bg-[#070707]">
-    <div class="max-w-5xl mx-auto px-6">
-      
-      <div class="bento-card p-8 sm:p-12 relative overflow-hidden">
-        <div class="ambient-orb w-96 h-96 bg-brand-forest/20 -top-20 -right-20"></div>
-
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
-          
-          <div class="md:col-span-4 text-center md:text-left">
-            <div class="w-28 h-28 mx-auto md:mx-0 rounded-2xl bg-neutral-900 border border-brand-caribe/30 p-1 mb-4 flex items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(0,196,106,0.15)]">
-              <span class="text-2xl font-bold font-mono text-brand-caribe">SA</span>
-            </div>
-            <h3 class="text-xl font-medium text-white">Sarmento Ads</h3>
-            <p class="text-xs font-mono text-brand-caribe mt-0.5">Estúdio Técnico & Gestão de Performance</p>
-            <div class="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-[11px] font-mono text-white/70">
-              <span class="w-1.5 h-1.5 rounded-full bg-brand-caribe animate-pulse"></span> Rio Grande do Sul — Brasil
-            </div>
-          </div>
-
-          <div class="md:col-span-8 space-y-4 text-xs sm:text-sm text-brand-muted font-light leading-relaxed border-t md:border-t-0 md:border-l border-white/[0.08] pt-6 md:pt-0 md:pl-8">
-            <p>
-              A Sarmento Ads nasceu para preencher a lacuna entre dois extremos do mercado: as agências tradicionais que entregam sites lentos em WordPress com excesso de plugins, e os programadores que constroem sistemas técnicos sem qualquer compreensão de copywriting ou psicologia de vendas.
-            </p>
-            <p>
-              Tratamos o código da sua página com rigor de engenharia de software e a redação com princípios práticos de resposta direta. Cada linha de código visa uma métrica simples: aumentar a taxa de conversão do seu tráfego qualificado.
-            </p>
-            <div class="pt-2 flex flex-wrap gap-4 text-xs font-mono text-white/90">
-              <div class="flex items-center gap-2">
-                <span class="text-brand-caribe">✓</span> Atendimento Técnico Direto
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-brand-caribe">✓</span> Sem Terceirização Oculta
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-brand-caribe">✓</span> Compromisso com Prazos Rigorosos
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       INVESTIMENTO & TRANSPARÊNCIA TÉCNICA
-       ============================================== -->
-  <section id="investimento" class="py-28 relative z-10 border-t border-white/[0.06]">
-    <div class="max-w-4xl mx-auto px-6">
-      
-      <div class="text-center max-w-xl mx-auto mb-16">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Transparência Comercial</span>
-        <h2 class="text-3xl sm:text-5xl font-light text-white mt-3">
-          Investimento direto. <br>
-          <span class="font-serif italic text-brand-caribe">Sem custos ocultos.</span>
-        </h2>
-        <p class="text-xs sm:text-sm text-brand-muted mt-3 font-light">
-          Um modelo estruturado para que você não precise se preocupar com aspectos técnicos, hospedagem instável ou lentidão de servidores.
-        </p>
-      </div>
-
-      <!-- Card Principal de Oferta -->
-      <div class="bento-card p-8 sm:p-12 border-brand-caribe/30 relative">
-        <div class="absolute top-0 right-0 px-6 py-2 bg-brand-forest/60 border-b border-l border-brand-forest/80 rounded-bl-2xl text-[10px] font-mono uppercase tracking-widest text-brand-caribe font-medium">
-          Sprint Semanal Limitado
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
-          <div class="lg:col-span-7 space-y-6">
-            <div>
-              <span class="text-xs font-mono uppercase text-brand-muted tracking-wider">Escopo Completo da Entrega</span>
-              <h3 class="text-2xl font-medium text-white mt-1">Landing Page de Alta Conversão</h3>
-            </div>
-
-            <ul class="space-y-3 text-xs sm:text-sm text-gray-300 font-light">
-              <li class="flex items-start gap-2.5">
-                <span class="text-brand-caribe font-bold">✓</span>
-                <span>Direção de Arte e UI/UX Exclusivos (Sem templates prontos)</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="text-brand-caribe font-bold">✓</span>
-                <span>Copywriting persuasivo orientado a tomadores de decisão</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="text-brand-caribe font-bold">✓</span>
-                <span>Desenvolvimento com tecnologia moderna e tempo de abertura instantâneo</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="text-brand-caribe font-bold">✓</span>
-                <span>Configuração de pixels de rastreamento (Meta & Google Tag Manager)</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="text-brand-caribe font-bold">✓</span>
-                <span>Otimização para dispositivos móveis com foco na zona do polegar</span>
-              </li>
-            </ul>
-
-            <!-- Módulo de Manutenção e Gestão Técnica -->
-            <div class="p-4 rounded-xl bg-black/50 border border-white/[0.08] text-xs font-light space-y-1.5">
-              <div class="flex items-center justify-between text-white font-medium">
-                <span class="flex items-center gap-1.5">
-                  <span class="w-2 h-2 rounded-full bg-brand-caribe"></span> Gestão Técnica & Infraestrutura:
-                </span>
-                <span class="font-mono text-brand-caribe font-bold">R$ 99,90 / mês</span>
-              </div>
-              <p class="text-brand-muted text-[11px] leading-relaxed pt-1">
-                Inclui hospedagem em nuvem de alta performance com certificado SSL vitalício, monitoramento de estabilidade 24/7, backups automatizados e suporte contínuo para alterações de contato e texto.
-              </p>
-            </div>
-          </div>
-
-          <!-- Coluna de Preço & CTA -->
-          <div class="lg:col-span-5 flex flex-col justify-center items-center lg:items-end text-center lg:text-right border-t lg:border-t-0 lg:border-l border-white/[0.08] pt-8 lg:pt-0 lg:pl-8">
-            <span class="text-xs font-mono uppercase text-brand-muted tracking-wider">DESENVOLVIMENTO COMPLETO</span>
-            <div class="my-3">
-              <span class="text-xs text-brand-muted font-mono align-baseline">a partir de R$</span>
-              <span class="text-5xl sm:text-6xl font-light text-white tracking-tight">997</span>
-              <span class="text-xs font-mono text-brand-muted block mt-1">à vista ou em até 12x no cartão</span>
-            </div>
-
-            <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20reservar%20uma%20vaga%20para%20desenvolvimento%20da%20minha%20landing%20page." 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="btn-shine w-full mt-4 px-8 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-full transition-all duration-300 text-center shadow-[0_10px_30px_rgba(0,196,106,0.3)]">
-              Reservar Minha Vaga
-            </a>
-            
-            <span class="text-[10px] font-mono text-brand-muted mt-3 block">
-              Início imediato mediante validação de briefing.
-            </span>
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- Garantia Blindada de 7 Dias -->
-      <div class="mt-8 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-center gap-5">
-        <div class="w-12 h-12 rounded-xl bg-brand-forest/30 border border-brand-forest/60 flex items-center justify-center text-brand-caribe shrink-0 font-mono text-lg font-bold">
-          7D
-        </div>
-        <div>
-          <h4 class="text-sm font-medium text-white">Garantia Incondicional de Satisfação</h4>
-          <p class="text-xs text-brand-muted font-light mt-1 leading-relaxed">
-            Após a entrega da primeira prévia da sua landing page, se você considerar que a qualidade visual e a arquitetura não atendem ao nível do seu negócio, devolvemos 100% do seu investimento sem questionamentos.
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       PERGUNTAS FREQUENTES (FAQ ACCORDION)
-       ============================================== -->
-  <section id="faq" class="py-24 relative z-10 border-t border-white/[0.06] bg-[#070707]">
-    <div class="max-w-4xl mx-auto px-6">
-      
-      <div class="text-center max-w-xl mx-auto mb-16">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Tire Suas Dúvidas</span>
-        <h2 class="text-3xl sm:text-4xl font-light text-white mt-2">
-          Respostas claras e factuais.
-        </h2>
-      </div>
-
-      <div class="space-y-4">
-        
-        <!-- Pergunta 1 -->
-        <div class="bento-card p-6 cursor-pointer faq-item" onclick="toggleFaq(this)">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm sm:text-base font-medium text-white">Qual é o prazo médio de entrega da página?</h3>
-            <span class="faq-icon text-brand-caribe text-lg font-mono transition-transform duration-300">+</span>
-          </div>
-          <div class="faq-content hidden mt-4 pt-4 border-t border-white/[0.06] text-xs text-brand-muted font-light leading-relaxed">
-            O prazo padrão é de 5 a 7 dias úteis após o alinhamento das informações de negócio no briefing inicial.
-          </div>
-        </div>
-
-        <!-- Pergunta 2 -->
-        <div class="bento-card p-6 cursor-pointer faq-item" onclick="toggleFaq(this)">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm sm:text-base font-medium text-white">Por que o site é desenvolvido em código em vez de WordPress?</h3>
-            <span class="faq-icon text-brand-caribe text-lg font-mono transition-transform duration-300">+</span>
-          </div>
-          <div class="faq-content hidden mt-4 pt-4 border-t border-white/[0.06] text-xs text-brand-muted font-light leading-relaxed">
-            Sites em WordPress costumam acumular dezenas de plugins pesados, vulnerabilidades frequentes de segurança e tempo de abertura superior a 4 segundos no celular. O código sob medida carrega em menos de 1 segundo, é imune a invasões comuns e garante pontuação máxima nos testes do Google.
-          </div>
-        </div>
-
-        <!-- Pergunta 3 -->
-        <div class="bento-card p-6 cursor-pointer faq-item" onclick="toggleFaq(this)">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm sm:text-base font-medium text-white">O que acontece se eu precisar trocar textos ou telefones no futuro?</h3>
-            <span class="faq-icon text-brand-caribe text-lg font-mono transition-transform duration-300">+</span>
-          </div>
-          <div class="faq-content hidden mt-4 pt-4 border-t border-white/[0.06] text-xs text-brand-muted font-light leading-relaxed">
-            O serviço de gestão contínua (R$ 99,90/mês) cobre suporte direto para atualizações periódicas de contatos, horários, fotos e alterações pontuais de texto sem custos adicionais de mão de obra.
-          </div>
-        </div>
-
-        <!-- Pergunta 4 -->
-        <div class="bento-card p-6 cursor-pointer faq-item" onclick="toggleFaq(this)">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm sm:text-base font-medium text-white">Eu não invisto em tráfego pago hoje. Essa estrutura serve para mim?</h3>
-            <span class="faq-icon text-brand-caribe text-lg font-mono transition-transform duration-300">+</span>
-          </div>
-          <div class="faq-content hidden mt-4 pt-4 border-t border-white/[0.06] text-xs text-brand-muted font-light leading-relaxed">
-            Com certeza. Se você fecha contratos por indicação ou prospecção ativa, o cliente invariavelmente pesquisa o seu nome no Google antes de assinar o contrato. Uma presença com acabamento premium garante que você não perca negócios por transmitir amadorismo visual.
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       CALL TO ACTION SECUNDÁRIO / FINAL
-       ============================================== -->
-  <section class="py-28 relative z-10 border-t border-white/[0.06] overflow-hidden">
-    <div class="ambient-orb w-[500px] h-[500px] bg-brand-caribe/10 bottom-0 left-1/2 -translate-x-1/2"></div>
-
-    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
-      
-      <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Decisão Estratégica</span>
-      
-      <h2 class="text-3xl sm:text-5xl md:text-6xl font-light text-white mt-4 leading-tight">
-        Sua empresa não merece uma página <br>
-        <span class="font-serif italic text-brand-caribe">que pareça amadora.</span>
-      </h2>
-
-      <p class="mt-6 text-sm sm:text-base text-brand-muted max-w-xl mx-auto font-light leading-relaxed">
-        Reserve o seu diagnóstico e tenha um canal de vendas digital desenhado com padrão visual contemporâneo e engenharia técnica de resposta imediata.
-      </p>
-
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="#contato" 
-           class="btn-shine w-full sm:w-auto px-10 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-full transition-all duration-300 shadow-[0_10px_30px_rgba(0,196,106,0.3)]">
-          Iniciar Meu Projeto
-        </a>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       SESSÃO DO FORMULÁRIO DINÂMICO (TURBINE SEU NEGÓCIO LOCAL!)
-       ============================================== -->
-  <section id="contato" class="py-24 relative z-10 border-t border-white/[0.06] bg-[#080808]">
-    <div class="max-w-xl mx-auto px-6">
-      
-      <div class="text-center mb-8">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Diagnóstico Estratégico</span>
-        <h2 class="text-3xl font-light text-white mt-2">
-          Turbine Seu Negócio Local!
-        </h2>
-        <p class="text-xs text-brand-muted mt-2 font-light">
-          Preencha os passos abaixo para receber uma análise completa e sob medida da sua operação.
-        </p>
-
-        <!-- Indicador visual das etapas -->
-        <div class="flex justify-center items-center gap-2 mt-6">
-          <div id="dot-1" class="h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300"></div>
-          <div id="dot-2" class="h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300"></div>
-          <div id="dot-3" class="h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300"></div>
-        </div>
-      </div>
-
-      <div class="bento-card p-8 border-brand-caribe/30">
-        <form id="form-crm" onsubmit="enviarParaCRM(event)">
-          
-          <!-- ETAPA 1: Dados Pessoais de Contato -->
-          <div id="etapa-1" class="space-y-4">
-            <div class="text-xs font-mono text-brand-caribe uppercase tracking-wider mb-2">Etapa 1 de 3 — Seus Dados</div>
-            
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nome Completo *</label>
-              <input type="text" id="campo-nome" required placeholder="Ex: Rodrigo Sarmento" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">WhatsApp *</label>
-                <input type="tel" id="campo-whatsapp" required placeholder="(51) 99999-9999" 
-                       class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-              </div>
-
-              <div>
-                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">E-mail *</label>
-                <input type="email" id="campo-email" required placeholder="contato@empresa.com" 
-                       class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-              </div>
-            </div>
-
-            <button type="button" onclick="irParaEtapa(2)" 
-                    class="btn-shine w-full mt-6 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)] flex items-center justify-center gap-2">
-              <span>Avançar para o Negócio →</span>
-            </button>
-          </div>
-
-          <!-- ETAPA 2: Dados do Negócio e Presença Web -->
-          <div id="etapa-2" class="space-y-4 hidden">
-            <div class="text-xs font-mono text-brand-caribe uppercase tracking-wider mb-2">Etapa 2 de 3 — Seu Negócio</div>
-
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nome do Negócio *</label>
-              <input type="text" id="campo-nome-negocio" placeholder="Ex: Barbearia Vip / Clínica Viva" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-            </div>
-
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Segmento de Atuação *</label>
-              <select id="campo-segmento" 
-                      class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-                <option value="" disabled selected>Selecione seu nicho</option>
-                <option value="Restaurantes/Bares">Restaurantes / Bares</option>
-                <option value="Salão de Beleza/Estética">Salão de Beleza / Estética</option>
-                <option value="Lojas/Comércio">Lojas e Comércio Local</option>
-                <option value="Academias">Academias</option>
-                <option value="Clínicas">Clínicas Médicas / Odontológicas</option>
-                <option value="Autônomo/Prestador">Profissional Autônomo</option>
-                <option value="Construtora/Reforma">Construtora / Reformas</option>
-                <option value="Imobiliária">Imobiliária / Corretor</option>
-                <option value="Outros">Outros</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Já possui um site ativo?</label>
-              <select id="campo-possui-site" onchange="verificarSite(this.value)" 
-                      class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-                <option value="Não">Não possuo site</option>
-                <option value="Sim">Sim, já tenho site</option>
-              </select>
-            </div>
-
-            <div id="wrapper-site-url" class="hidden">
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Endereço (URL) do Site</label>
-              <input type="url" id="campo-site-url" placeholder="https://www.seusite.com.br" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-            </div>
-
-            <div class="flex gap-3 pt-2">
-              <button type="button" onclick="irParaEtapa(1)" 
-                      class="w-1/3 py-4 border border-white/10 hover:border-white/30 text-white/80 font-mono text-xs uppercase rounded-xl transition">
-                ← Voltar
-              </button>
-              <button type="button" onclick="irParaEtapa(3)" 
-                      class="btn-shine w-2/3 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)]">
-                Avançar →
-              </button>
-            </div>
-          </div>
-
-          <!-- ETAPA 3: Diagnóstico de Desafio & Envio Final -->
-          <div id="etapa-3" class="space-y-4 hidden">
-            <div class="text-xs font-mono text-brand-caribe uppercase tracking-wider mb-2">Etapa 3 de 3 — Seu Maior Desafio</div>
-                        <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Qual o seu maior desafio atual para atrair clientes online? *</label>
-              <select id="campo-desafio" required
-                      class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-                <option value="" disabled selected>Selecione o principal obstáculo</option>
-                <option value="Não aparece no Google">Não apareço no Google quando procuram meu serviço</option>
-                <option value="Site não gera contatos">Tenho presença online/site, mas não recebo mensagens de clientes</option>
-                <option value="Falta de credibilidade">Falta de credibilidade visual na internet</option>
-                <option value="Concorrente mais visível">Concorrentes aparecem mais e captam os clientes da minha região</option>
-                <option value="Não sabe por onde começar">Não sei por onde começar a estruturar meu tráfego e presença</option>
-                <option value="Outro">Outro obstáculo</option>
-              </select>
-            </div>
-
-            <div class="flex gap-3 pt-2">
-              <button type="button" onclick="irParaEtapa(2)" 
-                      class="w-1/3 py-4 border border-white/10 hover:border-white/30 text-white/80 font-mono text-xs uppercase rounded-xl transition">
-                ← Voltar
-              </button>
-              <button type="submit" id="btn-enviar-crm" 
-                      class="btn-shine w-2/3 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)] flex items-center justify-center gap-2">
-                <span>Finalizar Aplicação</span>
-              </button>
-            </div>
-
-            <p id="msg-sucesso" class="hidden text-center text-xs font-mono text-brand-caribe mt-2">
-              ✓ Diagnóstico enviado com sucesso! Redirecionando...
-            </p>
-          </div>
-
-        </form>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       RODAPÉ EDITORIAL
-       ============================================== -->
-  <footer class="py-12 relative z-10 border-t border-white/[0.06] bg-[#050505]">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-brand-muted font-mono">
-      <div class="flex items-center gap-3">
-        <span class="w-2 h-2 rounded-full bg-brand-caribe"></span>
-        <span class="text-white">SARMENTO ADS</span>
-        <span class="text-white/20">|</span>
-        <span>Engenharia UI/UX & Conversão</span>
-      </div>
-
-      <div>
-        © 2026 Sarmento Ads. Todos os direitos reservados.
-      </div>
+  <!-- Rodapé -->
+  <footer style="padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; font-size: 0.85rem; color: var(--text-muted);">
+    <div class="container">
+      <p>© 2026 Sarmento Ads. Todos os direitos reservados. Landing Pages de Alta Performance.</p>
     </div>
   </footer>
 
-  <!-- ==============================================
-       SCRIPTS DE EXPERIÊNCIA & FÍSICA 3D (TILT & SPOTLIGHT)
-       ============================================== -->
+  <!-- Modal do Formulário Multi-etapas -->
+  <div id="form-modal">
+    <div class="modal-box">
+      <button class="close-modal" onclick="closeFormModal()">&times;</button>
+      
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="form-progress"></div>
+      </div>
+
+      <!-- Etapa 1 -->
+      <div class="form-step active" id="step-1">
+        <h3 class="step-title">Vamos conhecer seu negócio</h3>
+        <p class="step-desc">Preencha as informações básicas para personalizarmos seu projeto.</p>
+        <div class="form-group">
+          <label for="lead-name">Seu Nome Completo</label>
+          <input type="text" id="lead-name" placeholder="Ex: Rodrigo Silva">
+        </div>
+        <div class="form-group">
+          <label for="lead-phone">WhatsApp para contato</label>
+          <input type="tel" id="lead-phone" placeholder="(11) 99999-9999" maxlength="15">
+        </div>
+        <div class="step-buttons">
+          <button class="btn-step btn-step-next" onclick="nextStep(2)">Avançar →</button>
+        </div>
+      </div>
+
+      <!-- Etapa 2 -->
+      <div class="form-step" id="step-2">
+        <h3 class="step-title">Sobre a sua empresa</h3>
+        <p class="step-desc">Entender seu modelo de vendas é essencial para estruturar a landing page.</p>
+        <div class="form-group">
+          <label for="lead-business">Nome da Empresa / Marca</label>
+          <input type="text" id="lead-business" placeholder="Ex: Silva Odontologia">
+        </div>
+        <div class="form-group">
+          <label for="lead-segment">Segmento de Atuação</label>
+          <input type="text" id="lead-segment" placeholder="Ex: Saúde, Imobiliário, Consultoria...">
+        </div>
+        <div class="step-buttons">
+          <button class="btn-step btn-step-prev" onclick="prevStep(1)">← Voltar</button>
+          <button class="btn-step btn-step-next" onclick="nextStep(3)">Avançar →</button>
+        </div>
+      </div>
+
+      <!-- Etapa 3 -->
+      <div class="form-step" id="step-3">
+        <h3 class="step-title">Presença Atual</h3>
+        <p class="step-desc">Você já possui algum site ou página no ar atualmente?</p>
+        <div class="form-group">
+          <label for="lead-has-site">Já tem página ou anúncio ativo?</label>
+          <select id="lead-has-site" onchange="toggleSiteUrlInput()">
+            <option value="não">Não tenho site ainda</option>
+            <option value="sim">Sim, já tenho um site atual</option>
+          </select>
+        </div>
+        <div class="form-group" id="site-url-group" style="display: none;">
+          <label for="lead-site-url">Qual o link da sua página atual?</label>
+          <input type="url" id="lead-site-url" placeholder="https://seusite.com.br">
+        </div>
+        <div class="step-buttons">
+          <button class="btn-step btn-step-prev" onclick="prevStep(2)">← Voltar</button>
+          <button class="btn-step btn-step-next" onclick="nextStep(4)">Avançar →</button>
+        </div>
+      </div>
+
+      <!-- Etapa 4 -->
+      <div class="form-step" id="step-4">
+        <h3 class="step-title">Alinhamento de Escopo</h3>
+        <p class="step-desc">Nossa condição é de R$ 600 de implementação única + R$ 97,90/mês para manutenção, suporte e hospedagem dedicada.</p>
+        <div class="form-group">
+          <label for="lead-budget">Esse formato de investimento faz sentido para o seu momento?</label>
+          <select id="lead-budget">
+            <option value="Sim, perfeitamente">Sim, perfeitamente dentro do meu plano</option>
+            <option value="Preciso entender mais detalhes">Quero entender melhor os detalhes com o Thales</option>
+          </select>
+        </div>
+        <div class="step-buttons">
+          <button class="btn-step btn-step-prev" onclick="prevStep(3)">← Voltar</button>
+          <button class="btn-step btn-step-next" onclick="submitLead()">Finalizar Solicitação ↗</button>
+        </div>
+      </div>
+
+      <!-- Etapa 5 (Confirmação com botão do Thales) -->
+      <div class="form-step" id="step-5" style="text-align: center;">
+        <div style="font-size: 3rem; margin-bottom: 16px;">🎉</div>
+        <h3 class="step-title">Solicitação Registrada!</h3>
+        <p class="step-desc">Seus dados já foram encaminhados. Clique no botão abaixo para iniciar a conversa diretamente no WhatsApp com Thales.</p>
+        <a id="whatsapp-direct-link" href="#" target="_blank" class="btn-primary" style="display: inline-block; width: 100%; text-decoration: none; margin-top: 12px;">
+          Falar com Thales no WhatsApp Agora ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Painel CRM Kanban Oculto (?admin) -->
+  <div id="crm-panel">
+    <div class="crm-head">
+      <div>
+        <h2 style="font-size: 1.5rem; font-weight: 800;">Painel CRM Sarmento Ads</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Gerenciamento de Leads e Solicitações</p>
+      </div>
+      <button onclick="closeCRM()" style="padding: 8px 16px; border-radius: 8px; background: #ef4444; color: #fff; border: none; cursor: pointer; font-weight: 600;">Fechar CRM</button>
+    </div>
+
+    <div class="crm-board">
+      <div class="crm-col">
+        <h4>Novos Leads (<span id="count-novos">0</span>)</h4>
+        <div id="col-novos"></div>
+      </div>
+      <div class="crm-col">
+        <h4>Em Contato (<span id="count-contato">0</span>)</h4>
+        <div id="col-contato"></div>
+      </div>
+      <div class="crm-col">
+        <h4>Fechados (<span id="count-fechados">0</span>)</h4>
+        <div id="col-fechados"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS DE ALTA PERFORMANCE -->
   <script>
-    // 1. Cursor Spotlight Dinâmico
-    const cursorLight = document.getElementById('cursor-light');
+    // 1. Ambient Glow Tracker
+    const cursorGlow = document.getElementById('cursor-glow');
     window.addEventListener('mousemove', (e) => {
-      cursorLight.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      cursorGlow.style.left = e.clientX + 'px';
+      cursorGlow.style.top = e.clientY + 'px';
     });
 
-    // 2. Efeito Tilt 3D e Brilho Focal nos Bento Cards
-    const cards = document.querySelectorAll('.bento-card');
-    cards.forEach(card => {
+    // 2. Scroll Reveal com Fade-Up Blur
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(el => revealObserver.observe(el));
+
+    // 3. Contadores Dinâmicos de Números (Tickers)
+    const tickers = document.querySelectorAll('.ticker');
+    let tickersStarted = false;
+
+    const tickerObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !tickersStarted) {
+          tickersStarted = true;
+          tickers.forEach(ticker => {
+            const target = parseFloat(ticker.getAttribute('data-target'));
+            const decimals = parseInt(ticker.getAttribute('data-decimals') || 0);
+            const duration = 1400; // ms
+            const startTime = performance.now();
+
+            function updateTicker(now) {
+              const elapsed = now - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              // Easing out cubic
+              const easeProgress = 1 - Math.pow(1 - progress, 3);
+              const currentValue = (easeProgress * target).toFixed(decimals);
+              ticker.textContent = currentValue;
+
+              if (progress < 1) {
+                requestAnimationFrame(updateTicker);
+              } else {
+                ticker.textContent = target.toFixed(decimals);
+              }
+            }
+            requestAnimationFrame(updateTicker);
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const metricsBar = document.querySelector('.metrics-bar');
+    if (metricsBar) tickerObserver.observe(metricsBar);
+
+    // 4. Efeito Tilt 3D nos Cards
+    const tiltCards = document.querySelectorAll('.tilt-card, .price-box');
+    tiltCards.forEach(card => {
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -4;
-        const rotateY = ((x - centerX) / centerX) * 4;
+        const rotateX = ((y - centerY) / centerY) * -7;
+        const rotateY = ((x - centerX) / centerX) * 7;
 
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
       });
 
       card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
       });
     });
 
-    // 3. Acordeom Interativo de FAQ
-    function toggleFaq(item) {
-      const content = item.querySelector('.faq-content');
-      const icon = item.querySelector('.faq-icon');
-      
-      const isOpen = !content.classList.contains('hidden');
-      
-      document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
-      document.querySelectorAll('.faq-icon').forEach(i => {
-        i.textContent = '+';
-        i.style.transform = 'rotate(0deg)';
+    // 5. Máscara de Telefone Automática
+    const phoneInput = document.getElementById('lead-phone');
+    if (phoneInput) {
+      phoneInput.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.slice(0, 11);
+        if (value.length > 6) {
+          e.target.value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
+        } else if (value.length > 2) {
+          e.target.value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+        } else if (value.length > 0) {
+          e.target.value = `(${value}`;
+        }
       });
-
-      if (!isOpen) {
-        content.classList.remove('hidden');
-        icon.textContent = '×';
-        icon.style.transform = 'rotate(90deg)';
-      }
-    }
-  </script>
-
-  <!-- ==============================================
-       LÓGICA DO FORMULÁRIO DINÂMICO & SUPABASE CRM
-       ============================================== -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    // Navegação em Etapas
-    function irParaEtapa(etapa) {
-      if (etapa === 2) {
-        const nome = document.getElementById('campo-nome').value.trim();
-        const zap = document.getElementById('campo-whatsapp').value.trim();
-        const email = document.getElementById('campo-email').value.trim();
-        if (!nome || !zap || !email) {
-          alert("Por favor, preencha os dados de contato obrigatórios.");
-          return;
-        }
-      }
-
-      if (etapa === 3) {
-        const negocio = document.getElementById('campo-nome-negocio').value.trim();
-        const segmento = document.getElementById('campo-segmento').value;
-        if (!negocio || !segmento) {
-          alert("Por favor, preencha o nome do negócio e selecione o segmento.");
-          return;
-        }
-      }
-
-      // Alternar visualização dos blocos
-      document.getElementById('etapa-1').classList.toggle('hidden', etapa !== 1);
-      document.getElementById('etapa-2').classList.toggle('hidden', etapa !== 2);
-      document.getElementById('etapa-3').classList.toggle('hidden', etapa !== 3);
-
-      // Atualizar indicadores visuais
-      const d1 = document.getElementById('dot-1');
-      const d2 = document.getElementById('dot-2');
-      const d3 = document.getElementById('dot-3');
-
-      d1.className = etapa >= 1 ? 'h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300' : 'h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300';
-      d2.className = etapa >= 2 ? 'h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300' : 'h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300';
-      d3.className = etapa === 3 ? 'h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300' : 'h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300';
     }
 
-    // Exibição condicional do campo de URL do site
-    function verificarSite(valor) {
-      const wrapper = document.getElementById('wrapper-site-url');
-      if (valor === 'Sim') {
-        wrapper.classList.remove('hidden');
-      } else {
-        wrapper.classList.add('hidden');
-        document.getElementById('campo-site-url').value = '';
-      }
+    function toggleSiteUrlInput() {
+      const select = document.getElementById('lead-has-site');
+      const group = document.getElementById('site-url-group');
+      group.style.display = select.value === 'sim' ? 'block' : 'none';
     }
 
-    // Envio para o Supabase
-    const CRM_URL = "https://yqiunyrpkljtgenjeyev.supabase.co";
-    const CRM_KEY = "sb_publishable_6YnqMemgF07N1YwoTxVCkg_utecUki8";
-    const supabaseClient = supabase.createClient(CRM_URL, CRM_KEY);
+    // 6. Multi-Step Form Logic
+    function openFormModal() {
+      document.getElementById('form-modal').style.display = 'flex';
+      nextStep(1);
+    }
+    function closeFormModal() {
+      document.getElementById('form-modal').style.display = 'none';
+    }
 
-    async function enviarParaCRM(e) {
-      e.preventDefault();
-      const btn = document.getElementById('btn-enviar-crm');
-      btn.innerText = "Registrando Oportunidade...";
-      btn.disabled = true;
+    function nextStep(stepNumber) {
+      document.querySelectorAll('.form-step').forEach(step => step.classList.remove('active'));
+      const activeStep = document.getElementById(`step-${stepNumber}`);
+      if (activeStep) activeStep.classList.add('active');
+
+      const progressFill = document.getElementById('form-progress');
+      if (progressFill) progressFill.style.width = `${stepNumber * 20}%`;
+    }
+
+    function prevStep(stepNumber) {
+      nextStep(stepNumber);
+    }
+
+    function submitLead() {
+      const name = document.getElementById('lead-name').value.trim() || 'Não informado';
+      const phone = document.getElementById('lead-phone').value.trim() || 'Não informado';
+      const business = document.getElementById('lead-business').value.trim() || 'Não informado';
+      const segment = document.getElementById('lead-segment').value.trim() || 'Não informado';
+      const hasSite = document.getElementById('lead-has-site').value;
+      const siteUrl = document.getElementById('lead-site-url').value.trim() || 'Não possui';
+      const budget = document.getElementById('lead-budget').value;
 
       const leadData = {
-        nome: document.getElementById('campo-nome').value.trim(),
-        whatsapp: document.getElementById('campo-whatsapp').value.trim(),
-        email: document.getElementById('campo-email').value.trim(),
-        nome_negocio: document.getElementById('campo-nome-negocio').value.trim(),
-        segmento: document.getElementById('campo-segmento').value,
-        possui_site: document.getElementById('campo-possui-site').value,
-        site_url: document.getElementById('campo-site-url').value.trim() || null,
-        desafio: document.getElementById('campo-desafio').value,
-        status: 'novo'
+        id: Date.now(),
+        date: new Date().toLocaleDateString('pt-BR'),
+        name,
+        phone,
+        business,
+        segment,
+        hasSite,
+        siteUrl,
+        budget,
+        status: 'novos'
       };
 
-      const { error } = await supabaseClient.from('leads').insert([leadData]);
+      // Salva no LocalStorage para o CRM
+      const leads = JSON.parse(localStorage.getItem('sarmento_leads') || '[]');
+      leads.push(leadData);
+      localStorage.setItem('sarmento_leads', JSON.stringify(leads));
 
-      if (error) {
-        alert("Ocorreu um erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.");
-        btn.innerText = "Finalizar Aplicação";
-        btn.disabled = false;
-        return;
-      }
+      // Monta Link Direto para WhatsApp do Thales
+      const msg = encodeURIComponent(`Olá Thales! Acabei de solicitar minha landing page no site.\n\nNome: ${name}\nEmpresa: ${business}\nSegmento: ${segment}\nTelefone: ${phone}\nSite Atual: ${siteUrl}\nInvestimento: ${budget}`);
+      const whatsappBtn = document.getElementById('whatsapp-direct-link');
+      whatsappBtn.href = `https://wa.me/5584994276706?text=${msg}`;
 
-      document.getElementById('msg-sucesso').classList.remove('hidden');
-      
-      setTimeout(() => {
-        const zapMsg = encodeURIComponent(`Olá, sou ${leadData.nome} da ${leadData.nome_negocio}. Preenchi o formulário de diagnóstico da Sarmento Ads para o segmento de ${leadData.segmento}.`);
-        window.location.href = `https://wa.me/5551980211154?text=${zapMsg}`;
-      }, 1200);
+      nextStep(5);
+      renderCRM();
     }
+
+    // 7. CRM Kanban Logic (?admin)
+    function checkAdminURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('admin')) {
+        const pass = prompt('Acesso Restrito ao CRM Sarmento Ads. Digite a senha:');
+        if (pass === 'sarmento123') {
+          document.getElementById('crm-panel').style.display = 'flex';
+          renderCRM();
+        } else if (pass !== null) {
+          alert('Senha incorreta.');
+        }
+      }
+    }
+
+    function closeCRM() {
+      document.getElementById('crm-panel').style.display = 'none';
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    function renderCRM() {
+      const leads = JSON.parse(localStorage.getItem('sarmento_leads') || '[]');
+      const colNovos = document.getElementById('col-novos');
+      const colContato = document.getElementById('col-contato');
+      const colFechados = document.getElementById('col-fechados');
+
+      if (!colNovos) return;
+
+      colNovos.innerHTML = '';
+      colContato.innerHTML = '';
+      colFechados.innerHTML = '';
+
+      let countN = 0, countC = 0, countF = 0;
+
+      leads.forEach(lead => {
+        const card = document.createElement('div');
+        card.className = 'crm-card';
+        card.innerHTML = `
+          <b>${lead.name}</b>
+          <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 6px;">${lead.business} • ${lead.segment}</p>
+          <p style="font-size: 0.8rem; margin-bottom: 6px;">📱 ${lead.phone}</p>
+          <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 8px;">Orçamento: ${lead.budget}</p>
+          <div style="display: flex; gap: 6px;">
+            <button onclick="changeLeadStatus(${lead.id}, 'contato')" style="font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; border: none; cursor: pointer; background: #6366f1; color: #fff;">Contato</button>
+            <button onclick="changeLeadStatus(${lead.id}, 'fechados')" style="font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; border: none; cursor: pointer; background: #10b981; color: #fff;">Fechado</button>
+          </div>
+        `;
+
+        if (lead.status === 'novos') {
+          colNovos.appendChild(card);
+          countN++;
+        } else if (lead.status === 'contato') {
+          colContato.appendChild(card);
+          countC++;
+        } else {
+          colFechados.appendChild(card);
+          countF++;
+        }
+      });
+
+      document.getElementById('count-novos').textContent = countN;
+      document.getElementById('count-contato').textContent = countC;
+      document.getElementById('count-fechados').textContent = countF;
+    }
+
+    function changeLeadStatus(id, newStatus) {
+      let leads = JSON.parse(localStorage.getItem('sarmento_leads') || '[]');
+      leads = leads.map(lead => lead.id === id ? { ...lead, status: newStatus } : lead);
+      localStorage.setItem('sarmento_leads', JSON.stringify(leads));
+      renderCRM();
+    }
+
+    window.addEventListener('DOMContentLoaded', checkAdminURL);
   </script>
 </body>
 </html>
