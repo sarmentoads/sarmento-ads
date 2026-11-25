@@ -1,1166 +1,1325 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sarmento Ads — Engenharia de UI/UX & Posicionamento Digital</title>
-  
-  <!-- Tipografia Editorial & High-Tech -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              caribe: '#00C46A',
-              caribeGlow: 'rgba(0, 196, 106, 0.35)',
-              forest: '#1E4A37',
-              dark: '#080808',
-              surface: '#0f0f0f',
-              card: 'rgba(18, 18, 18, 0.75)',
-              border: 'rgba(255, 255, 255, 0.08)',
-              borderHover: 'rgba(0, 196, 106, 0.45)',
-              muted: '#8A8A8A',
-            }
-          },
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            serif: ['Instrument Serif', 'serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sarmento Ads</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Sarmento Ads — Engenharia de UI/UX, landing pages de alta conversão e tráfego pago para negócios que vendem competência técnica.">
+<meta name="theme-color" content="#06100C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-10 -10 185 168'%3E%3Cpath fill='%2300C46A' fill-rule='evenodd' d='M96 0H165V25L107 62H165V86L71 148H0V124L57 86H0V62ZM40 62L97 25H126L68 62ZM39 124L97 86H126L68 124Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      background-color: #060606;
-      color: #ECECEC;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      overflow-x: hidden;
-      selection-background-color: #00C46A;
-      selection-color: #000;
-    }
+<style>
+/* Layout: seções alternando "noite" (verde-escuro) e "papel" (menta clara), tipografia expandida como o logo, motion orquestrado por scroll */
+:root{
+  --ink:#06100C;          /* fundo noite */
+  --forest:#0D241A;       /* superfícies escuras */
+  --line:rgba(208,240,222,.10);
+  --green:#00C46A;        /* verde da marca */
+  --green-hi:#2BF08E;
+  --paper:#E8F0EA;        /* seções claras */
+  --paper-ink:#08160F;
+  --paper-muted:#4C6357;
+  --fg:#EAF3EE;
+  --muted:#8EA698;
+  --f-display:"Archivo", "Arial Black", system-ui, sans-serif;
+  --f-body:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-serif:"Instrument Serif", Georgia, "Times New Roman", serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --gutter:max(20px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(20px, env(safe-area-inset-right, 0px));
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--green);color:var(--paper-ink)}
+a{color:inherit;text-decoration:none}
+img,svg{max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1320px;margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter-r)}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.serif{font-family:var(--f-serif);font-style:italic;font-weight:400;font-stretch:100%;letter-spacing:0}
+.green{color:var(--green)}
+h1,h2,h3{margin:0;font-family:var(--f-display);font-stretch:125%;text-wrap:balance}
+p{margin:0}
 
-    /* Textura de Granulação de Filme (Film Noise) */
-    .film-grain {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 999;
-      opacity: 0.035;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
+/* split text */
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.06em;margin-bottom:-.06em}
+.wi{display:inline-block;will-change:transform}
 
-    /* Luz de Cursor Dinâmica (Spotlight de Ambiente) */
-    #cursor-light {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 600px;
-      height: 600px;
-      margin-top: -300px;
-      margin-left: -300px;
-      background: radial-gradient(circle, rgba(0, 196, 106, 0.09) 0%, rgba(41, 105, 78, 0.03) 40%, transparent 70%);
-      pointer-events: none;
-      z-index: 2;
-      border-radius: 50%;
-      transition: transform 0.15s ease-out;
-      will-change: transform;
-    }
+/* grão de filme */
+.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:90;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-2%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-    /* Orbes de Luz Animadas de Fundo */
-    .ambient-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(120px);
-      pointer-events: none;
-      animation: floatOrb 18s ease-in-out infinite alternate;
-    }
+/* ============ PRELOADER ============ */
+.preloader{position:fixed;inset:0;z-index:200;background:var(--ink);display:grid;place-items:center;
+  animation:plFallback .01s 4.5s forwards}
+@keyframes plFallback{to{visibility:hidden;opacity:0}}
+.pl-inner{display:grid;justify-items:center;gap:22px}
+.pl-mark{width:86px;height:auto}
+.pl-mark path{fill:transparent;stroke:var(--green);stroke-width:2;stroke-dasharray:900;stroke-dashoffset:900}
+.pl-count{font-family:var(--f-display);font-stretch:125%;font-weight:800;font-size:clamp(3rem,10vw,6rem);line-height:1;color:var(--fg);font-variant-numeric:tabular-nums}
+.pl-label{color:var(--muted)}
 
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) scale(1); opacity: 0.25; }
-      50% { transform: translate(60px, 40px) scale(1.15); opacity: 0.45; }
-      100% { transform: translate(-40px, 80px) scale(0.9); opacity: 0.2; }
-    }
+/* ============ CURSOR ============ */
+.cursor,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:150;border-radius:50%;display:none}
+.cursor{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--green)}
+.cursor-ring{width:44px;height:44px;margin:-22px 0 0 -22px;border:1px solid rgba(0,196,106,.55);display:none;place-items:center;
+  transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease),background .35s,border-color .35s}
+.cursor-ring span{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper-ink);opacity:0;transition:opacity .2s}
+.cursor-ring.is-label{width:92px;height:92px;margin:-46px 0 0 -46px;background:var(--green);border-color:var(--green)}
+.cursor-ring.is-label span{opacity:1}
+.cursor-ring.is-hover{width:64px;height:64px;margin:-32px 0 0 -32px;border-color:var(--green);background:rgba(0,196,106,.08)}
+@media (pointer:fine){.cursor{display:block}.cursor-ring{display:grid}}
 
-    /* Cartão Bento com Efeito Vidro e Tilt 3D */
-    .bento-card {
-      position: relative;
-      background: rgba(14, 14, 14, 0.65);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 24px;
-      overflow: hidden;
-      transform-style: preserve-3d;
-      transition: border-color 0.4s ease, transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.4s ease;
-    }
+/* ============ NAV ============ */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:61;background:var(--ink)}
+.nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:60;transition:transform .5s var(--ease)}
+.nav.is-hidden{transform:translateY(-110%)}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;height:76px;
+  background:rgba(6,16,12,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{width:26px;height:auto}
+.brand b{font-family:var(--f-display);font-stretch:125%;font-weight:800;font-size:15px;letter-spacing:.02em}
+.brand small{font-family:var(--f-mono);font-size:10px;letter-spacing:.3em;color:var(--green);margin-left:2px}
+.nav-links{display:none;gap:30px}
+.nav-links a{position:relative;color:var(--muted);transition:color .3s}
+.nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--green);transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.nav-links a:hover{color:var(--fg)}
+.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
+@media (min-width:980px){.nav-links{display:flex}}
+.nav-progress{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--green);transform-origin:left;transform:scaleX(0)}
 
-    .bento-card:hover {
-      border-color: rgba(0, 196, 106, 0.35);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 196, 106, 0.1);
-    }
+/* botões */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:18px 30px;border-radius:999px;
+  font-family:var(--f-mono);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;overflow:hidden;isolation:isolate;white-space:nowrap}
+.btn .btn-fill{position:absolute;inset:0;border-radius:inherit;z-index:-1;transform:translateY(101%);transition:transform .55s var(--ease)}
+.btn:hover .btn-fill{transform:translateY(0)}
+.btn-primary{background:var(--green);color:var(--paper-ink);box-shadow:0 14px 40px -12px rgba(0,196,106,.6)}
+.btn-primary .btn-fill{background:var(--fg)}
+.btn-ghost{border:1px solid rgba(234,243,238,.22);color:var(--fg)}
+.btn-ghost .btn-fill{background:var(--fg)}
+.btn-ghost:hover{color:var(--paper-ink)}
+.btn-sm{padding:12px 20px;font-size:11px}
+.btn .arrow{display:inline-block;transition:transform .45s var(--ease)}
+.btn:hover .arrow{transform:translateX(4px) rotate(-45deg)}
+.btn-dark{background:var(--paper-ink);color:var(--fg)}
+.btn-dark .btn-fill{background:var(--green)}
+.btn-dark:hover{color:var(--paper-ink)}
 
-    /* Brilho Interno Focal no Mouse */
-    .bento-card::before {
-      content: '';
-      position: absolute;
-      top: var(--mouse-y, -300px);
-      left: var(--mouse-x, -300px);
-      transform: translate(-50%, -50%);
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(0, 196, 106, 0.18) 0%, transparent 65%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
-      z-index: 1;
-    }
+/* ============ HERO ============ */
+.hero{position:relative;padding-top:calc(76px + env(safe-area-inset-top,0px) + clamp(56px,9vw,120px));padding-bottom:clamp(48px,6vw,80px);overflow:hidden;margin-top:calc(-1 * env(safe-area-inset-top,0px))}
+.hero-glow{position:absolute;width:900px;height:900px;border-radius:50%;left:55%;top:-280px;pointer-events:none;
+  background:radial-gradient(circle,rgba(0,196,106,.20),rgba(0,196,106,.04) 45%,transparent 70%);filter:blur(10px)}
+.hero-giant{position:absolute;left:0;bottom:12%;white-space:nowrap;font-family:var(--f-display);font-stretch:125%;font-weight:900;
+  font-size:clamp(9rem,26vw,26rem);line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(0,196,106,.16);pointer-events:none;user-select:none}
+.hero-grid{position:relative;display:grid;gap:48px;align-items:center}
+@media (min-width:980px){.hero-grid{grid-template-columns:1.45fr .75fr}}
+.pill{display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:rgba(13,36,26,.6);backdrop-filter:blur(10px)}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,196,106,.7);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(0,196,106,.6)}80%,100%{box-shadow:0 0 0 10px rgba(0,196,106,0)}}
+.pill .mono{font-size:11px;color:var(--green)}
+.pill .sep{width:3px;height:3px;border-radius:50%;background:var(--muted)}
+.pill span:last-child{font-size:13px;color:var(--muted)}
+.hero h1{margin-top:28px;font-weight:800;font-size:clamp(2.35rem,6.6vw,6.4rem);line-height:.98;letter-spacing:-.02em}
+.hero h1 .serif{color:var(--green);font-size:1.12em;line-height:.9}
+.hero-lead{margin-top:30px;max-width:56ch;font-size:clamp(1rem,1.3vw,1.18rem);color:var(--muted)}
+.hero-ctas{margin-top:40px;display:flex;flex-wrap:wrap;gap:14px}
 
-    .bento-card:hover::before {
-      opacity: 1;
-    }
+.hero-visual{position:relative;justify-self:center;width:min(380px,78vw);aspect-ratio:1}
+.badge-ring{position:absolute;inset:0;animation:spin 22s linear infinite}
+.badge-ring text{font-family:var(--f-mono);font-size:10.4px;letter-spacing:.32em;fill:var(--muted);text-transform:uppercase}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mark3d-stage{position:absolute;inset:18%;perspective:900px;display:grid;place-items:center}
+.mark3d{position:relative;width:76%;aspect-ratio:165/148;transform-style:preserve-3d}
+.mark3d svg{position:absolute;inset:0;width:100%;height:100%}
+.mark3d svg path{fill:var(--green)}
+.mark3d .layer path{fill:#0A3B25}
+.mark3d .front path{fill:url(#markGrad)}
+.hero-visual .halo{position:absolute;inset:22%;border-radius:50%;background:radial-gradient(circle,rgba(0,196,106,.35),transparent 65%);filter:blur(30px)}
 
-    /* Badge Pílula Flutuante */
-    .pill-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 16px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 9999px;
-      backdrop-filter: blur(12px);
-    }
+.stats{position:relative;margin-top:clamp(56px,8vw,96px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line)}
+@media (min-width:860px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stat{padding:26px 20px 0 0;display:grid;gap:6px}
+.stat b{font-family:var(--f-display);font-stretch:125%;font-weight:800;font-size:clamp(1.9rem,3.4vw,3rem);line-height:1;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:13px}
 
-    /* Botão com feixe cinemático */
-    .btn-shine {
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-shine::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(60deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
-      transform: rotate(30deg) translate(-100%, -100%);
-      transition: transform 0.75s ease;
-    }
-    .btn-shine:hover::after {
-      transform: rotate(30deg) translate(50%, 50%);
-    }
+/* ============ MARQUEE BANDS ============ */
+.bands{position:relative;height:clamp(170px,22vw,260px);overflow:hidden;display:grid;place-items:center}
+.band{position:absolute;left:-5%;width:110%;overflow:hidden;padding:18px 0}
+.band-a{background:var(--green);color:var(--paper-ink);transform:rotate(-3deg);z-index:2}
+.band-b{background:var(--forest);color:var(--fg);transform:rotate(2.5deg);border-block:1px solid var(--line)}
+.band-track{display:flex;width:max-content;animation:marquee 32s linear infinite}
+.band-b .band-track{animation-direction:reverse;animation-duration:40s}
+.band-item{display:flex;align-items:center;gap:28px;padding-right:28px;font-family:var(--f-display);font-stretch:125%;font-weight:800;font-size:clamp(1.3rem,2.6vw,2.2rem);text-transform:uppercase;white-space:nowrap}
+.band-item svg{width:.9em;height:auto;flex:none}
+.band-a svg path{fill:var(--paper-ink)}
+.band-b svg path{fill:var(--green)}
+@keyframes marquee{to{transform:translateX(-50%)}}
 
-    /* Efeito Radar UI */
-    @keyframes pulseRing {
-      0% { transform: scale(0.6); opacity: 0.8; }
-      100% { transform: scale(1.6); opacity: 0; }
-    }
-    .radar-ring {
-      animation: pulseRing 3s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
-    }
-  </style>
+/* ============ SEÇÕES ============ */
+.section{position:relative;padding-block:clamp(88px,12vw,168px)}
+.paper{background:var(--paper);color:var(--paper-ink)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--green)}
+.eyebrow::before{content:"";width:22px;height:1px;background:currentColor}
+.paper .eyebrow{color:#00894A}
+.h2{font-weight:800;font-size:clamp(2rem,4.8vw,4.4rem);line-height:1.02;letter-spacing:-.02em;margin-top:18px}
+.h2 .serif{font-size:1.1em}
+.lead{margin-top:22px;max-width:60ch;color:var(--muted);font-size:clamp(.98rem,1.2vw,1.1rem)}
+.paper .lead{color:var(--paper-muted)}
+.head{display:grid;gap:28px;margin-bottom:clamp(48px,6vw,80px)}
+@media (min-width:980px){.head.split{grid-template-columns:1.2fr .8fr;align-items:end}}
+
+/* manifesto */
+.manifesto p{font-family:var(--f-display);font-stretch:112%;font-weight:700;font-size:clamp(1.65rem,4vw,3.7rem);line-height:1.12;letter-spacing:-.015em;max-width:24ch}
+.manifesto p .serif{color:#00894A;font-size:1.08em}
+.manifesto .sign{margin-top:44px;display:flex;align-items:center;gap:14px;color:var(--paper-muted)}
+.manifesto .sign svg{width:30px}
+.manifesto .sign svg{fill:#00894A}
+
+/* bento */
+.bento{display:grid;gap:20px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:980px){.bento{grid-template-columns:repeat(12,minmax(0,1fr))}.c8{grid-column:span 8}.c4{grid-column:span 4}}
+.card{position:relative;border-radius:28px;padding:clamp(26px,3vw,40px);background:linear-gradient(160deg,rgba(13,36,26,.92),rgba(8,22,16,.92));border:1px solid var(--line);
+  overflow:hidden;display:flex;flex-direction:column;gap:28px;transition:border-color .4s;transform-style:preserve-3d}
+.card::before{content:"";position:absolute;width:420px;height:420px;left:var(--mx,-999px);top:var(--my,-999px);transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(0,196,106,.16),transparent 65%);pointer-events:none;opacity:0;transition:opacity .4s}
+.card:hover{border-color:rgba(0,196,106,.4)}
+.card:hover::before{opacity:1}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.card-top .mono{color:var(--green);font-size:11px}
+.tag{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;border-radius:999px;border:1px solid rgba(0,196,106,.35);color:var(--fg);background:rgba(0,196,106,.08)}
+.card h3{font-weight:700;font-size:clamp(1.15rem,1.6vw,1.45rem);line-height:1.2;font-stretch:115%}
+.card p{color:var(--muted);font-size:14.5px;margin-top:10px;max-width:58ch}
+.card-body{margin-top:auto}
+
+/* card 1: comparativo */
+.compare{display:grid;gap:18px;padding:24px;border-radius:18px;background:rgba(0,0,0,.28);border:1px solid var(--line)}
+.cmp-row{display:grid;gap:8px}
+.cmp-row header{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.cmp-row header b{font-family:var(--f-mono);color:var(--fg);font-weight:500}
+.cmp-row.us header b{color:var(--green)}
+.cmp-track{height:10px;border-radius:99px;background:rgba(234,243,238,.06);overflow:hidden}
+.cmp-bar{height:100%;border-radius:inherit;background:#4A5E54;transform-origin:left}
+.cmp-row.us .cmp-bar{background:var(--green);box-shadow:0 0 18px rgba(0,196,106,.6)}
+.cmp-note{font-family:var(--f-mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+
+/* card 2: celular */
+.phone{position:relative;width:150px;height:250px;margin:4px auto 0;border-radius:30px;border:1.5px solid rgba(234,243,238,.25);background:linear-gradient(180deg,rgba(234,243,238,.04),rgba(0,0,0,.25));overflow:hidden}
+.phone::before{content:"";position:absolute;top:10px;left:50%;width:46px;height:6px;margin-left:-23px;border-radius:9px;background:rgba(234,243,238,.18)}
+.phone .ln{position:absolute;left:16px;height:6px;border-radius:9px;background:rgba(234,243,238,.12)}
+.phone .zone{position:absolute;right:-70px;bottom:-70px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,106,.32),rgba(0,196,106,.05) 60%,transparent 70%)}
+.phone .tap{position:absolute;right:26px;bottom:34px;width:44px;height:44px;border-radius:50%;background:var(--green);display:grid;place-items:center;color:var(--paper-ink);font-family:var(--f-mono);font-size:10px;font-weight:700}
+.phone .tap::before,.phone .tap::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid var(--green);animation:ripple 2.4s var(--ease) infinite}
+.phone .tap::after{animation-delay:1.2s}
+@keyframes ripple{from{transform:scale(1);opacity:.9}to{transform:scale(2.6);opacity:0}}
+
+/* card 3: olhar guiado */
+.gaze{display:grid;gap:10px}
+.gaze div{display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(234,243,238,.02);font-size:14px;color:var(--muted);
+  animation:gaze 6s infinite}
+.gaze div:nth-child(2){animation-delay:2s}
+.gaze div:nth-child(3){animation-delay:4s}
+.gaze i{font-style:normal;font-family:var(--f-mono);font-size:11px;color:var(--green)}
+@keyframes gaze{0%,30%{border-color:rgba(0,196,106,.55);background:rgba(0,196,106,.10);color:var(--fg)}36%,100%{border-color:var(--line);background:rgba(234,243,238,.02);color:var(--muted)}}
+
+/* card 4: analytics */
+.metrics{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:640px){.metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.metric{padding:18px;border-radius:16px;background:rgba(0,0,0,.28);border:1px solid var(--line);display:grid;gap:4px}
+.metric small{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.metric b{font-size:17px;font-weight:600}
+.metric span{font-family:var(--f-mono);font-size:11px;color:var(--green)}
+.feed{display:grid;gap:6px;min-height:132px;align-content:start;font-family:var(--f-mono);font-size:12px}
+.feed-row{display:flex;justify-content:space-between;gap:12px;padding:8px 12px;border-radius:10px;background:rgba(234,243,238,.03);color:var(--muted)}
+.feed-row b{color:var(--fg);font-weight:500}
+.feed-row em{font-style:normal;color:var(--green)}
+.feed-title{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.feed-title .dot{width:6px;height:6px;border-radius:50%;background:#FF5A4E;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.25}}
+
+/* ============ HORIZONTAL ============ */
+.h-section{background:#040B08;border-block:1px solid var(--line);overflow:hidden}
+.h-pin{padding-block:clamp(88px,10vw,130px)}
+.h-track{display:grid;gap:20px;padding-left:var(--gutter);padding-right:var(--gutter-r)}
+.h-intro{max-width:560px}
+.h-card{position:relative;border-radius:28px;padding:clamp(28px,3vw,44px);min-height:420px;display:flex;flex-direction:column;justify-content:space-between;gap:40px;
+  background:var(--forest);border:1px solid var(--line);overflow:hidden}
+.h-card .big{position:absolute;right:-6px;top:10px;font-family:var(--f-display);font-stretch:125%;font-weight:900;font-size:clamp(4rem,8vw,7.5rem);line-height:.9;color:transparent;-webkit-text-stroke:1px rgba(0,196,106,.28);pointer-events:none}
+.h-card h3{font-weight:700;font-size:clamp(1.4rem,2.2vw,2rem);line-height:1.12;max-width:14ch}
+.h-card p{color:var(--muted);max-width:42ch;margin-top:14px;font-size:15px}
+.h-card .mono{color:var(--green);font-size:11px}
+.h-progress{margin:48px var(--gutter-r) 0 var(--gutter);height:1px;background:var(--line);position:relative;display:none}
+.h-progress i{position:absolute;inset:0;background:var(--green);transform-origin:left;transform:scaleX(0)}
+@media (min-width:980px){
+  .h-track{display:flex;gap:28px;width:max-content;align-items:stretch}
+  .h-intro{width:520px;flex:none;align-self:center;margin-right:40px}
+  .h-card{width:500px;flex:none;min-height:480px}
+  .h-progress{display:block}
+}
+
+/* ============ SEGMENTOS ============ */
+.fit{display:grid;gap:20px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){.fit{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fit-col{border-radius:28px;padding:clamp(26px,3vw,44px);display:grid;gap:26px;align-content:start}
+.fit-yes{background:var(--paper-ink);color:var(--fg)}
+.fit-no{background:transparent;border:1px solid rgba(8,22,15,.16)}
+.fit-col header{display:flex;align-items:center;gap:12px}
+.fit-col header i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:14px}
+.fit-yes header i{background:var(--green);color:var(--paper-ink)}
+.fit-no header i{border:1px solid rgba(8,22,15,.3);color:var(--paper-muted)}
+.fit-no header .mono{color:var(--paper-muted)}
+.fit ul{list-style:none;margin:0;padding:0;display:grid}
+.fit li{padding:18px 0;border-top:1px solid rgba(234,243,238,.1);display:grid;gap:4px}
+.fit-no li{border-color:rgba(8,22,15,.12)}
+.fit li b{font-weight:600;font-size:16.5px}
+.fit li span{font-size:14.5px;color:var(--muted)}
+.fit-no li span{color:var(--paper-muted)}
+.fit-no li b{color:var(--paper-ink)}
+
+/* ============ PORTFÓLIO ============ */
+.cases{display:grid;gap:28px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:980px){.cases{grid-template-columns:repeat(2,minmax(0,1fr))}.cases .case:nth-child(2){margin-top:120px}}
+.case{display:grid;gap:22px}
+.case-media{position:relative;aspect-ratio:4/3;max-width:100%;border-radius:26px;overflow:hidden;border:1px solid var(--line);background:var(--forest)}
+.case-media .mock{position:absolute;inset:-8% 0;display:flex;flex-direction:column}
+.case-tags{position:absolute;top:18px;left:18px;z-index:3;display:flex;gap:8px;flex-wrap:wrap}
+.case-tags span{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:rgba(6,16,12,.7);backdrop-filter:blur(8px);color:var(--fg)}
+.case-tags span.hot{background:var(--green);color:var(--paper-ink);font-weight:700}
+.case-info{display:grid;gap:10px}
+.case-info header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.case-info h3{font-weight:700;font-size:clamp(1.3rem,2vw,1.8rem);font-stretch:115%}
+.case-info header span{font-family:var(--f-mono);font-size:12px;color:var(--green)}
+.case-info p{color:var(--muted);font-size:15px;max-width:58ch}
+.case-info footer{display:flex;justify-content:space-between;gap:12px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.case-info footer a{color:var(--green)}
+
+/* mock 4Tires */
+.m-tires{background:radial-gradient(120% 90% at 80% 60%,#123526,#07130E 60%);padding:62px 7% 0}
+.mock-bar{display:flex;align-items:center;justify-content:space-between}
+.mock-bar i{display:flex;gap:6px}
+.mock-bar i b{width:8px;height:8px;border-radius:50%;background:rgba(234,243,238,.25)}
+.mock-bar span{font-family:var(--f-display);font-stretch:125%;font-weight:900;font-size:13px;color:var(--fg);letter-spacing:.04em}
+.m-tires .m-body{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:6%;margin-top:9%}
+.m-tires h4{margin:0;font-family:var(--f-display);font-stretch:125%;font-weight:900;font-size:clamp(1rem,2.3vw,1.7rem);line-height:1;color:var(--fg)}
+.m-tires h4 em{font-style:normal;color:var(--green)}
+.m-tires .m-cta{margin-top:16px;display:inline-flex;gap:8px;align-items:center;padding:9px 14px;border-radius:99px;background:var(--green);color:var(--paper-ink);font-family:var(--f-mono);font-size:10px;font-weight:700;letter-spacing:.08em}
+.tire{aspect-ratio:1;border-radius:50%;background:
+  radial-gradient(circle,#0b0f0d 0 22%,#3a4640 23% 26%,#121614 27% 47%,transparent 48%),
+  repeating-conic-gradient(#1a201d 0 6deg,#0c100e 6deg 12deg);box-shadow:0 30px 60px -20px rgba(0,0,0,.8),inset 0 0 0 6px #050706;animation:spin 9s linear infinite}
+.m-lines{display:grid;gap:7px;margin-top:14px}
+.m-lines b{height:6px;border-radius:9px;background:rgba(234,243,238,.12)}
+
+/* mock jurídico */
+.m-law{background:#F1EEE6;color:#1B2433;padding:62px 8% 0}
+.m-law .mock-bar span{color:#1B2433;font-family:var(--f-serif);font-stretch:100%;font-weight:400;font-size:16px;letter-spacing:.02em;font-style:italic}
+.m-law .mock-bar i b{background:rgba(27,36,51,.25)}
+.m-law h4{margin:12% 0 0;font-family:var(--f-serif);font-weight:400;font-size:clamp(1.3rem,3vw,2.3rem);line-height:1.05;max-width:13ch}
+.m-law hr{border:0;border-top:1px solid rgba(27,36,51,.25);margin:7% 0 5%}
+.m-law .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:6%}
+.m-law .cols div{font-family:var(--f-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#8C6A2F;display:grid;gap:7px}
+.m-law .cols div b{height:5px;border-radius:9px;background:rgba(27,36,51,.14)}
+
+/* ============ SOBRE ============ */
+.about{display:grid;gap:48px;align-items:start}
+@media (min-width:980px){.about{grid-template-columns:.9fr 1.1fr}}
+.about-id{display:grid;gap:22px;position:relative}
+@media (min-width:980px){.about-id{position:sticky;top:120px}}
+.about-id .mk{width:clamp(90px,10vw,130px)}
+.about-id .mk{fill:#00894A}
+.about-id h2{font-weight:900;font-size:clamp(2.4rem,5vw,4.8rem);line-height:.95}
+.about-id .loc{display:inline-flex;align-items:center;gap:10px;color:var(--paper-muted)}
+.about-id .loc i{width:7px;height:7px;border-radius:50%;background:#00894A}
+.about-text{display:grid;gap:26px;font-size:clamp(1.05rem,1.5vw,1.3rem);line-height:1.55;color:var(--paper-muted)}
+.about-text strong{color:var(--paper-ink);font-weight:600}
+.checks{display:grid;gap:0;margin-top:12px}
+.checks div{display:flex;align-items:center;gap:16px;padding:20px 0;border-top:1px solid rgba(8,22,15,.14);font-family:var(--f-display);font-stretch:115%;font-weight:700;font-size:clamp(1rem,1.5vw,1.25rem);color:var(--paper-ink)}
+.checks div:last-child{border-bottom:1px solid rgba(8,22,15,.14)}
+.checks i{width:30px;height:30px;flex:none;border-radius:50%;background:var(--paper-ink);color:var(--green);display:grid;place-items:center;font-style:normal;font-size:14px}
+
+/* ============ INVESTIMENTO ============ */
+@property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
+.price-wrap{max-width:1080px;margin:0 auto}
+.price{position:relative;border-radius:32px;padding:2px;background:conic-gradient(from var(--ang),rgba(0,196,106,.05),var(--green) 12%,rgba(0,196,106,.05) 30%,rgba(0,196,106,.05) 60%,var(--green-hi) 75%,rgba(0,196,106,.05) 90%);animation:rot 6s linear infinite}
+@keyframes rot{to{--ang:360deg}}
+.price-in{border-radius:30px;background:linear-gradient(170deg,#0D241A,#071510);padding:clamp(28px,4vw,56px);display:grid;gap:40px}
+@media (min-width:980px){.price-in{grid-template-columns:1.25fr .75fr;align-items:center}}
+.price-flag{position:absolute;top:-14px;right:clamp(20px,4vw,48px);z-index:2;padding:8px 16px;border-radius:999px;background:var(--green);color:var(--paper-ink);font-family:var(--f-mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.price h3{font-weight:800;font-size:clamp(1.5rem,2.6vw,2.2rem);line-height:1.1;margin-top:8px}
+.price .mono{color:var(--muted);font-size:11px}
+.incl{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:14px}
+.incl li{display:flex;gap:14px;align-items:flex-start;font-size:15px;color:#C7D6CD}
+.incl li i{flex:none;width:22px;height:22px;border-radius:50%;background:rgba(0,196,106,.14);color:var(--green);display:grid;place-items:center;font-style:normal;font-size:12px;margin-top:1px}
+.infra{margin-top:28px;padding:20px;border-radius:18px;background:rgba(0,0,0,.3);border:1px solid var(--line);display:grid;gap:8px}
+.infra header{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:600}
+.infra header b{font-family:var(--f-mono);color:var(--green)}
+.infra p{font-size:13.5px;color:var(--muted)}
+.price-side{display:grid;gap:10px;justify-items:start;padding-top:32px;border-top:1px solid var(--line)}
+@media (min-width:980px){.price-side{padding:0 0 0 40px;border-top:0;border-left:1px solid var(--line)}}
+.amount{display:flex;align-items:flex-start;gap:8px;font-family:var(--f-display);font-stretch:125%;font-weight:800;line-height:.9}
+.amount small{font-size:16px;margin-top:12px;color:var(--muted);font-weight:500}
+.amount b{font-size:clamp(4.2rem,8vw,6.6rem);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.price-side .btn{width:100%;margin-top:16px}
+.price-side .note{font-size:12.5px;color:var(--muted)}
+.guarantee{margin-top:28px;display:flex;align-items:center;gap:24px;padding:24px;border-radius:24px;border:1px solid var(--line);background:rgba(13,36,26,.5)}
+.stamp{position:relative;width:96px;height:96px;flex:none}
+.stamp svg{position:absolute;inset:0;animation:spin 16s linear infinite}
+.stamp svg text{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.26em;fill:var(--green);text-transform:uppercase}
+.stamp b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-stretch:125%;font-weight:900;font-size:24px}
+.guarantee h4{margin:0;font-size:17px;font-weight:600}
+.guarantee p{margin-top:6px;font-size:14px;color:var(--muted);max-width:70ch}
+@media (max-width:560px){.guarantee{flex-direction:column;align-items:flex-start}}
+
+/* ============ FAQ ============ */
+.faq-grid{display:grid;gap:40px}
+@media (min-width:980px){.faq-grid{grid-template-columns:.8fr 1.2fr}}
+.faq-list{border-top:1px solid rgba(8,22,15,.16)}
+.faq-item{border-bottom:1px solid rgba(8,22,15,.16)}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:28px 0;text-align:left;font-family:var(--f-display);font-stretch:112%;font-weight:700;font-size:clamp(1.05rem,1.6vw,1.35rem);color:var(--paper-ink)}
+.faq-icon{position:relative;flex:none;width:40px;height:40px;border-radius:50%;border:1px solid rgba(8,22,15,.25);transition:background .35s,border-color .35s,transform .5s var(--ease)}
+.faq-icon::before,.faq-icon::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:1.5px;margin:-.75px 0 0 -7px;background:var(--paper-ink);transition:transform .45s var(--ease),background .35s}
+.faq-icon::after{transform:rotate(90deg)}
+.faq-item.open .faq-icon{background:var(--paper-ink);border-color:var(--paper-ink);transform:rotate(180deg)}
+.faq-item.open .faq-icon::before,.faq-item.open .faq-icon::after{background:var(--green)}
+.faq-item.open .faq-icon::after{transform:rotate(0)}
+.faq-a{height:0;overflow:hidden}
+.faq-a p{padding:0 56px 28px 0;color:var(--paper-muted);font-size:16px;max-width:66ch}
+
+/* ============ CTA FINAL ============ */
+.final{position:relative;overflow:hidden;text-align:left}
+.final h2{font-weight:900;font-size:clamp(2.3rem,7.4vw,7.6rem);line-height:.96;letter-spacing:-.025em}
+.final h2 .serif{color:var(--green);font-size:1.08em}
+.final-row{margin-top:48px;display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between}
+.final-row p{max-width:48ch;color:var(--muted)}
+.final .hero-glow{left:-10%;top:auto;bottom:-500px}
+
+/* ============ FORMULÁRIO ============ */
+.form-sec{background:#040B08;border-top:1px solid var(--line)}
+.form-grid{display:grid;gap:48px;align-items:start}
+@media (min-width:980px){.form-grid{grid-template-columns:.9fr 1.1fr}}
+.steps{display:flex;gap:8px;margin-top:30px}
+.steps i{height:4px;width:44px;border-radius:9px;background:rgba(234,243,238,.12);transition:background .4s,width .5s var(--ease)}
+.steps i.on{background:var(--green);width:64px}
+.form-card{border-radius:28px;padding:clamp(24px,3vw,40px);background:var(--forest);border:1px solid rgba(0,196,106,.25)}
+.form-step{display:grid;gap:18px}
+.form-step .mono{color:var(--green);font-size:11px}
+.field{display:grid;gap:8px}
+.field label{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select{width:100%;padding:16px 18px;border-radius:14px;border:1px solid rgba(234,243,238,.12);background:rgba(0,0,0,.35);color:var(--fg);font:inherit;font-size:15px;transition:border-color .3s,box-shadow .3s;appearance:none;-webkit-appearance:none}
+.field select{background-image:linear-gradient(45deg,transparent 50%,var(--green) 50%),linear-gradient(135deg,var(--green) 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:44px}
+.field select option{background:var(--forest)}
+.field input:focus,.field select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 4px rgba(0,196,106,.15)}
+.two{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:640px){.two{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.form-nav{display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-top:8px}
+.form-nav .btn,.form-step>.btn{width:100%}
+.form-msg{font-family:var(--f-mono);font-size:12px;text-align:center;min-height:1em}
+.form-msg.err{color:#FF8A7A}
+.form-msg.ok{color:var(--green)}
+
+/* ============ FOOTER ============ */
+.footer{padding-top:clamp(64px,8vw,110px);padding-bottom:calc(28px + env(safe-area-inset-bottom,0px));overflow:hidden;border-top:1px solid var(--line)}
+.foot-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:28px;align-items:flex-end}
+.foot-top nav{display:flex;flex-wrap:wrap;gap:22px;color:var(--muted)}
+.foot-top nav a:hover{color:var(--green)}
+.wordmark{margin-top:56px;font-family:var(--f-display);font-stretch:125%;font-weight:900;font-size:clamp(3rem,15.2vw,15.5rem);line-height:.8;letter-spacing:-.02em;color:var(--green);white-space:nowrap;overflow:hidden}
+.wordmark .ch{display:inline-block}
+.foot-bottom{margin-top:30px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;color:var(--muted);font-size:13px}
+
+/* reveal: estado de repouso visível; o JS só anima a partir dele */
+.no-js [data-reveal]{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .preloader{display:none}
+  .grain{display:none}
+}
+</style>
 </head>
-<body class="selection:bg-brand-caribe selection:text-black">
+<body>
 
-  <!-- Ruído de Granulação de Cinema -->
-  <div class="film-grain"></div>
+<!-- símbolo da marca reutilizado em toda a página -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="markGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5CFFB0"/>
+      <stop offset=".55" stop-color="#00C46A"/>
+      <stop offset="1" stop-color="#00894A"/>
+    </linearGradient>
+    <symbol id="mark" viewBox="0 0 165 148">
+      <path fill-rule="evenodd" d="M96 0H165V25L107 62H165V86L71 148H0V124L57 86H0V62ZM40 62L97 25H126L68 62ZM39 124L97 86H126L68 124Z"/>
+    </symbol>
+  </defs>
+</svg>
 
-  <!-- Luz Dinâmica que Segue o Cursor -->
-  <div id="cursor-light"></div>
+<div class="grain" aria-hidden="true"></div>
 
-  <!-- NAVEGAÇÃO MINIMALISTA COM VIDRO -->
-  <nav class="fixed top-0 left-0 w-full z-50 bg-[#060606]/75 backdrop-blur-2xl border-b border-white/[0.06]">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      
-      <!-- Assinatura Sarmento Ads -->
-      <a href="#" class="flex items-center gap-3 group">
-        <span class="w-2.5 h-2.5 rounded-full bg-brand-caribe shadow-[0_0_12px_#00C46A]"></span>
-        <span class="text-sm font-semibold tracking-wider text-white">SARMENTO <span class="font-serif italic font-normal text-brand-caribe text-base">Ads</span></span>
+<!-- PRELOADER -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="pl-inner">
+    <svg class="pl-mark" viewBox="0 0 165 148"><path fill-rule="evenodd" d="M96 0H165V25L107 62H165V86L71 148H0V124L57 86H0V62ZM40 62L97 25H126L68 62ZM39 124L97 86H126L68 124Z"/></svg>
+    <div class="pl-count" id="pl-count">000</div>
+    <div class="mono pl-label">Sarmento Ads · carregando experiência</div>
+  </div>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursor-ring" aria-hidden="true"><span id="cursor-label">Ver</span></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav" aria-label="Principal">
+  <div class="nav-bar">
+    <div class="wrap nav-inner">
+      <a href="#topo" class="brand" aria-label="Sarmento Ads, voltar ao topo">
+        <svg viewBox="0 0 165 148" aria-hidden="true"><use href="#mark" fill="#00C46A"/></svg>
+        <b>SARMENTO<small>ADS</small></b>
       </a>
-
-      <!-- Menu de Seções com Linha de Estúdio -->
-      <div class="hidden md:flex items-center gap-8 text-xs font-mono tracking-wider text-brand-muted">
-        <a href="#experiencia" class="hover:text-white transition-colors">UI / UX Experience</a>
-        <a href="#detalhe" class="hover:text-white transition-colors">Engenharia</a>
-        <a href="#portfolio" class="hover:text-white transition-colors">Projetos</a>
-        <a href="#investimento" class="hover:text-white transition-colors">Investimento</a>
-        <a href="#faq" class="hover:text-white transition-colors">Dúvidas</a>
+      <div class="nav-links mono">
+        <a href="#experiencia">Experiência</a>
+        <a href="#detalhe">Engenharia</a>
+        <a href="#portfolio">Projetos</a>
+        <a href="#investimento">Investimento</a>
+        <a href="#faq">Dúvidas</a>
       </div>
-
-      <!-- CTA Nav -->
-      <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20avaliar%20o%20posicionamento%20digital%20da%20minha%20empresa." 
-         target="_blank" 
-         rel="noopener noreferrer" 
-         class="px-5 py-2.5 rounded-full border border-white/15 text-xs text-white/90 hover:border-brand-caribe hover:text-brand-caribe transition-all duration-300 backdrop-blur-lg">
-        Iniciar Conversa
+      <a class="btn btn-ghost btn-sm magnetic" href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20avaliar%20o%20posicionamento%20digital%20da%20minha%20empresa." target="_blank" rel="noopener noreferrer">
+        <span class="btn-fill"></span>Iniciar conversa
       </a>
     </div>
-  </nav>
-
-  <!-- ==============================================
-       HERO CINEMATOGRÁFICO
-       ============================================== -->
-  <header class="relative pt-40 pb-28 md:pt-52 md:pb-36 z-10 overflow-hidden">
-    
-    <!-- Luzes de Estúdio Animadas -->
-    <div class="ambient-orb w-[650px] h-[650px] bg-brand-caribe/15 top-10 left-1/2 -translate-x-1/2"></div>
-    <div class="ambient-orb w-[450px] h-[450px] bg-emerald-950/40 -top-20 left-10" style="animation-delay: -5s;"></div>
-
-    <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-      
-      <!-- Pílula de Autoridade Interativa -->
-      <div class="pill-badge mb-8 mx-auto hover:border-brand-caribe/50 transition-colors">
-        <span class="w-2 h-2 rounded-full bg-brand-caribe animate-pulse shadow-[0_0_8px_#00C46A]"></span>
-        <span class="text-[11px] font-mono tracking-[0.2em] uppercase text-brand-caribe font-semibold">Engenharia de UI / UX & Tráfego</span>
-        <span class="w-1 h-1 rounded-full bg-white/20"></span>
-        <span class="text-[11px] text-white/70">Padrão Internacional</span>
-      </div>
-
-      <!-- Manchete Editorial com Instrument Serif Itálico -->
-      <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-tight text-white leading-[1.05]">
-        Construímos a presença digital que <br class="hidden sm:inline">
-        <span class="font-serif italic font-normal text-brand-caribe tracking-normal">justifica os seus honorários.</span>
-      </h1>
-
-      <p class="mt-8 text-base sm:text-xl text-brand-muted max-w-3xl mx-auto leading-relaxed font-light">
-        A maioria dos sites corporativos parece um documento em PDF estático e sem vida. Criamos ecossistemas fluidos, cinematográficos e desenhados para que o cliente decida fechar contrato nos primeiros cinco segundos.
-      </p>
-
-      <!-- Botões de Ação com Acabamento Refinado -->
-      <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20avaliar%20o%20posicionamento%20digital%20da%20minha%20empresa." 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="btn-shine w-full sm:w-auto px-9 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-full transition-all duration-300 flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(0,196,106,0.3)]">
-          <span>Agendar Diagnóstico Gratuito</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-        </a>
-
-        <a href="#experiencia" 
-           class="w-full sm:w-auto px-8 py-4 rounded-full border border-white/10 hover:border-white/30 text-white/80 hover:text-white text-xs tracking-wider uppercase font-medium transition-all duration-300 bg-white/[0.02] backdrop-blur-lg">
-          Explorar a Experiência UI / UX ↓
-        </a>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- ==============================================
-       NOVO MÓDULO: EXPERIÊNCIA DE UI / UX & MOTION (BENTO GRID)
-       ============================================== -->
-  <section id="experiencia" class="py-28 relative z-10 border-t border-white/[0.06]">
-    <div class="max-w-7xl mx-auto px-6">
-      
-      <div class="max-w-2xl mb-16">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Motion & User Experience</span>
-        <h2 class="text-3xl sm:text-5xl font-light text-white mt-3 leading-tight">
-          Por que uma interface fluida <br>
-          <span class="font-serif italic text-brand-caribe">vende infinitamente mais?</span>
-        </h2>
-        <p class="text-sm text-brand-muted mt-4 leading-relaxed font-light">
-          A psicologia humana associa movimento suave, design sem ruído e resposta imediata a marcas sólidas, caras e confiáveis. Integramos os três pilares que transformam visitantes em compradores:
-        </p>
-      </div>
-
-      <!-- BENTO GRID ASSIMÉTRICO DINÂMICO -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-        
-        <!-- Bloco 1: Microinterações & Física (8 Colunas) -->
-        <div class="bento-card p-8 md:p-10 md:col-span-8 flex flex-col justify-between min-h-[380px]">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono uppercase tracking-widest text-brand-caribe font-medium">01 / MICROINTERAÇÃO & FLUIDEZ</span>
-            <span class="text-[10px] font-mono px-3 py-1 rounded-full bg-brand-forest/30 border border-brand-forest/50 text-white/80">60 FPS Native</span>
-          </div>
-
-          <!-- Demonstração Visual de Interface Responsiva -->
-          <div class="my-8 p-6 rounded-2xl bg-black/40 border border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div class="space-y-2 text-center sm:text-left">
-              <div class="text-xs font-mono text-brand-muted uppercase">Feedback Visual Imediato</div>
-              <div class="text-xl font-medium text-white">Taxa de Conversão por Segundo de Resposta</div>
-              <p class="text-xs text-brand-muted max-w-sm font-light">Páginas com transições orgânicas diminuem a percepção de espera a zero absoluto.</p>
-            </div>
-            <!-- Simulador de Barra de Performance -->
-            <div class="w-full sm:w-48 bg-white/5 p-4 rounded-xl border border-white/10 text-center">
-              <div class="text-2xl font-mono font-bold text-brand-caribe tracking-tight">&lt; 0.8s</div>
-              <div class="text-[10px] font-mono text-brand-muted uppercase mt-1">Tempo de Resposta Médio</div>
-              <div class="w-full bg-neutral-800 h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-brand-caribe h-full w-[96%] rounded-full shadow-[0_0_10px_#00C46A]"></div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-medium text-white mb-2">Engenharia Visual com Física Natural</h3>
-            <p class="text-xs sm:text-sm text-brand-muted font-light leading-relaxed">
-              Cada botão, rolagem e abertura de sanfona reage ao usuário com curvas de aceleração orgânicas. Eliminamos a sensação robótica de templates antigos.
-            </p>
-          </div>
-        </div>
-
-        <!-- Bloco 2: Radar de Atenção / Ergonomia Mobile (4 Colunas) -->
-        <div class="bento-card p-8 md:p-10 md:col-span-4 flex flex-col justify-between min-h-[380px]">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono uppercase tracking-widest text-brand-caribe font-medium">02 / ERGONOMIA</span>
-            <div class="w-2 h-2 rounded-full bg-brand-caribe animate-ping"></div>
-          </div>
-
-          <!-- Radar Animado -->
-          <div class="relative w-36 h-36 mx-auto my-6 flex items-center justify-center">
-            <div class="absolute inset-0 rounded-full border border-brand-forest/40 radar-ring"></div>
-            <div class="absolute inset-3 rounded-full border border-brand-forest/60"></div>
-            <div class="absolute inset-8 rounded-full border border-brand-caribe/30"></div>
-            <div class="w-12 h-12 rounded-full bg-brand-forest/30 border border-brand-caribe flex items-center justify-center text-brand-caribe font-mono text-xs shadow-[0_0_20px_rgba(0,196,106,0.3)]">
-              UX
-            </div>
-          </div>
-
-          <div>
-            <h3 class="text-lg font-medium text-white mb-1">Zona do Polegar Mobile</h3>
-            <p class="text-xs text-brand-muted font-light leading-relaxed">
-              O botão de fechamento fica no raio natural de alcance do polegar. Zero esforço para quem está navegando pelo smartphone.
-            </p>
-          </div>
-        </div>
-
-        <!-- Bloco 3: Hierarquia Editorial Anti-Cansaço (4 Colunas) -->
-        <div class="bento-card p-8 md:p-10 md:col-span-4 flex flex-col justify-between min-h-[340px]">
-          <span class="text-xs font-mono uppercase tracking-widest text-brand-caribe font-medium">03 / PSICOLOGIA COGNITIVA</span>
-          
-          <div class="my-6 space-y-2.5">
-            <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs font-mono text-white/80">
-              <span class="text-brand-caribe">01.</span> Gancho Visual Sofisticado
-            </div>
-            <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs font-mono text-white/80">
-              <span class="text-brand-caribe">02.</span> Eliminação de Objeções Factual
-            </div>
-            <div class="p-3 rounded-xl bg-brand-forest/20 border border-brand-forest/50 text-xs font-mono text-brand-caribe font-medium">
-              <span class="text-white">03.</span> Ação Direta no WhatsApp
-            </div>
-          </div>
-
-          <div>
-            <h3 class="text-lg font-medium text-white mb-1">Arquitetura de Olhar Guiado</h3>
-            <p class="text-xs text-brand-muted font-light leading-relaxed">
-              O visitante nunca se sente sobrecarregado de texto. Cada parágrafo é calculado para criar curiosidade e respeito pela sua marca.
-            </p>
-          </div>
-        </div>
-
-        <!-- Bloco 4: Rastreamento & Dados sem Cookies Pesados (8 Colunas) -->
-        <div class="bento-card p-8 md:p-10 md:col-span-8 flex flex-col justify-between min-h-[340px]">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono uppercase tracking-widest text-brand-caribe font-medium">04 / INTELIGÊNCIA COMERCIAL</span>
-            <span class="text-xs font-mono text-brand-muted">Analytics Precision</span>
-          </div>
-
-          <div class="my-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="p-4 rounded-xl bg-black/40 border border-white/[0.06]">
-              <span class="text-[10px] font-mono uppercase text-brand-muted block">Meta Pixel 8.0</span>
-              <span class="text-lg font-medium text-white mt-1 block">Eventos de Lead</span>
-              <span class="text-xs font-mono text-brand-caribe">100% Auditado</span>
-            </div>
-            <div class="p-4 rounded-xl bg-black/40 border border-white/[0.06]">
-              <span class="text-[10px] font-mono uppercase text-brand-muted block">Google Tag Manager</span>
-              <span class="text-lg font-medium text-white mt-1 block">Conversão Exata</span>
-              <span class="text-xs font-mono text-brand-caribe">Zero Dispersão</span>
-            </div>
-            <div class="p-4 rounded-xl bg-black/40 border border-white/[0.06]">
-              <span class="text-[10px] font-mono uppercase text-brand-muted block">Core Web Vitals</span>
-              <span class="text-lg font-medium text-white mt-1 block">Nota 95+ Mobile</span>
-              <span class="text-xs font-mono text-brand-caribe">Green Score</span>
-            </div>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-medium text-white mb-1">Rastreamento Analítico Sem Comprometer a Velocidade</h3>
-            <p class="text-xs sm:text-sm text-brand-muted font-light leading-relaxed">
-              Enquanto sites comuns ficam lentos ao instalar pixels de anúncio, nossa arquitetura dispara eventos em segundo plano sem travar a experiência do usuário.
-            </p>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       DETALHAMENTO DO CONTEÚDO (MÉTODO)
-       ============================================== -->
-  <section id="detalhe" class="py-24 relative z-10 border-t border-white/[0.06] bg-[#070707]">
-    <div class="max-w-6xl mx-auto px-6">
-      
-      <div class="max-w-2xl mb-16">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">A Engenharia</span>
-        <h2 class="text-3xl md:text-5xl font-light text-white mt-3 leading-tight">
-          Menos ruído visual. <br>
-          <span class="font-serif italic text-white/90">Mais conversão imediata.</span>
-        </h2>
-        <p class="text-sm text-brand-muted mt-4 leading-relaxed font-light">
-          Templates genéricos do WordPress carregam centenas de scripts desnecessários que espantam o visitante antes do carregamento. A nossa abordagem é orientada a código limpo e arquitetura comercial.
-        </p>
-      </div>
-
-      <!-- Grid com Bento Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <div class="bento-card p-8">
-          <div class="text-xs font-mono text-brand-caribe mb-6 tracking-wider">01 / NARRATIVA</div>
-          <h3 class="text-xl font-medium text-white mb-3">Copywriting com Rigor Factual</h3>
-          <p class="text-xs text-brand-muted leading-relaxed font-light">
-            Textos pensados para quem decide. Eliminamos jargões vazios e estruturamos uma narrativa que antecipa as dúvidas e quebra as principais objeções de compra antes do primeiro contato.
-          </p>
-        </div>
-
-        <div class="bento-card p-8">
-          <div class="text-xs font-mono text-brand-caribe mb-6 tracking-wider">02 / VELOCIDADE</div>
-          <h3 class="text-xl font-medium text-white mb-3">Carregamento Sub-Segundo</h3>
-          <p class="text-xs text-brand-muted leading-relaxed font-light">
-            Desenvolvido com tecnologia de ponta sem plugins acumulados. A página abre em menos de 1,2 segundo no smartphone do seu prospecto, mesmo em redes 4G oscilantes.
-          </p>
-        </div>
-
-        <div class="bento-card p-8">
-          <div class="text-xs font-mono text-brand-caribe mb-6 tracking-wider">03 / CONVERSÃO</div>
-          <h3 class="text-xl font-medium text-white mb-3">Fluxo de Contato sem Fricção</h3>
-          <p class="text-xs text-brand-muted leading-relaxed font-light">
-            Cada elemento, botão e chamada é posicionado na rota ergonômica natural do polegar, conduzindo o interessado diretamente para o seu WhatsApp corporativo em um único toque.
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       PARA QUEM É (CRITÉRIO DE QUALIFICAÇÃO)
-       ============================================== -->
-  <section class="py-24 relative z-10 border-t border-white/[0.06] bg-[#090909]">
-    <div class="max-w-6xl mx-auto px-6">
-      
-      <div class="text-center max-w-xl mx-auto mb-16">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Filtro de Segmentos</span>
-        <h2 class="text-3xl md:text-5xl font-light text-white mt-3">
-          Projetado para quem vende <span class="font-serif italic">competência técnica.</span>
-        </h2>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-        
-        <!-- Para Quem É -->
-        <div class="bento-card p-8 sm:p-10 border-brand-forest/50">
-          <div class="flex items-center gap-3 mb-6">
-            <span class="w-2.5 h-2.5 rounded-full bg-brand-caribe shadow-[0_0_8px_#00C46A]"></span>
-            <span class="text-xs font-mono uppercase tracking-wider text-white font-medium">Projetos com Alta Sinergia</span>
-          </div>
-          <ul class="space-y-5 text-xs sm:text-sm text-gray-300 font-light">
-            <li class="flex items-start gap-3">
-              <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Escritórios de Advocacia Especializada:</strong> Que precisam demonstrar reputação, rigor institucional e autoridade antes de reuniões de honorários.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>BPO Financeiro & Auditoria Contábil:</strong> Empresas que vendem segurança de dados e processos organizados para decisores e diretores.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Clínicas Médicas & Odontologia Avançada:</strong> Onde a sofisticação da experiência visual precisa refletir o alto nível do procedimento clínico.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-brand-caribe font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Negócios B2B e Serviços Especializados:</strong> Empresas que recebem clientes por indicação, prospecção ativa ou anúncios e exigem uma presença digital que passe credibilidade imediata na hora de fechar contratos.</span>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Para Quem Não É -->
-        <div class="bento-card p-8 sm:p-10 border-white/[0.05] bg-black/40">
-          <div class="flex items-center gap-3 mb-6">
-            <span class="w-2.5 h-2.5 rounded-full bg-neutral-600"></span>
-            <span class="text-xs font-mono uppercase tracking-wider text-brand-muted font-medium">Modelos Sem Alinhamento</span>
-          </div>
-                    <ul class="space-y-5 text-xs sm:text-sm text-brand-muted font-light">
-            <li class="flex items-start gap-3">
-              <span class="text-neutral-500 font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Lojas de Dropshipping ou E-commerce de Varejo:</strong> Não desenvolvemos catálogos com centenas de produtos ou gateways de carrinho complexos.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-neutral-500 font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Empresas focadas em soluções improvisadas:</strong> Nosso foco é engenharia de código sob medida, arquitetura de informação e posicionamento de autoridade.</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-neutral-500 font-serif text-lg leading-none mt-0.5">•</span>
-              <span><strong>Projetos sem clareza de proposta de valor:</strong> A estrutura funciona potencializando negócios com serviços validados e posicionamento comercial sério.</span>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       CASES & PORTFÓLIO VISUAL (UI/UX NA PRÁTICA)
-       ============================================== -->
-  <section id="portfolio" class="py-28 relative z-10 border-t border-white/[0.06]">
-    <div class="max-w-7xl mx-auto px-6">
-      
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-        <div>
-          <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Portfólio Selecionado</span>
-          <h2 class="text-3xl sm:text-5xl font-light text-white mt-3 leading-tight">
-            Projetos reais construídos <br>
-            <span class="font-serif italic text-brand-caribe">para converter decisores.</span>
-          </h2>
-        </div>
-        <p class="text-xs text-brand-muted max-w-md font-light leading-relaxed">
-          Cada página é tratada como um ativo de vendas exclusivo. Não utilizamos estruturas prontas; desenhamos cada hierarquia conforme o perfil do comprador final.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        
-        <!-- Case 1: 4Tires (Case Real de Sucesso) -->
-        <div class="bento-card group p-8 flex flex-col justify-between">
-          <div>
-            <div class="aspect-video w-full rounded-xl bg-neutral-900 border border-white/10 overflow-hidden relative mb-6">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
-              <div class="absolute top-4 left-4 z-20 flex gap-2">
-                <span class="text-[10px] font-mono uppercase bg-brand-caribe text-black font-semibold px-2.5 py-1 rounded-full">Case Real</span>
-                <span class="text-[10px] font-mono uppercase bg-white/10 text-white/90 backdrop-blur-md px-2.5 py-1 rounded-full">Automotivo Premium</span>
-              </div>
-              <div class="w-full h-full flex items-center justify-center text-brand-muted/40 font-mono text-sm group-hover:scale-105 transition-transform duration-500">
-                [ Interface 4Tires — Otimizada para WhatsApp ]
-              </div>
-            </div>
-            <div class="flex items-baseline justify-between mb-2">
-              <h3 class="text-2xl font-medium text-white">4Tires Centro Automotivo</h3>
-              <span class="text-xs font-mono text-brand-caribe">Taxa de Conversão 18.4%</span>
-            </div>
-            <p class="text-xs text-brand-muted font-light leading-relaxed">
-              Estrutura ergonômica voltada à cotação direta de pneus de alta performance. Redução do tempo de carregamento para 0.9s e integração direta com o time de vendas via WhatsApp.
-            </p>
-          </div>
-          <div class="mt-6 pt-6 border-t border-white/[0.06] flex items-center justify-between">
-            <span class="text-[11px] font-mono text-brand-muted">Arquitetura UI/UX & Código Puro</span>
-            <span class="text-xs font-mono text-brand-caribe group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">Ver Detalhes →</span>
-          </div>
-        </div>
-
-        <!-- Case 2: Modelo Advocacia & Direito Corporativo -->
-        <div class="bento-card group p-8 flex flex-col justify-between">
-          <div>
-            <div class="aspect-video w-full rounded-xl bg-neutral-900 border border-white/10 overflow-hidden relative mb-6">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
-              <div class="absolute top-4 left-4 z-20 flex gap-2">
-                <span class="text-[10px] font-mono uppercase bg-white/10 text-white/90 backdrop-blur-md px-2.5 py-1 rounded-full">Direito Empresarial</span>
-                <span class="text-[10px] font-mono uppercase bg-brand-forest/60 text-brand-caribe border border-brand-forest px-2.5 py-1 rounded-full">Editorial Jurídico</span>
-              </div>
-              <div class="w-full h-full flex items-center justify-center text-brand-muted/40 font-mono text-sm group-hover:scale-105 transition-transform duration-500">
-                [ Layout Advocacia de Alto Valor ]
-              </div>
-            </div>
-            <div class="flex items-baseline justify-between mb-2">
-              <h3 class="text-2xl font-medium text-white">Boutique Jurídica & Compliance</h3>
-              <span class="text-xs font-mono text-brand-caribe">Status Institucional</span>
-            </div>
-            <p class="text-xs text-brand-muted font-light leading-relaxed">
-              Comunicação sóbria em tipografia com serifa clássica, eliminando distrações e valorizando as áreas de atuação para clientes com honorários superiores a cinco dígitos.
-            </p>
-          </div>
-          <div class="mt-6 pt-6 border-t border-white/[0.06] flex items-center justify-between">
-            <span class="text-[11px] font-mono text-brand-muted">Design Conforme Provimento OAB</span>
-            <span class="text-xs font-mono text-brand-caribe group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">Ver Detalhes →</span>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       SOBRE A EMPRESA & O ESTRATEGISTA
-       ============================================== -->
-  <section class="py-24 relative z-10 border-t border-white/[0.06] bg-[#070707]">
-    <div class="max-w-5xl mx-auto px-6">
-      
-      <div class="bento-card p-8 sm:p-12 relative overflow-hidden">
-        <div class="ambient-orb w-96 h-96 bg-brand-forest/20 -top-20 -right-20"></div>
-
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
-          
-          <div class="md:col-span-4 text-center md:text-left">
-            <div class="w-28 h-28 mx-auto md:mx-0 rounded-2xl bg-neutral-900 border border-brand-caribe/30 p-1 mb-4 flex items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(0,196,106,0.15)]">
-              <span class="text-2xl font-bold font-mono text-brand-caribe">SA</span>
-            </div>
-            <h3 class="text-xl font-medium text-white">Sarmento Ads</h3>
-            <p class="text-xs font-mono text-brand-caribe mt-0.5">Estúdio Técnico & Gestão de Performance</p>
-            <div class="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-[11px] font-mono text-white/70">
-              <span class="w-1.5 h-1.5 rounded-full bg-brand-caribe animate-pulse"></span> Rio Grande do Sul — Brasil
-            </div>
-          </div>
-
-          <div class="md:col-span-8 space-y-4 text-xs sm:text-sm text-brand-muted font-light leading-relaxed border-t md:border-t-0 md:border-l border-white/[0.08] pt-6 md:pt-0 md:pl-8">
-            <p>
-              A Sarmento Ads nasceu para preencher a lacuna entre dois extremos do mercado: as agências tradicionais que entregam sites lentos em WordPress com excesso de plugins, e os programadores que constroem sistemas técnicos sem qualquer compreensão de copywriting ou psicologia de vendas.
-            </p>
-            <p>
-              Tratamos o código da sua página com rigor de engenharia de software e a redação com princípios práticos de resposta direta. Cada linha de código visa uma métrica simples: aumentar a taxa de conversão do seu tráfego qualificado.
-            </p>
-            <div class="pt-2 flex flex-wrap gap-4 text-xs font-mono text-white/90">
-              <div class="flex items-center gap-2">
-                <span class="text-brand-caribe">✓</span> Atendimento Técnico Direto
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-brand-caribe">✓</span> Sem Terceirização Oculta
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-brand-caribe">✓</span> Compromisso com Prazos Rigorosos
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       INVESTIMENTO & TRANSPARÊNCIA TÉCNICA
-       ============================================== -->
-  <section id="investimento" class="py-28 relative z-10 border-t border-white/[0.06]">
-    <div class="max-w-4xl mx-auto px-6">
-      
-      <div class="text-center max-w-xl mx-auto mb-16">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Transparência Comercial</span>
-        <h2 class="text-3xl sm:text-5xl font-light text-white mt-3">
-          Investimento direto. <br>
-          <span class="font-serif italic text-brand-caribe">Sem custos ocultos.</span>
-        </h2>
-        <p class="text-xs sm:text-sm text-brand-muted mt-3 font-light">
-          Um modelo estruturado para que você não precise se preocupar com aspectos técnicos, hospedagem instável ou lentidão de servidores.
-        </p>
-      </div>
-
-      <!-- Card Principal de Oferta -->
-      <div class="bento-card p-8 sm:p-12 border-brand-caribe/30 relative">
-        <div class="absolute top-0 right-0 px-6 py-2 bg-brand-forest/60 border-b border-l border-brand-forest/80 rounded-bl-2xl text-[10px] font-mono uppercase tracking-widest text-brand-caribe font-medium">
-          Sprint Semanal Limitado
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
-          <div class="lg:col-span-7 space-y-6">
-            <div>
-              <span class="text-xs font-mono uppercase text-brand-muted tracking-wider">Escopo Completo da Entrega</span>
-              <h3 class="text-2xl font-medium text-white mt-1">Landing Page de Alta Conversão</h3>
-            </div>
-
-            <ul class="space-y-3 text-xs sm:text-sm text-gray-300 font-light">
-              <li class="flex items-start gap-2.5">
-                <span class="text-brand-caribe font-bold">✓</span>
-                <span>Direção de Arte e UI/UX Exclusivos (Sem templates prontos)</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="text-brand-caribe font-bold">✓</span>
-                <span>Copywriting persuasivo orientado a tomadores de decisão</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="text-brand-caribe font-bold">✓</span>
-                <span>Desenvolvimento com tecnologia moderna e tempo de abertura instantâneo</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="text-brand-caribe font-bold">✓</span>
-                <span>Configuração de pixels de rastreamento (Meta & Google Tag Manager)</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="text-brand-caribe font-bold">✓</span>
-                <span>Otimização para dispositivos móveis com foco na zona do polegar</span>
-              </li>
-            </ul>
-
-            <!-- Módulo de Manutenção e Gestão Técnica -->
-            <div class="p-4 rounded-xl bg-black/50 border border-white/[0.08] text-xs font-light space-y-1.5">
-              <div class="flex items-center justify-between text-white font-medium">
-                <span class="flex items-center gap-1.5">
-                  <span class="w-2 h-2 rounded-full bg-brand-caribe"></span> Gestão Técnica & Infraestrutura:
-                </span>
-                <span class="font-mono text-brand-caribe font-bold">R$ 99,90 / mês</span>
-              </div>
-              <p class="text-brand-muted text-[11px] leading-relaxed pt-1">
-                Inclui hospedagem em nuvem de alta performance com certificado SSL vitalício, monitoramento de estabilidade 24/7, backups automatizados e suporte contínuo para alterações de contato e texto.
-              </p>
-            </div>
-          </div>
-
-          <!-- Coluna de Preço & CTA -->
-          <div class="lg:col-span-5 flex flex-col justify-center items-center lg:items-end text-center lg:text-right border-t lg:border-t-0 lg:border-l border-white/[0.08] pt-8 lg:pt-0 lg:pl-8">
-            <span class="text-xs font-mono uppercase text-brand-muted tracking-wider">DESENVOLVIMENTO COMPLETO</span>
-            <div class="my-3">
-              <span class="text-xs text-brand-muted font-mono align-baseline">a partir de R$</span>
-              <span class="text-5xl sm:text-6xl font-light text-white tracking-tight">997</span>
-              <span class="text-xs font-mono text-brand-muted block mt-1">à vista ou em até 12x no cartão</span>
-            </div>
-
-            <a href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20reservar%20uma%20vaga%20para%20desenvolvimento%20da%20minha%20landing%20page." 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="btn-shine w-full mt-4 px-8 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-full transition-all duration-300 text-center shadow-[0_10px_30px_rgba(0,196,106,0.3)]">
-              Reservar Minha Vaga
-            </a>
-            
-            <span class="text-[10px] font-mono text-brand-muted mt-3 block">
-              Início imediato mediante validação de briefing.
-            </span>
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- Garantia Blindada de 7 Dias -->
-      <div class="mt-8 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-center gap-5">
-        <div class="w-12 h-12 rounded-xl bg-brand-forest/30 border border-brand-forest/60 flex items-center justify-center text-brand-caribe shrink-0 font-mono text-lg font-bold">
-          7D
-        </div>
-        <div>
-          <h4 class="text-sm font-medium text-white">Garantia Incondicional de Satisfação</h4>
-          <p class="text-xs text-brand-muted font-light mt-1 leading-relaxed">
-            Após a entrega da primeira prévia da sua landing page, se você considerar que a qualidade visual e a arquitetura não atendem ao nível do seu negócio, devolvemos 100% do seu investimento sem questionamentos.
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       PERGUNTAS FREQUENTES (FAQ ACCORDION)
-       ============================================== -->
-  <section id="faq" class="py-24 relative z-10 border-t border-white/[0.06] bg-[#070707]">
-    <div class="max-w-4xl mx-auto px-6">
-      
-      <div class="text-center max-w-xl mx-auto mb-16">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase">Tire Suas Dúvidas</span>
-        <h2 class="text-3xl sm:text-4xl font-light text-white mt-2">
-          Respostas claras e factuais.
-        </h2>
-      </div>
-
-      <div class="space-y-4">
-        
-        <!-- Pergunta 1 -->
-        <div class="bento-card p-6 cursor-pointer faq-item" onclick="toggleFaq(this)">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm sm:text-base font-medium text-white">Qual é o prazo médio de entrega da página?</h3>
-            <span class="faq-icon text-brand-caribe text-lg font-mono transition-transform duration-300">+</span>
-          </div>
-          <div class="faq-content hidden mt-4 pt-4 border-t border-white/[0.06] text-xs text-brand-muted font-light leading-relaxed">
-            O prazo padrão é de 5 a 7 dias úteis após o alinhamento das informações de negócio no briefing inicial.
-          </div>
-        </div>
-
-        <!-- Pergunta 2 -->
-        <div class="bento-card p-6 cursor-pointer faq-item" onclick="toggleFaq(this)">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm sm:text-base font-medium text-white">Por que o site é desenvolvido em código em vez de WordPress?</h3>
-            <span class="faq-icon text-brand-caribe text-lg font-mono transition-transform duration-300">+</span>
-          </div>
-          <div class="faq-content hidden mt-4 pt-4 border-t border-white/[0.06] text-xs text-brand-muted font-light leading-relaxed">
-            Sites em WordPress costumam acumular dezenas de plugins pesados, vulnerabilidades frequentes de segurança e tempo de abertura superior a 4 segundos no celular. O código sob medida carrega em menos de 1 segundo, é imune a invasões comuns e garante pontuação máxima nos testes do Google.
-          </div>
-        </div>
-
-        <!-- Pergunta 3 -->
-        <div class="bento-card p-6 cursor-pointer faq-item" onclick="toggleFaq(this)">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm sm:text-base font-medium text-white">O que acontece se eu precisar trocar textos ou telefones no futuro?</h3>
-            <span class="faq-icon text-brand-caribe text-lg font-mono transition-transform duration-300">+</span>
-          </div>
-          <div class="faq-content hidden mt-4 pt-4 border-t border-white/[0.06] text-xs text-brand-muted font-light leading-relaxed">
-            O serviço de gestão contínua (R$ 99,90/mês) cobre suporte direto para atualizações periódicas de contatos, horários, fotos e alterações pontuais de texto sem custos adicionais de mão de obra.
-          </div>
-        </div>
-
-        <!-- Pergunta 4 -->
-        <div class="bento-card p-6 cursor-pointer faq-item" onclick="toggleFaq(this)">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm sm:text-base font-medium text-white">Eu não invisto em tráfego pago hoje. Essa estrutura serve para mim?</h3>
-            <span class="faq-icon text-brand-caribe text-lg font-mono transition-transform duration-300">+</span>
-          </div>
-          <div class="faq-content hidden mt-4 pt-4 border-t border-white/[0.06] text-xs text-brand-muted font-light leading-relaxed">
-            Com certeza. Se você fecha contratos por indicação ou prospecção ativa, o cliente invariavelmente pesquisa o seu nome no Google antes de assinar o contrato. Uma presença com acabamento premium garante que você não perca negócios por transmitir amadorismo visual.
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       CALL TO ACTION SECUNDÁRIO / FINAL
-       ============================================== -->
-  <section class="py-28 relative z-10 border-t border-white/[0.06] overflow-hidden">
-    <div class="ambient-orb w-[500px] h-[500px] bg-brand-caribe/10 bottom-0 left-1/2 -translate-x-1/2"></div>
-
-    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
-      
-      <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Decisão Estratégica</span>
-      
-      <h2 class="text-3xl sm:text-5xl md:text-6xl font-light text-white mt-4 leading-tight">
-        Sua empresa não merece uma página <br>
-        <span class="font-serif italic text-brand-caribe">que pareça amadora.</span>
-      </h2>
-
-      <p class="mt-6 text-sm sm:text-base text-brand-muted max-w-xl mx-auto font-light leading-relaxed">
-        Reserve o seu diagnóstico e tenha um canal de vendas digital desenhado com padrão visual contemporâneo e engenharia técnica de resposta imediata.
-      </p>
-
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="#contato" 
-           class="btn-shine w-full sm:w-auto px-10 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-full transition-all duration-300 shadow-[0_10px_30px_rgba(0,196,106,0.3)]">
-          Iniciar Meu Projeto
-        </a>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       SESSÃO DO FORMULÁRIO DINÂMICO (TURBINE SEU NEGÓCIO LOCAL!)
-       ============================================== -->
-  <section id="contato" class="py-24 relative z-10 border-t border-white/[0.06] bg-[#080808]">
-    <div class="max-w-xl mx-auto px-6">
-      
-      <div class="text-center mb-8">
-        <span class="text-xs font-mono tracking-widest text-brand-caribe uppercase font-semibold">Diagnóstico Estratégico</span>
-        <h2 class="text-3xl font-light text-white mt-2">
-          Turbine Seu Negócio Local!
-        </h2>
-        <p class="text-xs text-brand-muted mt-2 font-light">
-          Preencha os passos abaixo para receber uma análise completa e sob medida da sua operação.
-        </p>
-
-        <!-- Indicador visual das etapas -->
-        <div class="flex justify-center items-center gap-2 mt-6">
-          <div id="dot-1" class="h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300"></div>
-          <div id="dot-2" class="h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300"></div>
-          <div id="dot-3" class="h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300"></div>
-        </div>
-      </div>
-
-      <div class="bento-card p-8 border-brand-caribe/30">
-        <form id="form-crm" onsubmit="enviarParaCRM(event)">
-          
-          <!-- ETAPA 1: Dados Pessoais de Contato -->
-          <div id="etapa-1" class="space-y-4">
-            <div class="text-xs font-mono text-brand-caribe uppercase tracking-wider mb-2">Etapa 1 de 3 — Seus Dados</div>
-            
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nome Completo *</label>
-              <input type="text" id="campo-nome" required placeholder="Ex: Rodrigo Sarmento" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">WhatsApp *</label>
-                <input type="tel" id="campo-whatsapp" required placeholder="(51) 99999-9999" 
-                       class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-              </div>
-
-              <div>
-                <label class="block text-xs font-mono text-brand-muted uppercase mb-1">E-mail *</label>
-                <input type="email" id="campo-email" required placeholder="contato@empresa.com" 
-                       class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-              </div>
-            </div>
-
-            <button type="button" onclick="irParaEtapa(2)" 
-                    class="btn-shine w-full mt-6 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)] flex items-center justify-center gap-2">
-              <span>Avançar para o Negócio →</span>
-            </button>
-          </div>
-
-          <!-- ETAPA 2: Dados do Negócio e Presença Web -->
-          <div id="etapa-2" class="space-y-4 hidden">
-            <div class="text-xs font-mono text-brand-caribe uppercase tracking-wider mb-2">Etapa 2 de 3 — Seu Negócio</div>
-
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Nome do Negócio *</label>
-              <input type="text" id="campo-nome-negocio" placeholder="Ex: Barbearia Vip / Clínica Viva" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-            </div>
-
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Segmento de Atuação *</label>
-              <select id="campo-segmento" 
-                      class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-                <option value="" disabled selected>Selecione seu nicho</option>
-                <option value="Restaurantes/Bares">Restaurantes / Bares</option>
-                <option value="Salão de Beleza/Estética">Salão de Beleza / Estética</option>
-                <option value="Lojas/Comércio">Lojas e Comércio Local</option>
-                <option value="Academias">Academias</option>
-                <option value="Clínicas">Clínicas Médicas / Odontológicas</option>
-                <option value="Autônomo/Prestador">Profissional Autônomo</option>
-                <option value="Construtora/Reforma">Construtora / Reformas</option>
-                <option value="Imobiliária">Imobiliária / Corretor</option>
-                <option value="Outros">Outros</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Já possui um site ativo?</label>
-              <select id="campo-possui-site" onchange="verificarSite(this.value)" 
-                      class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-                <option value="Não">Não possuo site</option>
-                <option value="Sim">Sim, já tenho site</option>
-              </select>
-            </div>
-
-            <div id="wrapper-site-url" class="hidden">
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Endereço (URL) do Site</label>
-              <input type="url" id="campo-site-url" placeholder="https://www.seusite.com.br" 
-                     class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-            </div>
-
-            <div class="flex gap-3 pt-2">
-              <button type="button" onclick="irParaEtapa(1)" 
-                      class="w-1/3 py-4 border border-white/10 hover:border-white/30 text-white/80 font-mono text-xs uppercase rounded-xl transition">
-                ← Voltar
-              </button>
-              <button type="button" onclick="irParaEtapa(3)" 
-                      class="btn-shine w-2/3 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)]">
-                Avançar →
-              </button>
-            </div>
-          </div>
-
-          <!-- ETAPA 3: Diagnóstico de Desafio & Envio Final -->
-          <div id="etapa-3" class="space-y-4 hidden">
-            <div class="text-xs font-mono text-brand-caribe uppercase tracking-wider mb-2">Etapa 3 de 3 — Seu Maior Desafio</div>
-                        <div>
-              <label class="block text-xs font-mono text-brand-muted uppercase mb-1">Qual o seu maior desafio atual para atrair clientes online? *</label>
-              <select id="campo-desafio" required
-                      class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-caribe transition">
-                <option value="" disabled selected>Selecione o principal obstáculo</option>
-                <option value="Não aparece no Google">Não apareço no Google quando procuram meu serviço</option>
-                <option value="Site não gera contatos">Tenho presença online/site, mas não recebo mensagens de clientes</option>
-                <option value="Falta de credibilidade">Falta de credibilidade visual na internet</option>
-                <option value="Concorrente mais visível">Concorrentes aparecem mais e captam os clientes da minha região</option>
-                <option value="Não sabe por onde começar">Não sei por onde começar a estruturar meu tráfego e presença</option>
-                <option value="Outro">Outro obstáculo</option>
-              </select>
-            </div>
-
-            <div class="flex gap-3 pt-2">
-              <button type="button" onclick="irParaEtapa(2)" 
-                      class="w-1/3 py-4 border border-white/10 hover:border-white/30 text-white/80 font-mono text-xs uppercase rounded-xl transition">
-                ← Voltar
-              </button>
-              <button type="submit" id="btn-enviar-crm" 
-                      class="btn-shine w-2/3 py-4 bg-brand-caribe hover:bg-[#00d876] text-black font-semibold text-xs tracking-wider uppercase rounded-xl transition duration-300 shadow-[0_10px_25px_rgba(0,196,106,0.25)] flex items-center justify-center gap-2">
-                <span>Finalizar Aplicação</span>
-              </button>
-            </div>
-
-            <p id="msg-sucesso" class="hidden text-center text-xs font-mono text-brand-caribe mt-2">
-              ✓ Diagnóstico enviado com sucesso! Redirecionando...
-            </p>
-          </div>
-
-        </form>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==============================================
-       RODAPÉ EDITORIAL
-       ============================================== -->
-  <footer class="py-12 relative z-10 border-t border-white/[0.06] bg-[#050505]">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-brand-muted font-mono">
-      <div class="flex items-center gap-3">
-        <span class="w-2 h-2 rounded-full bg-brand-caribe"></span>
-        <span class="text-white">SARMENTO ADS</span>
-        <span class="text-white/20">|</span>
-        <span>Engenharia UI/UX & Conversão</span>
-      </div>
-
+  </div>
+  <div class="nav-progress" id="nav-progress"></div>
+</nav>
+
+<main id="topo">
+
+<!-- HERO -->
+<header class="hero" id="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-giant" id="hero-giant" aria-hidden="true">SARMENTO ADS · SARMENTO ADS ·</div>
+
+  <div class="wrap">
+    <div class="hero-grid">
       <div>
-        © 2026 Sarmento Ads. Todos os direitos reservados.
+        <div class="pill" data-hero>
+          <span class="dot"></span>
+          <span class="mono">Engenharia de UI/UX & Tráfego</span>
+          <span class="sep"></span>
+          <span>Padrão internacional</span>
+        </div>
+        <h1 id="hero-title">Construímos a presença digital que <span class="serif">justifica os seus honorários.</span></h1>
+        <p class="hero-lead" data-hero>A maioria dos sites corporativos parece um PDF estático e sem vida. Criamos páginas fluidas, rápidas e desenhadas para que o cliente decida fechar contrato nos primeiros cinco segundos.</p>
+        <div class="hero-ctas" data-hero>
+          <a class="btn btn-primary magnetic" href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20avaliar%20o%20posicionamento%20digital%20da%20minha%20empresa." target="_blank" rel="noopener noreferrer">
+            <span class="btn-fill"></span>Agendar diagnóstico gratuito <span class="arrow">→</span>
+          </a>
+          <a class="btn btn-ghost magnetic" href="#experiencia"><span class="btn-fill"></span>Explorar a experiência ↓</a>
+        </div>
+      </div>
+
+      <div class="hero-visual" data-hero aria-hidden="true">
+        <div class="halo"></div>
+        <svg class="badge-ring" viewBox="0 0 200 200">
+          <defs><path id="circ" d="M100,100 m-86,0 a86,86 0 1,1 172,0 a86,86 0 1,1 -172,0"/></defs>
+          <text><textPath href="#circ">Diagnóstico gratuito · Landing pages · Tráfego pago · UI/UX ·</textPath></text>
+        </svg>
+        <div class="mark3d-stage">
+          <div class="mark3d" id="mark3d"></div>
+        </div>
       </div>
     </div>
-  </footer>
 
-  <!-- ==============================================
-       SCRIPTS DE EXPERIÊNCIA & FÍSICA 3D (TILT & SPOTLIGHT)
-       ============================================== -->
-  <script>
-    // 1. Cursor Spotlight Dinâmico
-    const cursorLight = document.getElementById('cursor-light');
-    window.addEventListener('mousemove', (e) => {
-      cursorLight.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+    <div class="stats">
+      <div class="stat" data-hero><b data-count="0.8" data-dec="1" data-pre="&lt; " data-suf="s">&lt; 0,8s</b><span>Tempo médio de resposta</span></div>
+      <div class="stat" data-hero><b data-count="95" data-suf="+">95+</b><span>Nota Core Web Vitals no celular</span></div>
+      <div class="stat" data-hero><b data-count="18.4" data-dec="1" data-suf="%">18,4%</b><span>Conversão no case 4Tires</span></div>
+      <div class="stat" data-hero><b data-count="7" data-suf=" dias">7 dias</b><span>Garantia incondicional</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- FAIXAS -->
+<div class="bands" aria-hidden="true">
+  <div class="band band-b"><div class="band-track" data-band="Código puro|Meta Pixel|Google Tag Manager|Zona do polegar|Copy de resposta direta"></div></div>
+  <div class="band band-a"><div class="band-track" data-band="UI/UX|Tráfego pago|Conversão|Landing pages|Performance"></div></div>
+</div>
+
+<!-- MANIFESTO -->
+<section class="section paper manifesto">
+  <div class="wrap">
+    <span class="mono eyebrow">Manifesto</span>
+    <p id="manifesto-text" style="margin-top:28px">A psicologia humana associa movimento suave, design sem ruído e resposta imediata a marcas <span class="serif">sólidas, caras e confiáveis.</span> É isso que construímos, linha por linha.</p>
+    <div class="sign mono"><svg viewBox="0 0 165 148" aria-hidden="true"><use href="#mark"/></svg>Sarmento Ads · Rio Grande do Sul</div>
+  </div>
+</section>
+
+<!-- EXPERIÊNCIA (BENTO) -->
+<section class="section" id="experiencia">
+  <div class="wrap">
+    <div class="head split">
+      <div>
+        <span class="mono eyebrow">Motion & User Experience</span>
+        <h2 class="h2" data-split>Por que uma interface fluida <span class="serif green">vende muito mais?</span></h2>
+      </div>
+      <p class="lead" data-reveal>Integramos os pilares que transformam visitantes em compradores: resposta imediata, ergonomia no celular, leitura guiada e dados confiáveis.</p>
+    </div>
+
+    <div class="bento">
+      <article class="card c8 tilt" data-reveal>
+        <div class="card-top"><span class="mono">Microinteração & fluidez</span><span class="tag">60 FPS</span></div>
+        <div class="compare" id="compare">
+          <div class="cmp-row">
+            <header><span>Template WordPress com plugins</span><b>~4 s</b></header>
+            <div class="cmp-track"><div class="cmp-bar" style="width:100%"></div></div>
+          </div>
+          <div class="cmp-row us">
+            <header><span>Código sob medida Sarmento</span><b>&lt; 0,8 s</b></header>
+            <div class="cmp-track"><div class="cmp-bar" style="width:20%"></div></div>
+          </div>
+          <span class="cmp-note">Tempo de abertura no celular em 4G</span>
+        </div>
+        <div class="card-body">
+          <h3>Engenharia visual com física natural</h3>
+          <p>Cada botão, rolagem e abertura de sanfona reage ao usuário com curvas de aceleração orgânicas. Some a sensação robótica dos templates antigos.</p>
+        </div>
+      </article>
+
+      <article class="card c4 tilt" data-reveal>
+        <div class="card-top"><span class="mono">Ergonomia</span><span class="tag">Mobile</span></div>
+        <div class="phone" aria-hidden="true">
+          <span class="ln" style="top:34px;width:60%"></span>
+          <span class="ln" style="top:50px;width:78%"></span>
+          <span class="ln" style="top:66px;width:44%"></span>
+          <span class="ln" style="top:96px;width:70%;height:40px;border-radius:10px"></span>
+          <span class="zone"></span>
+          <span class="tap">WA</span>
+        </div>
+        <div class="card-body">
+          <h3>Zona do polegar</h3>
+          <p>O botão de contato fica no raio natural do polegar. Zero esforço para quem navega pelo celular.</p>
+        </div>
+      </article>
+
+      <article class="card c4 tilt" data-reveal>
+        <div class="card-top"><span class="mono">Psicologia cognitiva</span></div>
+        <div class="gaze">
+          <div><i>01</i>Gancho visual sofisticado</div>
+          <div><i>02</i>Objeções eliminadas com fatos</div>
+          <div><i>03</i>Ação direta no WhatsApp</div>
+        </div>
+        <div class="card-body">
+          <h3>Arquitetura de olhar guiado</h3>
+          <p>O visitante nunca se sente sobrecarregado. Cada parágrafo cria curiosidade e respeito pela sua marca.</p>
+        </div>
+      </article>
+
+      <article class="card c8 tilt" data-reveal>
+        <div class="card-top"><span class="mono">Inteligência comercial</span><span class="tag">Analytics</span></div>
+        <div class="metrics">
+          <div class="metric"><small>Meta Pixel</small><b>Eventos de lead</b><span>100% auditado</span></div>
+          <div class="metric"><small>Google Tag Manager</small><b>Conversão exata</b><span>Zero dispersão</span></div>
+          <div class="metric"><small>Core Web Vitals</small><b>Nota 95+ mobile</b><span>Green score</span></div>
+        </div>
+        <div>
+          <div class="feed-title"><span class="dot"></span>Eventos em tempo real (exemplo)</div>
+          <div class="feed" id="feed" style="margin-top:10px"></div>
+        </div>
+        <div class="card-body">
+          <h3>Rastreamento sem comprometer a velocidade</h3>
+          <p>Enquanto sites comuns ficam lentos ao instalar pixels, nossa arquitetura dispara eventos em segundo plano sem travar a experiência.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ENGENHARIA (SCROLL HORIZONTAL) -->
+<section class="h-section" id="detalhe">
+  <div class="h-pin" id="h-pin">
+    <div class="h-track" id="h-track">
+      <div class="h-intro">
+        <span class="mono eyebrow">A engenharia</span>
+        <h2 class="h2" data-split>Menos ruído visual. <span class="serif green">Mais conversão imediata.</span></h2>
+        <p class="lead">Templates genéricos carregam centenas de scripts que espantam o visitante antes da página abrir. Nossa abordagem é código limpo e arquitetura comercial.</p>
+      </div>
+      <article class="h-card">
+        <span class="big" aria-hidden="true">COPY</span>
+        <span class="mono">01 · Narrativa</span>
+        <div><h3>Copywriting com rigor factual</h3><p>Textos pensados para quem decide. Sem jargão vazio: uma narrativa que antecipa dúvidas e quebra as principais objeções antes do primeiro contato.</p></div>
+      </article>
+      <article class="h-card">
+        <span class="big" aria-hidden="true">1,2s</span>
+        <span class="mono">02 · Velocidade</span>
+        <div><h3>Carregamento abaixo de um segundo</h3><p>Sem plugins acumulados. A página abre em menos de 1,2 segundo no celular do seu cliente, mesmo em redes 4G instáveis.</p></div>
+      </article>
+      <article class="h-card">
+        <span class="big" aria-hidden="true">1 toque</span>
+        <span class="mono">03 · Conversão</span>
+        <div><h3>Contato sem fricção</h3><p>Cada botão fica na rota natural do polegar e leva o interessado direto para o seu WhatsApp corporativo em um único toque.</p></div>
+      </article>
+    </div>
+    <div class="h-progress" aria-hidden="true"><i id="h-progress"></i></div>
+  </div>
+</section>
+
+<!-- SEGMENTOS -->
+<section class="section paper">
+  <div class="wrap">
+    <div class="head split">
+      <div>
+        <span class="mono eyebrow">Filtro de segmentos</span>
+        <h2 class="h2" data-split>Projetado para quem vende <span class="serif">competência técnica.</span></h2>
+      </div>
+      <p class="lead" data-reveal>Trabalhamos melhor com negócios de serviço que fecham contratos de valor e precisam passar confiança antes da primeira reunião.</p>
+    </div>
+    <div class="fit">
+      <div class="fit-col fit-yes" data-reveal>
+        <header><i>✓</i><span class="mono">Alta sinergia</span></header>
+        <ul>
+          <li data-li><b>Advocacia especializada</b><span>Reputação, rigor institucional e autoridade antes das reuniões de honorários.</span></li>
+          <li data-li><b>BPO financeiro & contabilidade</b><span>Empresas que vendem segurança de dados e processos organizados para diretores.</span></li>
+          <li data-li><b>Clínicas médicas & odontologia</b><span>A experiência visual precisa refletir o alto nível do procedimento clínico.</span></li>
+          <li data-li><b>B2B e serviços especializados</b><span>Clientes por indicação, prospecção ou anúncios que exigem credibilidade imediata na hora de fechar.</span></li>
+        </ul>
+      </div>
+      <div class="fit-col fit-no" data-reveal>
+        <header><i>×</i><span class="mono">Sem alinhamento</span></header>
+        <ul>
+          <li data-li><b>Dropshipping e varejo online</b><span>Não desenvolvemos catálogos com centenas de produtos ou carrinhos complexos.</span></li>
+          <li data-li><b>Soluções improvisadas</b><span>Nosso foco é código sob medida, arquitetura de informação e posicionamento de autoridade.</span></li>
+          <li data-li><b>Proposta de valor indefinida</b><span>A estrutura potencializa negócios com serviços validados e posicionamento comercial sério.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFÓLIO -->
+<section class="section" id="portfolio">
+  <div class="wrap">
+    <div class="head split">
+      <div>
+        <span class="mono eyebrow">Portfólio selecionado</span>
+        <h2 class="h2" data-split>Projetos reais construídos <span class="serif green">para converter decisores.</span></h2>
+      </div>
+      <p class="lead" data-reveal>Cada página é tratada como um ativo de vendas exclusivo. Nada de estrutura pronta: desenhamos a hierarquia conforme o perfil do comprador final.</p>
+    </div>
+
+    <div class="cases">
+      <article class="case">
+        <div class="case-media" data-cursor="Ver case">
+          <div class="case-tags"><span class="hot">Case real</span><span>Automotivo premium</span></div>
+          <div class="mock m-tires" data-parallax>
+            <div class="mock-bar"><span>4TIRES</span><i><b></b><b></b><b></b></i></div>
+            <div class="m-body">
+              <div>
+                <h4>Pneus de <em>alta performance</em> com cotação em 1 toque</h4>
+                <div class="m-lines"><b style="width:90%"></b><b style="width:70%"></b></div>
+                <span class="m-cta">COTAR NO WHATSAPP →</span>
+              </div>
+              <div class="tire"></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-info" data-reveal>
+          <header><h3>4Tires Centro Automotivo</h3><span>Conversão 18,4%</span></header>
+          <p>Estrutura ergonômica voltada à cotação direta de pneus de alta performance. Carregamento reduzido para 0,9 s e integração com o time de vendas via WhatsApp.</p>
+          <footer><span>UI/UX & código puro</span><a href="https://wa.me/5551980211154?text=Olá,%20vi%20o%20case%204Tires%20e%20quero%20algo%20parecido." target="_blank" rel="noopener noreferrer">Quero um assim →</a></footer>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="case-media" data-cursor="Ver case">
+          <div class="case-tags"><span>Direito empresarial</span><span>Editorial jurídico</span></div>
+          <div class="mock m-law" data-parallax>
+            <div class="mock-bar"><span>Boutique Jurídica</span><i><b></b><b></b><b></b></i></div>
+            <h4>Direito empresarial e compliance para decisões de alto valor.</h4>
+            <hr>
+            <div class="cols">
+              <div>Societário<b></b><b style="width:70%"></b></div>
+              <div>Tributário<b></b><b style="width:60%"></b></div>
+              <div>Compliance<b></b><b style="width:80%"></b></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-info" data-reveal>
+          <header><h3>Boutique Jurídica & Compliance</h3><span>Status institucional</span></header>
+          <p>Comunicação sóbria em tipografia serifada clássica, sem distrações, valorizando as áreas de atuação para clientes com honorários de cinco dígitos.</p>
+          <footer><span>Conforme Provimento OAB</span><a href="https://wa.me/5551980211154?text=Olá,%20vi%20o%20case%20jurídico%20e%20quero%20algo%20parecido." target="_blank" rel="noopener noreferrer">Quero um assim →</a></footer>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section class="section paper">
+  <div class="wrap about">
+    <div class="about-id">
+      <svg class="mk" viewBox="0 0 165 148" aria-hidden="true"><use href="#mark"/></svg>
+      <h2 data-split>Estúdio técnico & gestão de performance.</h2>
+      <span class="loc mono"><i></i>Rio Grande do Sul — Brasil</span>
+    </div>
+    <div class="about-text">
+      <p data-reveal>A Sarmento Ads nasceu para preencher a lacuna entre dois extremos do mercado: <strong>agências que entregam sites lentos em WordPress</strong> com excesso de plugins, e <strong>programadores que constroem sistemas sem entender</strong> copywriting ou psicologia de vendas.</p>
+      <p data-reveal>Tratamos o código da sua página com rigor de engenharia de software e a redação com princípios de resposta direta. Cada linha visa uma métrica simples: <strong>aumentar a taxa de conversão do seu tráfego qualificado.</strong></p>
+      <div class="checks">
+        <div data-li><i>✓</i>Atendimento técnico direto</div>
+        <div data-li><i>✓</i>Sem terceirização oculta</div>
+        <div data-li><i>✓</i>Compromisso com prazos rigorosos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTIMENTO -->
+<section class="section" id="investimento">
+  <div class="wrap">
+    <div class="head" style="text-align:center;justify-items:center">
+      <span class="mono eyebrow">Transparência comercial</span>
+      <h2 class="h2" data-split>Investimento direto. <span class="serif green">Sem custos ocultos.</span></h2>
+      <p class="lead" data-reveal style="margin-top:0">Um modelo estruturado para você não se preocupar com parte técnica, hospedagem instável ou servidor lento.</p>
+    </div>
+
+    <div class="price-wrap">
+      <div class="price" data-reveal>
+        <span class="price-flag">Sprint semanal limitado</span>
+        <div class="price-in">
+          <div>
+            <span class="mono">Escopo completo da entrega</span>
+            <h3>Landing page de alta conversão</h3>
+            <ul class="incl">
+              <li data-li><i>✓</i>Direção de arte e UI/UX exclusivos, sem templates prontos</li>
+              <li data-li><i>✓</i>Copywriting persuasivo para tomadores de decisão</li>
+              <li data-li><i>✓</i>Tecnologia moderna com abertura instantânea</li>
+              <li data-li><i>✓</i>Pixels de rastreamento configurados (Meta & Google Tag Manager)</li>
+              <li data-li><i>✓</i>Otimização para celular com foco na zona do polegar</li>
+            </ul>
+            <div class="infra">
+              <header><span>Gestão técnica & infraestrutura</span><b>R$ 99,90 / mês</b></header>
+              <p>Hospedagem em nuvem de alta performance, SSL, monitoramento 24/7, backups automáticos e suporte contínuo para alterações de contato e texto.</p>
+            </div>
+          </div>
+          <div class="price-side">
+            <span class="mono">Desenvolvimento completo</span>
+            <div class="amount"><small>a partir de R$</small><b data-count="997">997</b></div>
+            <span class="note">à vista ou em até 12x no cartão</span>
+            <a class="btn btn-primary magnetic" href="https://wa.me/5551980211154?text=Olá,%20gostaria%20de%20reservar%20uma%20vaga%20para%20desenvolvimento%20da%20minha%20landing%20page." target="_blank" rel="noopener noreferrer">
+              <span class="btn-fill"></span>Reservar minha vaga <span class="arrow">→</span>
+            </a>
+            <span class="note">Início imediato após validação do briefing.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="guarantee" data-reveal>
+        <div class="stamp" aria-hidden="true">
+          <svg viewBox="0 0 100 100"><defs><path id="circ2" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><text><textPath href="#circ2">Garantia · Sem risco · Garantia · Sem risco ·</textPath></text></svg>
+          <b>7D</b>
+        </div>
+        <div>
+          <h4>Garantia incondicional de satisfação</h4>
+          <p>Após a primeira prévia da sua landing page, se a qualidade visual e a arquitetura não estiverem à altura do seu negócio, devolvemos 100% do investimento, sem questionamentos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section paper" id="faq">
+  <div class="wrap faq-grid">
+    <div>
+      <span class="mono eyebrow">Tire suas dúvidas</span>
+      <h2 class="h2" data-split>Respostas claras <span class="serif">e diretas.</span></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false">Qual é o prazo médio de entrega da página?<span class="faq-icon" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>O prazo padrão é de 5 a 7 dias úteis após o alinhamento das informações do negócio no briefing inicial.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false">Por que o site é feito em código em vez de WordPress?<span class="faq-icon" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>Sites em WordPress costumam acumular dezenas de plugins pesados, vulnerabilidades de segurança e abertura acima de 4 segundos no celular. O código sob medida carrega em menos de 1 segundo, é imune a invasões comuns e garante pontuação alta nos testes do Google.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false">E se eu precisar trocar textos ou telefones no futuro?<span class="faq-icon" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>A gestão contínua (R$ 99,90/mês) cobre atualizações de contatos, horários, fotos e alterações pontuais de texto sem custo adicional de mão de obra.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false">Não invisto em tráfego pago hoje. Serve para mim?<span class="faq-icon" aria-hidden="true"></span></button>
+        <div class="faq-a"><p>Sim. Se você fecha contratos por indicação ou prospecção ativa, o cliente pesquisa o seu nome no Google antes de assinar. Uma presença com acabamento premium garante que você não perca negócios por parecer amador.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="section final">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="wrap" style="position:relative">
+    <span class="mono eyebrow">Decisão estratégica</span>
+    <h2 id="final-title" style="margin-top:24px">Sua empresa não merece uma página <span class="serif">que pareça amadora.</span></h2>
+    <div class="final-row">
+      <p data-reveal>Reserve seu diagnóstico e tenha um canal de vendas digital com padrão visual contemporâneo e engenharia de resposta imediata.</p>
+      <a class="btn btn-primary magnetic" href="#contato" data-reveal><span class="btn-fill"></span>Iniciar meu projeto <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULÁRIO -->
+<section class="section form-sec" id="contato">
+  <div class="wrap form-grid">
+    <div>
+      <span class="mono eyebrow">Diagnóstico estratégico</span>
+      <h2 class="h2" data-split>Turbine seu <span class="serif green">negócio local.</span></h2>
+      <p class="lead">Preencha os três passos e receba uma análise sob medida da sua operação, direto no WhatsApp.</p>
+      <div class="steps" aria-hidden="true"><i id="dot-1" class="on"></i><i id="dot-2"></i><i id="dot-3"></i></div>
+    </div>
+
+    <div class="form-card" data-reveal>
+      <form id="form-crm" novalidate>
+        <div id="etapa-1" class="form-step">
+          <span class="mono">Etapa 1 de 3 · Seus dados</span>
+          <div class="field"><label for="campo-nome">Nome completo *</label><input type="text" id="campo-nome" required autocomplete="name" placeholder="Ex: Rodrigo Sarmento"></div>
+          <div class="two">
+            <div class="field"><label for="campo-whatsapp">WhatsApp *</label><input type="tel" id="campo-whatsapp" required autocomplete="tel" placeholder="(51) 99999-9999"></div>
+            <div class="field"><label for="campo-email">E-mail *</label><input type="email" id="campo-email" required autocomplete="email" placeholder="contato@empresa.com"></div>
+          </div>
+          <button type="button" class="btn btn-primary" data-go="2"><span class="btn-fill"></span>Avançar para o negócio <span class="arrow">→</span></button>
+        </div>
+
+        <div id="etapa-2" class="form-step" hidden>
+          <span class="mono">Etapa 2 de 3 · Seu negócio</span>
+          <div class="field"><label for="campo-nome-negocio">Nome do negócio *</label><input type="text" id="campo-nome-negocio" placeholder="Ex: Clínica Viva"></div>
+          <div class="field"><label for="campo-segmento">Segmento de atuação *</label>
+            <select id="campo-segmento">
+              <option value="" disabled selected>Selecione seu nicho</option>
+              <option value="Restaurantes/Bares">Restaurantes / Bares</option>
+              <option value="Salão de Beleza/Estética">Salão de Beleza / Estética</option>
+              <option value="Lojas/Comércio">Lojas e Comércio Local</option>
+              <option value="Academias">Academias</option>
+              <option value="Clínicas">Clínicas Médicas / Odontológicas</option>
+              <option value="Autônomo/Prestador">Profissional Autônomo</option>
+              <option value="Construtora/Reforma">Construtora / Reformas</option>
+              <option value="Imobiliária">Imobiliária / Corretor</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+          <div class="field"><label for="campo-possui-site">Já possui um site ativo?</label>
+            <select id="campo-possui-site">
+              <option value="Não">Não possuo site</option>
+              <option value="Sim">Sim, já tenho site</option>
+            </select>
+          </div>
+          <div class="field" id="wrapper-site-url" hidden><label for="campo-site-url">Endereço (URL) do site</label><input type="url" id="campo-site-url" placeholder="https://www.seusite.com.br"></div>
+          <div class="form-nav">
+            <button type="button" class="btn btn-ghost" data-go="1"><span class="btn-fill"></span>← Voltar</button>
+            <button type="button" class="btn btn-primary" data-go="3"><span class="btn-fill"></span>Avançar <span class="arrow">→</span></button>
+          </div>
+        </div>
+
+        <div id="etapa-3" class="form-step" hidden>
+          <span class="mono">Etapa 3 de 3 · Seu maior desafio</span>
+          <div class="field"><label for="campo-desafio">Qual o seu maior desafio para atrair clientes online? *</label>
+            <select id="campo-desafio" required>
+              <option value="" disabled selected>Selecione o principal obstáculo</option>
+              <option value="Não aparece no Google">Não apareço no Google quando procuram meu serviço</option>
+              <option value="Site não gera contatos">Tenho site, mas não recebo mensagens de clientes</option>
+              <option value="Falta de credibilidade">Falta de credibilidade visual na internet</option>
+              <option value="Concorrente mais visível">Concorrentes aparecem mais e captam os clientes da minha região</option>
+              <option value="Não sabe por onde começar">Não sei por onde começar a estruturar meu tráfego e presença</option>
+              <option value="Outro">Outro obstáculo</option>
+            </select>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn btn-ghost" data-go="2"><span class="btn-fill"></span>← Voltar</button>
+            <button type="submit" class="btn btn-primary" id="btn-enviar-crm"><span class="btn-fill"></span><span id="btn-enviar-txt">Finalizar aplicação</span></button>
+          </div>
+        </div>
+
+        <p class="form-msg" id="form-msg" role="status" aria-live="polite" style="margin-top:16px"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <a href="#topo" class="brand"><svg viewBox="0 0 165 148" aria-hidden="true"><use href="#mark" fill="#00C46A"/></svg><b>SARMENTO<small>ADS</small></b></a>
+      <nav class="mono" aria-label="Rodapé">
+        <a href="#experiencia">Experiência</a>
+        <a href="#portfolio">Projetos</a>
+        <a href="#investimento">Investimento</a>
+        <a href="https://wa.me/5551980211154" target="_blank" rel="noopener noreferrer">WhatsApp (51) 98021-1154</a>
+      </nav>
+    </div>
+    <div class="wordmark" id="wordmark" aria-hidden="true">SARMENTO</div>
+    <div class="foot-bottom"><span>Engenharia UI/UX & Conversão</span><span>© 2026 Sarmento Ads. Todos os direitos reservados.</span></div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+
+<script>
+(function(){
+  const $ = (s, c=document) => c.querySelector(s);
+  const $$ = (s, c=document) => [...c.querySelectorAll(s)];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(pointer: fine)').matches;
+  const hasGsap = !!window.gsap && !!window.ScrollTrigger;
+  const preloader = $('#preloader');
+
+  /* ---------- conteúdo gerado ---------- */
+  // símbolo 3D em camadas (extrusão)
+  const m3d = $('#mark3d');
+  const D = 'M96 0H165V25L107 62H165V86L71 148H0V124L57 86H0V62ZM40 62L97 25H126L68 62ZM39 124L97 86H126L68 124Z';
+  for (let i = 10; i >= 0; i--) {
+    const s = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    s.setAttribute('viewBox','0 0 165 148');
+    s.setAttribute('class', i === 0 ? 'front' : 'layer');
+    s.style.transform = `translateZ(${-i*2.2}px)`;
+    s.innerHTML = `<path fill-rule="evenodd" d="${D}"/>`;
+    m3d.appendChild(s);
+  }
+  // faixas de marquee
+  const markSvg = '<svg viewBox="0 0 165 148" aria-hidden="true"><path fill-rule="evenodd" d="'+D+'"/></svg>';
+  $$('[data-band]').forEach(t => {
+    const items = t.dataset.band.split('|').map(w => `<span class="band-item">${w}${markSvg}</span>`).join('');
+    t.innerHTML = items + items + items + items;
+  });
+  // feed de eventos (exemplo ilustrativo)
+  const feed = $('#feed');
+  const evts = [['Lead','Formulário'],['Contato','WhatsApp'],['PageView','/'],['ViewContent','#investimento'],['Lead','WhatsApp'],['Scroll','75%']];
+  let ei = 0;
+  function pushEvt(){
+    const [a,b] = evts[ei++ % evts.length];
+    const row = document.createElement('div');
+    row.className = 'feed-row';
+    row.innerHTML = `<span><b>${a}</b> · ${b}</span><em>${(Math.random()*0.25+0.05).toFixed(2).replace('.',',')}s</em>`;
+    feed.prepend(row);
+    if (hasGsap && !reduce) gsap.from(row,{y:-16,opacity:0,duration:.5,ease:'power3.out'});
+    while (feed.children.length > 4) feed.lastElementChild.remove();
+  }
+  for (let i=0;i<3;i++) pushEvt();
+  if (!reduce) setInterval(pushEvt, 2200);
+
+  /* ---------- FAQ (funciona com ou sem GSAP) ---------- */
+  $$('.faq-item').forEach(item => {
+    const q = $('.faq-q', item), a = $('.faq-a', item);
+    q.addEventListener('click', () => {
+      const open = item.classList.contains('open');
+      $$('.faq-item.open').forEach(o => { if (o !== item) toggle(o, false); });
+      toggle(item, !open);
+    });
+  });
+  function toggle(item, open){
+    const a = $('.faq-a', item);
+    item.classList.toggle('open', open);
+    $('.faq-q', item).setAttribute('aria-expanded', open);
+    if (hasGsap && !reduce) gsap.to(a, {height: open ? 'auto' : 0, duration: .6, ease: 'power3.inOut'});
+    else a.style.height = open ? 'auto' : '0';
+  }
+
+  /* ---------- sem animação: libera a página e sai ---------- */
+  if (!hasGsap || reduce) {
+    preloader && preloader.remove();
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ---------- rolagem suave ---------- */
+  let lenis = null;
+  if (window.Lenis) {
+    lenis = new Lenis({ lerp: .09, wheelMultiplier: 1 });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(t => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+  $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    const el = id.length > 1 ? $(id) : null;
+    if (!el) return;
+    e.preventDefault();
+    if (lenis) lenis.scrollTo(el, { offset: id === '#topo' ? 0 : -70, duration: 1.4 });
+    else el.scrollIntoView({ behavior: 'smooth' });
+  }));
+
+  /* ---------- split de palavras ---------- */
+  function split(el){
+    const walk = node => {
+      [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(part => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+            const w = document.createElement('span'); w.className = 'w';
+            const i = document.createElement('span'); i.className = 'wi'; i.textContent = part;
+            w.appendChild(i); frag.appendChild(w);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1 && n.tagName !== 'BR') walk(n);
+      });
+    };
+    walk(el);
+    return $$('.wi', el);
+  }
+
+  /* ---------- preloader + entrada do hero ---------- */
+  const heroWords = split($('#hero-title'));
+  gsap.set(heroWords, { yPercent: 110 });
+  gsap.set('[data-hero]', { y: 40, opacity: 0 });
+
+  const counter = { v: 0 };
+  const plCount = $('#pl-count');
+  const intro = gsap.timeline({ delay: .1 });
+  intro
+    .to('.pl-mark path', { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' }, 0)
+    .to(counter, { v: 100, duration: 1.1, ease: 'power2.inOut', onUpdate: () => plCount.textContent = String(Math.round(counter.v)).padStart(3,'0') }, 0)
+    .to('.pl-mark path', { fill: '#00C46A', duration: .3 }, 1)
+    .to(preloader, { clipPath: 'inset(0 0 100% 0)', duration: .9, ease: 'power4.inOut' }, 1.25)
+    .set(preloader, { display: 'none' })
+    .to(heroWords, { yPercent: 0, duration: 1.1, stagger: .045, ease: 'power4.out' }, 1.55)
+    .to('[data-hero]', { y: 0, opacity: 1, duration: 1, stagger: .08, ease: 'power3.out' }, 1.85)
+    .from('#mark3d', { rotateY: -180, scale: .6, duration: 1.6, ease: 'expo.out' }, 1.8)
+    .add(() => $$('.stat [data-count]').forEach(countUp), 2.1);
+  preloader.style.clipPath = 'inset(0 0 0% 0)';
+
+  /* ---------- contadores ---------- */
+  function countUp(el){
+    if (el.dataset.done) return; el.dataset.done = 1;
+    const to = parseFloat(el.dataset.count), dec = +(el.dataset.dec || 0);
+    const pre = el.dataset.pre || '', suf = el.dataset.suf || '';
+    const o = { v: 0 };
+    gsap.to(o, { v: to, duration: 1.8, ease: 'power3.out', onUpdate: () => {
+      el.textContent = pre + o.v.toFixed(dec).replace('.', ',') + suf;
+    }});
+  }
+  $$('[data-count]').forEach(el => {
+    if (el.closest('.stat')) return;
+    ScrollTrigger.create({ trigger: el, start: 'top 85%', once: true, onEnter: () => countUp(el) });
+  });
+
+  /* ---------- nav: progresso e esconder ao descer ---------- */
+  const nav = $('#nav');
+  gsap.to('#nav-progress', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: true } });
+  ScrollTrigger.create({ start: 0, end: 'max', onUpdate: self => {
+    nav.classList.toggle('is-hidden', self.direction === 1 && self.scroll() > 400);
+  }});
+
+  /* ---------- hero: texto gigante e símbolo 3D ---------- */
+  gsap.to('#hero-giant', { xPercent: -30, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to('.hero-visual', { yPercent: 25, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+  const rX = gsap.quickTo(m3d, 'rotateX', { duration: .8, ease: 'power3' });
+  const rY = gsap.quickTo(m3d, 'rotateY', { duration: .8, ease: 'power3' });
+  if (fine) {
+    window.addEventListener('mousemove', e => {
+      const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5;
+      rY(x * 50); rX(-y * 40);
+    });
+  } else {
+    gsap.to(m3d, { rotateY: 25, rotateX: -10, duration: 3, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+  }
+
+  /* ---------- faixas: inclinam com a velocidade do scroll ---------- */
+  const skewA = gsap.quickTo('.band-a .band-track', 'skewX', { duration: .4 });
+  const skewB = gsap.quickTo('.band-b .band-track', 'skewX', { duration: .4 });
+  ScrollTrigger.create({ start: 0, end: 'max', onUpdate: self => {
+    const v = gsap.utils.clamp(-12, 12, self.getVelocity() / -250);
+    skewA(v); skewB(-v);
+  }});
+  ScrollTrigger.create({ trigger: '.bands', start: 'top bottom', end: 'bottom top', scrub: true,
+    animation: gsap.timeline().fromTo('.band-a', { xPercent: 4 }, { xPercent: -4, ease: 'none' }, 0).fromTo('.band-b', { xPercent: -4 }, { xPercent: 4, ease: 'none' }, 0) });
+
+  /* ---------- manifesto: palavras acendem no scroll ---------- */
+  const mWords = split($('#manifesto-text'));
+  gsap.fromTo(mWords, { opacity: .14 }, { opacity: 1, stagger: .05, ease: 'none',
+    scrollTrigger: { trigger: '#manifesto-text', start: 'top 80%', end: 'bottom 45%', scrub: true } });
+
+  /* ---------- títulos de seção ---------- */
+  $$('[data-split]').forEach(h => {
+    const ws = split(h);
+    gsap.from(ws, { yPercent: 110, duration: 1, stagger: .04, ease: 'power4.out',
+      scrollTrigger: { trigger: h, start: 'top 85%', once: true } });
+  });
+  const fWords = split($('#final-title'));
+  gsap.from(fWords, { yPercent: 110, rotate: 4, duration: 1.1, stagger: .05, ease: 'power4.out',
+    scrollTrigger: { trigger: '#final-title', start: 'top 80%', once: true } });
+
+  /* ---------- revelações ---------- */
+  ScrollTrigger.batch('[data-reveal]', { start: 'top 88%', once: true,
+    onEnter: els => gsap.from(els, { y: 60, opacity: 0, duration: 1.1, stagger: .12, ease: 'power3.out', clearProps: 'transform,opacity' }) });
+  ScrollTrigger.batch('[data-li]', { start: 'top 92%', once: true,
+    onEnter: els => gsap.from(els, { x: -30, opacity: 0, duration: .8, stagger: .08, ease: 'power3.out', clearProps: 'transform,opacity' }) });
+
+  // barras do comparativo
+  gsap.from('.cmp-bar', { scaleX: 0, duration: 1.6, stagger: .25, ease: 'power3.out',
+    scrollTrigger: { trigger: '#compare', start: 'top 80%', once: true } });
+
+  /* ---------- engenharia: scroll horizontal fixado (desktop) ---------- */
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 980px)', () => {
+    const track = $('#h-track');
+    const dist = () => track.scrollWidth - innerWidth;
+    gsap.to(track, { x: () => -dist(), ease: 'none',
+      scrollTrigger: { trigger: '#h-pin', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true,
+        onUpdate: self => gsap.set('#h-progress', { scaleX: self.progress }) } });
+  });
+  mm.add('(max-width: 979px)', () => {
+    gsap.utils.toArray('.h-card').forEach(c => gsap.from(c, { y: 60, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: c, start: 'top 88%', once: true } }));
+  });
+
+  /* ---------- portfólio: cortina + parallax interno ---------- */
+  $$('.case-media').forEach(m => {
+    gsap.fromTo(m, { clipPath: 'inset(18% 10% 18% 10% round 26px)' }, { clipPath: 'inset(0% 0% 0% 0% round 26px)', ease: 'none',
+      scrollTrigger: { trigger: m, start: 'top 95%', end: 'top 40%', scrub: true } });
+    const inner = $('[data-parallax]', m);
+    gsap.fromTo(inner, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: m, start: 'top bottom', end: 'bottom top', scrub: true } });
+  });
+
+  /* ---------- rodapé: letras sobem ---------- */
+  const wm = $('#wordmark');
+  wm.innerHTML = wm.textContent.split('').map(c => `<span class="ch">${c}</span>`).join('');
+  gsap.from('#wordmark .ch', { yPercent: 100, duration: 1.1, stagger: .05, ease: 'power4.out',
+    scrollTrigger: { trigger: wm, start: 'top 95%', once: true } });
+
+  /* ---------- interações de ponteiro (desktop) ---------- */
+  if (fine) {
+    const cur = $('#cursor'), ring = $('#cursor-ring'), label = $('#cursor-label');
+    const cx = gsap.quickTo(cur, 'x', { duration: .08 }), cy = gsap.quickTo(cur, 'y', { duration: .08 });
+    const rx = gsap.quickTo(ring, 'x', { duration: .45, ease: 'power3' }), ry = gsap.quickTo(ring, 'y', { duration: .45, ease: 'power3' });
+    window.addEventListener('mousemove', e => { cx(e.clientX); cy(e.clientY); rx(e.clientX); ry(e.clientY); });
+    $$('a, button, select, input').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('is-hover'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('is-hover'));
+    });
+    $$('[data-cursor]').forEach(el => {
+      el.addEventListener('mouseenter', () => { label.textContent = el.dataset.cursor; ring.classList.add('is-label'); });
+      el.addEventListener('mouseleave', () => ring.classList.remove('is-label'));
     });
 
-    // 2. Efeito Tilt 3D e Brilho Focal nos Bento Cards
-    const cards = document.querySelectorAll('.bento-card');
-    cards.forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -4;
-        const rotateY = ((x - centerX) / centerX) * 4;
-
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
-      });
-
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
-      });
+    // botões magnéticos
+    $$('.magnetic').forEach(b => {
+      const xTo = gsap.quickTo(b, 'x', { duration: .6, ease: 'elastic.out(1,.4)' });
+      const yTo = gsap.quickTo(b, 'y', { duration: .6, ease: 'elastic.out(1,.4)' });
+      b.addEventListener('mousemove', e => { const r = b.getBoundingClientRect(); xTo((e.clientX - r.left - r.width/2) * .3); yTo((e.clientY - r.top - r.height/2) * .4); });
+      b.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
     });
 
-    // 3. Acordeom Interativo de FAQ
-    function toggleFaq(item) {
-      const content = item.querySelector('.faq-content');
-      const icon = item.querySelector('.faq-icon');
-      
-      const isOpen = !content.classList.contains('hidden');
-      
-      document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
-      document.querySelectorAll('.faq-icon').forEach(i => {
-        i.textContent = '+';
-        i.style.transform = 'rotate(0deg)';
+    // cards: brilho segue o mouse + tilt leve
+    $$('.tilt').forEach(c => {
+      const rx2 = gsap.quickTo(c, 'rotateX', { duration: .5 }), ry2 = gsap.quickTo(c, 'rotateY', { duration: .5 });
+      gsap.set(c, { transformPerspective: 1100 });
+      c.addEventListener('mousemove', e => {
+        const r = c.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+        c.style.setProperty('--mx', x + 'px'); c.style.setProperty('--my', y + 'px');
+        rx2(((y / r.height) - .5) * -5); ry2(((x / r.width) - .5) * 5);
       });
+      c.addEventListener('mouseleave', () => { rx2(0); ry2(0); });
+    });
+  }
 
-      if (!isOpen) {
-        content.classList.remove('hidden');
-        icon.textContent = '×';
-        icon.style.transform = 'rotate(90deg)';
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+  window.__lenis = lenis;
+})();
+</script>
+
+<!-- FORMULÁRIO EM ETAPAS + SUPABASE CRM -->
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const msg = $('form-msg');
+  const anim = !!window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let atual = 1;
+
+  function aviso(t, tipo){ msg.textContent = t; msg.className = 'form-msg ' + (tipo || ''); }
+
+  function irParaEtapa(etapa){
+    if (etapa === 2 && atual === 1) {
+      if (!$('campo-nome').value.trim() || !$('campo-whatsapp').value.trim() || !$('campo-email').value.trim()) {
+        aviso('Preencha nome, WhatsApp e e-mail para continuar.', 'err'); return;
       }
     }
-  </script>
-
-  <!-- ==============================================
-       LÓGICA DO FORMULÁRIO DINÂMICO & SUPABASE CRM
-       ============================================== -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    // Navegação em Etapas
-    function irParaEtapa(etapa) {
-      if (etapa === 2) {
-        const nome = document.getElementById('campo-nome').value.trim();
-        const zap = document.getElementById('campo-whatsapp').value.trim();
-        const email = document.getElementById('campo-email').value.trim();
-        if (!nome || !zap || !email) {
-          alert("Por favor, preencha os dados de contato obrigatórios.");
-          return;
-        }
-      }
-
-      if (etapa === 3) {
-        const negocio = document.getElementById('campo-nome-negocio').value.trim();
-        const segmento = document.getElementById('campo-segmento').value;
-        if (!negocio || !segmento) {
-          alert("Por favor, preencha o nome do negócio e selecione o segmento.");
-          return;
-        }
-      }
-
-      // Alternar visualização dos blocos
-      document.getElementById('etapa-1').classList.toggle('hidden', etapa !== 1);
-      document.getElementById('etapa-2').classList.toggle('hidden', etapa !== 2);
-      document.getElementById('etapa-3').classList.toggle('hidden', etapa !== 3);
-
-      // Atualizar indicadores visuais
-      const d1 = document.getElementById('dot-1');
-      const d2 = document.getElementById('dot-2');
-      const d3 = document.getElementById('dot-3');
-
-      d1.className = etapa >= 1 ? 'h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300' : 'h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300';
-      d2.className = etapa >= 2 ? 'h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300' : 'h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300';
-      d3.className = etapa === 3 ? 'h-1.5 w-8 rounded-full bg-brand-caribe transition-all duration-300' : 'h-1.5 w-8 rounded-full bg-white/10 transition-all duration-300';
-    }
-
-    // Exibição condicional do campo de URL do site
-    function verificarSite(valor) {
-      const wrapper = document.getElementById('wrapper-site-url');
-      if (valor === 'Sim') {
-        wrapper.classList.remove('hidden');
-      } else {
-        wrapper.classList.add('hidden');
-        document.getElementById('campo-site-url').value = '';
+    if (etapa === 3 && atual === 2) {
+      if (!$('campo-nome-negocio').value.trim() || !$('campo-segmento').value) {
+        aviso('Preencha o nome do negócio e selecione o segmento.', 'err'); return;
       }
     }
+    aviso('');
+    const dir = etapa > atual ? 1 : -1;
+    [1,2,3].forEach(n => { $('etapa-' + n).hidden = n !== etapa; });
+    if (anim) gsap.fromTo('#etapa-' + etapa, { x: 40 * dir, opacity: 0 }, { x: 0, opacity: 1, duration: .55, ease: 'power3.out' });
+    [1,2,3].forEach(n => $('dot-' + n).classList.toggle('on', n <= etapa));
+    atual = etapa;
+  }
 
-    // Envio para o Supabase
-    const CRM_URL = "https://yqiunyrpkljtgenjeyev.supabase.co";
-    const CRM_KEY = "sb_publishable_6YnqMemgF07N1YwoTxVCkg_utecUki8";
-    const supabaseClient = supabase.createClient(CRM_URL, CRM_KEY);
+  document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => irParaEtapa(+b.dataset.go)));
 
-    async function enviarParaCRM(e) {
-      e.preventDefault();
-      const btn = document.getElementById('btn-enviar-crm');
-      btn.innerText = "Registrando Oportunidade...";
-      btn.disabled = true;
+  $('campo-possui-site').addEventListener('change', e => {
+    const sim = e.target.value === 'Sim';
+    $('wrapper-site-url').hidden = !sim;
+    if (!sim) $('campo-site-url').value = '';
+  });
 
-      const leadData = {
-        nome: document.getElementById('campo-nome').value.trim(),
-        whatsapp: document.getElementById('campo-whatsapp').value.trim(),
-        email: document.getElementById('campo-email').value.trim(),
-        nome_negocio: document.getElementById('campo-nome-negocio').value.trim(),
-        segmento: document.getElementById('campo-segmento').value,
-        possui_site: document.getElementById('campo-possui-site').value,
-        site_url: document.getElementById('campo-site-url').value.trim() || null,
-        desafio: document.getElementById('campo-desafio').value,
-        status: 'novo'
-      };
+  const CRM_URL = "https://yqiunyrpkljtgenjeyev.supabase.co";
+  const CRM_KEY = "sb_publishable_6YnqMemgF07N1YwoTxVCkg_utecUki8";
+  let supabaseClient = null;
+  try { supabaseClient = window.supabase.createClient(CRM_URL, CRM_KEY); } catch (e) {}
 
-      const { error } = await supabaseClient.from('leads').insert([leadData]);
+  $('form-crm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!$('campo-desafio').value) { aviso('Selecione o seu principal desafio.', 'err'); return; }
+    const btn = $('btn-enviar-crm'), txt = $('btn-enviar-txt');
+    txt.textContent = 'Registrando…'; btn.disabled = true;
 
-      if (error) {
-        alert("Ocorreu um erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.");
-        btn.innerText = "Finalizar Aplicação";
-        btn.disabled = false;
-        return;
-      }
+    const leadData = {
+      nome: $('campo-nome').value.trim(),
+      whatsapp: $('campo-whatsapp').value.trim(),
+      email: $('campo-email').value.trim(),
+      nome_negocio: $('campo-nome-negocio').value.trim(),
+      segmento: $('campo-segmento').value,
+      possui_site: $('campo-possui-site').value,
+      site_url: $('campo-site-url').value.trim() || null,
+      desafio: $('campo-desafio').value,
+      status: 'novo'
+    };
 
-      document.getElementById('msg-sucesso').classList.remove('hidden');
-      
-      setTimeout(() => {
-        const zapMsg = encodeURIComponent(`Olá, sou ${leadData.nome} da ${leadData.nome_negocio}. Preenchi o formulário de diagnóstico da Sarmento Ads para o segmento de ${leadData.segmento}.`);
-        window.location.href = `https://wa.me/5551980211154?text=${zapMsg}`;
-      }, 1200);
+    let error = null;
+    try {
+      if (!supabaseClient) throw new Error('sem cliente');
+      ({ error } = await supabaseClient.from('leads').insert([leadData]));
+    } catch (err) { error = err; }
+
+    if (error) {
+      aviso('Não conseguimos enviar agora. Tente de novo ou chame no WhatsApp (51) 98021-1154.', 'err');
+      txt.textContent = 'Finalizar aplicação'; btn.disabled = false;
+      return;
     }
-  </script>
+
+    aviso('✓ Diagnóstico enviado! Abrindo o WhatsApp…', 'ok');
+    setTimeout(() => {
+      const zapMsg = encodeURIComponent(`Olá, sou ${leadData.nome} da ${leadData.nome_negocio}. Preenchi o formulário de diagnóstico da Sarmento Ads para o segmento de ${leadData.segmento}.`);
+      window.location.href = `https://wa.me/5551980211154?text=${zapMsg}`;
+    }, 1200);
+  });
+})();
+</script>
 </body>
 </html>
