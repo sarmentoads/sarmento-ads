@@ -264,10 +264,13 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .h-progress{margin:48px var(--gutter-r) 0 var(--gutter);height:1px;background:var(--line);position:relative;display:none}
 .h-progress i{position:absolute;inset:0;background:var(--green);transform-origin:left;transform:scaleX(0)}
 @media (min-width:980px){
-  .h-track{display:flex;gap:28px;width:max-content;align-items:stretch}
-  .h-intro{width:520px;flex:none;align-self:center;margin-right:40px}
-  .h-card{width:500px;flex:none;min-height:480px}
-  .h-progress{display:block}
+  .h-track{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .h-intro{grid-column:1/-1;margin-bottom:28px}
+  /* modo horizontal: só quando o JS ativa o scroll fixado */
+  .h-on .h-track{display:flex;gap:28px;width:max-content;align-items:stretch}
+  .h-on .h-intro{width:520px;flex:none;align-self:center;margin:0 40px 0 0}
+  .h-on .h-card{width:500px;flex:none;min-height:480px}
+  .h-on .h-progress{display:block}
 }
 
 /* ============ SEGMENTOS ============ */
@@ -440,9 +443,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* reveal: estado de repouso visível; o JS só anima a partir dele */
 .no-js [data-reveal]{opacity:1}
+/* "reduzir movimento": mantém as animações da página, só remove o grão tremulante */
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
-  .preloader{display:none}
   .grain{display:none}
 }
 </style>
@@ -1013,11 +1015,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
     row.className = 'feed-row';
     row.innerHTML = `<span><b>${a}</b> · ${b}</span><em>${(Math.random()*0.25+0.05).toFixed(2).replace('.',',')}s</em>`;
     feed.prepend(row);
-    if (hasGsap && !reduce) gsap.from(row,{y:-16,opacity:0,duration:.5,ease:'power3.out'});
+    if (hasGsap) gsap.from(row,{y:-16,opacity:0,duration:.5,ease:'power3.out'});
     while (feed.children.length > 4) feed.lastElementChild.remove();
   }
   for (let i=0;i<3;i++) pushEvt();
-  if (!reduce) setInterval(pushEvt, 2200);
+  setInterval(pushEvt, 2200);
 
   /* ---------- FAQ (funciona com ou sem GSAP) ---------- */
   $$('.faq-item').forEach(item => {
@@ -1032,12 +1034,12 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
     const a = $('.faq-a', item);
     item.classList.toggle('open', open);
     $('.faq-q', item).setAttribute('aria-expanded', open);
-    if (hasGsap && !reduce) gsap.to(a, {height: open ? 'auto' : 0, duration: .6, ease: 'power3.inOut'});
+    if (hasGsap) gsap.to(a, {height: open ? 'auto' : 0, duration: .6, ease: 'power3.inOut'});
     else a.style.height = open ? 'auto' : '0';
   }
 
   /* ---------- sem animação: libera a página e sai ---------- */
-  if (!hasGsap || reduce) {
+  if (!hasGsap) {
     preloader && preloader.remove();
     return;
   }
@@ -1046,7 +1048,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
   /* ---------- rolagem suave ---------- */
   let lenis = null;
-  if (window.Lenis) {
+  if (window.Lenis && !reduce) {
     lenis = new Lenis({ lerp: .09, wheelMultiplier: 1 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(t => lenis.raf(t * 1000));
@@ -1176,11 +1178,15 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   /* ---------- engenharia: scroll horizontal fixado (desktop) ---------- */
   const mm = gsap.matchMedia();
   mm.add('(min-width: 980px)', () => {
+    const sec = $('#detalhe');
+    sec.classList.add('h-on');
+    ScrollTrigger.refresh();
     const track = $('#h-track');
     const dist = () => track.scrollWidth - innerWidth;
     gsap.to(track, { x: () => -dist(), ease: 'none',
       scrollTrigger: { trigger: '#h-pin', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true,
         onUpdate: self => gsap.set('#h-progress', { scaleX: self.progress }) } });
+    return () => sec.classList.remove('h-on');
   });
   mm.add('(max-width: 979px)', () => {
     gsap.utils.toArray('.h-card').forEach(c => gsap.from(c, { y: 60, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: c, start: 'top 88%', once: true } }));
@@ -1246,7 +1252,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 (function(){
   const $ = id => document.getElementById(id);
   const msg = $('form-msg');
-  const anim = !!window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const anim = !!window.gsap;
   let atual = 1;
 
   function aviso(t, tipo){ msg.textContent = t; msg.className = 'form-msg ' + (tipo || ''); }
