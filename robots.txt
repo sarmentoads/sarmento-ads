@@ -1,0 +1,6 @@
+# Sarmento Ads — regras para robôs de busca e de IA
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://sarmentoads.vercel.app/sitemap.xml

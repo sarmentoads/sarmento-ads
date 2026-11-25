@@ -1,0 +1,43 @@
+# Sarmento Ads
+
+> Estúdio de engenharia de UI/UX e tráfego pago do Rio Grande do Sul, Brasil. Cria landing pages de alta conversão em código sob medida (sem WordPress), com copywriting de resposta direta, rastreamento Meta Pixel e Google Tag Manager, e contato direto pelo WhatsApp. Atende negócios de serviço que vendem competência técnica.
+
+## Serviços
+
+- **Landing page de alta conversão**: direção de arte e UI/UX exclusivos (sem templates), copywriting para tomadores de decisão, desenvolvimento em código com abertura em menos de 1 segundo no celular, configuração de Meta Pixel e Google Tag Manager, otimização mobile com foco na zona do polegar.
+- **Gestão técnica e infraestrutura**: hospedagem em nuvem, SSL, monitoramento 24/7, backups automáticos e suporte para alterações de contato e texto.
+- **Tráfego pago e posicionamento digital**: estrutura de captação para negócios que anunciam ou recebem clientes por indicação e prospecção.
+
+## Preços
+
+- Desenvolvimento completo da landing page: a partir de R$ 997, à vista ou em até 12x no cartão.
+- Gestão técnica e infraestrutura: R$ 99,90 por mês.
+- Prazo padrão de entrega: 5 a 7 dias úteis após o briefing.
+- Garantia de 7 dias: se a primeira prévia não atender ao nível do negócio, o investimento é devolvido integralmente.
+
+## Para quem é
+
+- Escritórios de advocacia especializada (design conforme o Provimento da OAB)
+- BPO financeiro, contabilidade e auditoria
+- Clínicas médicas e odontológicas
+- Empresas B2B e serviços especializados
+
+Não atende: lojas de dropshipping, e-commerce de varejo com catálogos grandes, nem projetos sem proposta de valor definida.
+
+## Cases
+
+- **4Tires Centro Automotivo**: landing page para cotação de pneus de alta performance via WhatsApp. Taxa de conversão de 18,4% e carregamento de 0,9 s.
+- **Boutique Jurídica & Compliance**: site institucional editorial para direito empresarial, com tipografia sóbria e conformidade com a OAB.
+
+## Diferenciais
+
+- Código sob medida em vez de WordPress: mais velocidade, menos vulnerabilidades e nota alta no Core Web Vitals.
+- Atendimento técnico direto, sem terceirização.
+- Copywriting e engenharia de software no mesmo time.
+
+## Contato
+
+- WhatsApp: +55 51 98021-1154 (https://wa.me/5551980211154)
+- Site: https://sarmentoads.vercel.app/
+- Diagnóstico gratuito pelo formulário do site: https://sarmentoads.vercel.app/#contato
+- Região: Rio Grande do Sul, Brasil (atendimento online para todo o país)
